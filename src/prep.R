@@ -2,11 +2,11 @@
 library(data.table)
 library(stringi)
 
-deaths191030 <- fread(cmd = "gunzip -c ../data/deaths1910-30.csv.gz")
+deaths191030 <- fread(cmd = "gunzip -c ../dat/deaths1910-30.csv.gz")
 
-topo <- fread("../data/DutchToponyms1812-2012Spatio-Temporal.txt")
+topo <- fread("../dat/DutchToponyms1812-2012Spatio-Temporal.txt")
 # nicer colnames
-setnames(topo, tolower(names(top)))
+setnames(topo, tolower(names(topo)))
 setnames(topo, "toponym (city,town,village,hamlet)", "toponym")
 setnames(topo, "lattitude (3 dec.degrees)", "lat")
 setnames(topo, "longitude (3 dec.degrees)" , "lon")
@@ -24,11 +24,11 @@ deaths191030[HISCLASS == 5  | HISCLASS == 9  | HISCLASS == 10, skill_level := "l
 deaths191030[HISCLASS == 11 | HISCLASS == 12 | HISCLASS == 13, skill_level := "unskilled", ]
 
 # covid coding
-covid_coding <- fread("~/downloads/covid_coding_final.csv")
+covid_coding <- fread("../dat/covid_coding_final.csv")
 covid_coding[, HISCO_THREE := as.character(stri_sub(unitGroup, -3, -1)),]
 
 # covid coding only occs where we agreed directly
-covid2 <- fread("~/downloads/covid_coding_rr_ria.csv")
+covid2 <- fread("../dat/covid_coding_rr_ria.csv")
 
 covid2[rr_confined == ria_confined & rr_meet == ria_meet, agreement := 1,]
 covid2[is.na(agreement), agreement := 0,]
@@ -56,6 +56,8 @@ deaths191030[HISCO_THREE == "065", final_meet_strangers := 1]
 deaths191030[HISCO_THREE == "980", final_under_roof := 0]
 deaths191030[HISCO_THREE == "980", final_meet_strangers := 1]
 
+# encoding misery
+deaths191030[, occtitle_st := stringi::stri_replace_all_fixed(occtitle_st, "\xe3", "e")]
 deaths191030[HISCO_THREE == "999" & grepl("fabriek", occtitle_st), final_under_roof := 1]
 
 deaths191030[occtitle_st == "ziekenverpleegster", HISCO_THREE := "071"]
@@ -72,11 +74,9 @@ deaths191030[occtitle_st == "herbergierster" | occtitle_st == "koffiehuishoudste
 deaths191030[occtitle_st == "herbergierster" | occtitle_st == "koffiehuishoudster", final_meet_strangers := 1]
 
 # drop HISCO 99999, -2, -3
-
 deaths191030 <- deaths191030[HISCO != 99999 & HISCO != -2 & HISCO != -3,]
 
 # code exposure
-
 deaths191030[final_under_roof == 0 & final_meet_strangers == 0, exposure := 0]
 deaths191030[final_under_roof == 1 & final_meet_strangers == 0, exposure := 1]
 deaths191030[final_under_roof == 0 & final_meet_strangers == 1, exposure := 2]
@@ -84,19 +84,8 @@ deaths191030[final_under_roof == 1 & final_meet_strangers == 1, exposure := 3]
 
 deaths191030[, .N, list(exposure)][order(exposure)]
 
-
-### optional: compare low/high mortality regions
-
-#clusters <- fread("Mortality_1918_Q4.txt")
-
-#high <- clusters[quintile == "80-100%",]
-#low <- clusters[quintile == "0-19%" | quintile == " 20-39%" | quintile == "40-59%"]
-
-#deaths1918 <- deaths191030[amco %in% low$amco, ]
-
-### meet_strangers
 deaths191030[, death_date := as.Date(
   stri_join(event_year, "-", event_month, "-", event_day),
   format = "%Y-%m-%d")]
 
-fwrite(deaths191030, "~/data/civreg/deaths191030.csv")
+fwrite(deaths191030, "~/dat/civreg/deaths191030.csv")
