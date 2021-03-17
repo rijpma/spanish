@@ -4,6 +4,10 @@ library(stringi)
 
 deaths191030 <- fread(cmd = "gunzip -c ../dat/deaths1910-30.csv.gz")
 
+# municipalities with sufficient number of certificates
+munic_cov = fread("../dat/HDNG_OpenArch.txt")
+deaths191030 = deaths191030[amco %in% unique(munic_cov$ACODE)]
+
 topo <- fread("../dat/DutchToponyms1812-2012Spatio-Temporal.txt")
 # nicer colnames
 setnames(topo, tolower(names(topo)))
