@@ -96,6 +96,6 @@ deaths191030[, plus40 := pr_age >= 40]
 deaths191030[, year := year(death_date)]
 deaths191030[is.na(year), year := event_year] # bit pointless as we'll need a date?
 deaths191030[, flu := between(death_date, as.Date("1918-09-01"), as.Date("1918-12-31"))]
-deaths191030[, compmonth := between(event_month, 9, 12) & year != 1918]
+deaths191030[, sep_dec := between(event_month, 9, 12)]
 
 fwrite(deaths191030, "../dat/deaths.csv")
