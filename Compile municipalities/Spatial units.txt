@@ -1,0 +1,1119 @@
+ACODE	gemeente	Sampled	EGG	Corop	Provincie
+10531	Aagtekerke	Sampled	96	32	Zeeland
+11264	Aalsmeer	Sampled	62	23	Noord-Holland
+11423	Aalst [NB]	Sampled	114	36	Noord-Brabant
+11046	Aalten	Sampled	30	14	Gelderland
+11020	Aardenburg	Sampled	98	31	Zeeland
+10757	Aarle-Rixtel	Sampled	115	36	Noord-Brabant
+10439	Abbekerk	Sampled	54	18	Noord-Holland
+11026	Abbenbroek	Sampled	91	29	Zuid-Holland
+11184	Abcoude-Baambrugge	Sampled	48	17	Utrecht
+10712	Abcoude-Proostdij	Sampled	48	17	Utrecht
+10199	Achtkarspelen	Sampled	9	4	Friesland
+10524	Achttienhoven [Ut]	Sampled	48	17	Utrecht
+10996	Adorp	Sampled	6	3	Groningen
+10999	Aduard	Sampled	6	3	Groningen
+10157	Aengwirden	Sampled	9	6	Friesland
+10346	Akersloot	Sampled	55	19	Noord-Holland
+11327	Alblasserdam	No data	76	30	Zuid-Holland
+10495	Alem, Maren en Kessel	Sampled	111	16	Noord-Brabant
+10349	Alkemade	Sampled	72	25	Zuid-Holland
+10527	Alkmaar	Sampled	55	19	Noord-Holland
+11053	Almelo [2]	Sampled	24	12	Overijssel
+10788	Almkerk	Sampled	105	34	Noord-Brabant
+10517	Alphen aan den Rijn	No data	73	28	Zuid-Holland
+10710	Alphen en Riel	Sampled	108	34	Noord-Brabant
+11400	Ambt Delden	Sampled	24	12	Overijssel
+10396	Ambt Doetinchem	Sampled	27	14	Gelderland
+10174	Ambt Hardenberg	No data	21	10	Overijssel
+11069	Ambt Ommen	No data	21	10	Overijssel
+11088	Ambt Vollenhove	No data	19	10	Overijssel
+10922	Amby	Sampled	126	39	Limburg
+11349	Ameide	Sampled	77	30	Zuid-Holland
+11153	Ameland	Sampled	13	4	Friesland
+11372	Amerongen	Sampled	44	17	Utrecht
+10948	Amersfoort	Sampled	43	17	Utrecht
+10863	Ammerstol	No data	75	28	Zuid-Holland
+10151	Ammerzoden	Sampled	42	16	Gelderland
+10062	Amstenrade	Sampled	125	39	Limburg
+11150	Amsterdam	No data	63	23	Noord-Holland
+10871	Andel	Sampled	105	34	Noord-Brabant
+10822	Andijk	Sampled	54	18	Noord-Holland
+11131	Angerlo	No data	26	15	Gelderland
+10936	Ankeveen	Sampled	65	24	Noord-Holland
+10787	Anloo	Sampled	16	7	Drenthe
+10344	Anna Paulowna	Sampled	52	18	Noord-Holland
+11075	Apeldoorn	Sampled	33	13	Gelderland
+11296	Appeltern	No data	41	16	Gelderland
+10886	Appingedam	Sampled	2	2	Groningen
+10202	Arcen en Velden	Sampled	120	37	Limburg
+10079	Arkel	No data	76	30	Zuid-Holland
+11419	Arnemuiden	Sampled	96	32	Zeeland
+10795	Arnhem	Sampled	35	15	Gelderland
+11369	Asperen	Sampled	78	30	Zuid-Holland
+10522	Assen	Sampled	17	7	Drenthe
+11373	Assendelft	Sampled	58	22	Noord-Holland
+10478	Asten	Sampled	118	36	Noord-Brabant
+11147	Avenhorn	Sampled	54	18	Noord-Holland
+11190	Avereest	Sampled	21	10	Overijssel
+11289	Axel	Sampled	99	31	Zeeland
+10422	Baarderadeel	Sampled	10	4	Friesland
+10006	Baardwijk	Sampled	106	34	Noord-Brabant
+10634	Baarland	Sampled	97	32	Zeeland
+10060	Baarle-Nassau	Sampled	108	34	Noord-Brabant
+11411	Baarn	Sampled	44	17	Utrecht
+11255	Baexem	Sampled	123	38	Limburg
+10539	Baflo	Sampled	1	3	Groningen
+10749	Bakel en Milheeze	Sampled	118	36	Noord-Brabant
+10849	Balgoij	No data	40	15	Gelderland
+10943	Barendrecht [2]	No data	86	29	Zuid-Holland
+10906	Barneveld	Sampled	31	13	Gelderland
+10156	Barradeel	Sampled	12	4	Friesland
+10973	Barsingerhorn	Sampled	53	18	Noord-Holland
+10447	Barwoutswaarder	Sampled	73	28	Zuid-Holland
+10921	Batenburg	Sampled	41	15	Gelderland
+11030	Bathmen	Sampled	22	11	Overijssel
+10425	Bedum	Sampled	1	3	Groningen
+11089	Beegden	Sampled	123	38	Limburg
+11374	Beek [Li]	Sampled	124	39	Limburg
+10173	Beek en Donk	Sampled	115	36	Noord-Brabant
+10816	Beemster	Sampled	56	23	Noord-Holland
+11410	Beers	Sampled	119	35	Noord-Brabant
+11043	Beerta	Sampled	3	1	Groningen
+10259	Beesd	No data	38	16	Gelderland
+10195	Beesel	Sampled	121	37	Limburg
+10536	Beets	No data	56	23	Noord-Holland
+10520	Beilen	Sampled	17	9	Drenthe
+10292	Belfeld	Sampled	121	37	Limburg
+10340	Bellingwolde	Sampled	3	1	Groningen
+10878	Bemelen	Sampled	127	39	Limburg
+10744	Bemmel	Sampled	37	15	Gelderland
+10734	Bennebroek	Sampled	61	21	Noord-Holland
+11330	Benschop	Sampled	49	17	Utrecht
+10398	Benthuizen	No data	83	28	Zuid-Holland
+10796	Berg en Terblijt	Sampled	127	39	Limburg
+10962	Bergambacht	No data	75	28	Zuid-Holland
+11281	Bergen [Li]	No data	120	37	Limburg
+11424	Bergen [NH]	Sampled	55	19	Noord-Holland
+11037	Bergen op Zoom	Sampled	102	33	Noord-Brabant
+11160	Bergeyk	Sampled	116	36	Noord-Brabant
+10350	Bergh	Sampled	27	14	Gelderland
+10883	Bergharen	Sampled	41	15	Gelderland
+10733	Berghem	Sampled	111	35	Noord-Brabant
+10445	Bergschenhoek	Sampled	83	29	Zuid-Holland
+10139	Berkel en Rodenrijs	Sampled	83	29	Zuid-Holland
+11132	Berkel-Enschot	Sampled	108	34	Noord-Brabant
+10797	Berkenwoude	No data	75	28	Zuid-Holland
+10354	Berkhout	Sampled	54	18	Noord-Holland
+10362	Berlicum	Sampled	110	35	Noord-Brabant
+10056	Besoijen	Sampled	106	34	Noord-Brabant
+10442	Best	Sampled	114	36	Noord-Brabant
+10252	Beugen en Rijkevoort	Sampled	119	35	Noord-Brabant
+10417	Beuningen	Sampled	40	15	Gelderland
+11182	Beusichem	No data	38	16	Gelderland
+10272	Beverwijk	Sampled	59	20	Noord-Holland
+11294	Bierum	Sampled	1	2	Groningen
+10257	Biervliet	Sampled	98	31	Zeeland
+11364	Biggekerke	Sampled	96	32	Zeeland
+10967	Bingelrade	Sampled	125	39	Limburg
+11006	Bladel en Netersel	Sampled	116	36	Noord-Brabant
+10320	Blankenham	Sampled	19	10	Overijssel
+10493	Blaricum	Sampled	67	24	Noord-Holland
+10994	Bleiswijk	Sampled	83	29	Zuid-Holland
+10451	Bleskensgraaf en Hofwegen	No data	77	30	Zuid-Holland
+10850	Bloemendaal	Sampled	61	21	Noord-Holland
+10804	Blokker	Sampled	54	18	Noord-Holland
+10689	Blokzijl	Sampled	19	10	Overijssel
+10986	Bocholtz	Sampled	125	39	Limburg
+11091	Bodegraven	Sampled	73	28	Zuid-Holland
+10432	Boekel	Sampled	112	35	Noord-Brabant
+11083	Bokhoven	Sampled	110	35	Noord-Brabant
+10865	Bolsward	Sampled	10	5	Friesland
+11307	Borculo	No data	28	14	Gelderland
+10448	Borger	Sampled	16	7	Drenthe
+11334	Borgharen	Sampled	127	39	Limburg
+11013	Borkel en Schaft	Sampled	117	36	Noord-Brabant
+10927	Born	Sampled	124	39	Limburg
+10326	Borne	Sampled	24	12	Overijssel
+10043	Borssele	Sampled	97	32	Zeeland
+10605	Boschkapelle	Sampled	100	31	Zeeland
+10419	Boskoop	Sampled	73	28	Zuid-Holland
+10945	Bovenkarspel	Sampled	54	18	Noord-Holland
+11227	Boxmeer	Sampled	119	35	Noord-Brabant
+10083	Boxtel	Sampled	110	35	Noord-Brabant
+11125	Brakel	Sampled	42	16	Gelderland
+10169	Brandwijk	No data	77	30	Zuid-Holland
+10154	Breda	Sampled	103	33	Noord-Brabant
+10233	Breskens	Sampled	98	31	Zeeland
+10807	Breukelen-Nijenrode	Sampled	48	17	Utrecht
+11149	Breukelen-Sint Pieters	No data	48	17	Utrecht
+10232	Brielle	Sampled	91	29	Zuid-Holland
+10289	Broek in Waterland	Sampled	57	23	Noord-Holland
+10955	Broek op Langendijk	Sampled	53	19	Noord-Holland
+10856	Broekhuizen	Sampled	120	37	Limburg
+10655	Broeksittard	Sampled	124	39	Limburg
+10030	Brouwershaven	Sampled	93	32	Zeeland
+11291	Bruinisse	Sampled	93	32	Zeeland
+10798	Brummen	Sampled	34	14	Gelderland
+10533	Brunssum	Sampled	125	39	Limburg
+10219	Budel	Sampled	117	36	Noord-Brabant
+10857	Buggenum	Sampled	123	38	Limburg
+10961	Buiksloot	Sampled	63	23	Noord-Holland
+10831	Bunde	Sampled	127	39	Limburg
+10820	Bunnik	Sampled	45	17	Utrecht
+11343	Bunschoten	Sampled	43	17	Utrecht
+11286	Buren	Sampled	38	16	Gelderland
+11000	Burgh	Sampled	93	32	Zeeland
+10281	Bussum	Sampled	67	24	Noord-Holland
+10460	Buurmalsen	Sampled	38	16	Gelderland
+11447	Cadier en Keer	Sampled	127	39	Limburg
+11002	Cadzand	Sampled	98	31	Zeeland
+10559	Callantsoog	Sampled	52	18	Noord-Holland
+11233	Capelle	Sampled	106	34	Noord-Brabant
+11248	Capelle aan den IJssel	No data	88	29	Zuid-Holland
+11287	Castricum	Sampled	55	20	Noord-Holland
+11433	Chaam	Sampled	104	33	Noord-Brabant
+10965	Clinge	Sampled	100	31	Zeeland
+10383	Coevorden	Sampled	18	8	Drenthe
+10121	Colijnsplaat	Sampled	97	32	Zeeland
+11316	Cothen	Sampled	45	17	Utrecht
+10053	Cromvoirt	Sampled	110	35	Noord-Brabant
+10023	Cuijk en Sint Agatha	Sampled	119	35	Noord-Brabant
+10342	Culemborg	Sampled	38	16	Gelderland
+11004	Dalen	Sampled	17	8	Drenthe
+11007	Dalfsen	Sampled	20	10	Overijssel
+10650	Dantumadeel	Sampled	9	4	Friesland
+10168	De Bilt	Sampled	44	17	Utrecht
+10241	De Lier	Sampled	81	27	Zuid-Holland
+11417	De Rijp	Sampled	56	23	Noord-Holland
+10116	De Werken en Sleeuwijk	Sampled	105	34	Noord-Brabant
+10753	De Wijk	Sampled	18	9	Drenthe
+10057	Deil	Sampled	38	16	Gelderland
+10928	Delft	Sampled	82	27	Zuid-Holland
+10976	Delfzijl	Sampled	2	2	Groningen
+10293	Den Bommel	No data	92	18	Zuid-Holland
+10491	Den Dungen	Sampled	110	35	Noord-Brabant
+10395	Den Ham	Sampled	21	12	Overijssel
+10285	Den Helder	Sampled	52	18	Noord-Holland
+10245	Denekamp	Sampled	24	12	Overijssel
+10379	Deurne en Liessel	Sampled	118	36	Noord-Brabant
+10209	Deursen en Dennenburg	Sampled	111	35	Noord-Brabant
+10899	Deventer	Sampled	22	11	Overijssel
+10153	Didam	No data	26	15	Gelderland
+11138	Dieden, Demen en Langel	Sampled	111	35	Noord-Brabant
+11039	Diemen	Sampled	64	23	Noord-Holland
+10311	Diepenheim	Sampled	24	12	Overijssel
+10933	Diepenveen	Sampled	22	11	Overijssel
+11185	Diessen	Sampled	108	34	Noord-Brabant
+10418	Diever	Sampled	17	9	Drenthe
+11193	Dinteloord en Prinsenland	Sampled	101	33	Noord-Brabant
+10690	Dinther	Sampled	112	35	Noord-Brabant
+11154	Dinxperlo	No data	29	14	Gelderland
+11344	Dirksland	No data	92	29	Zuid-Holland
+10647	Dodewaard	No data	37	16	Gelderland
+10327	Doesburg	Sampled	27	15	Gelderland
+10198	Dokkum	Sampled	12	4	Friesland
+10236	Domburg	Sampled	96	32	Zeeland
+10424	Dommelen	Sampled	117	36	Noord-Brabant
+11412	Dongen	Sampled	108	34	Noord-Brabant
+10086	Doniawerstal	Sampled	10	5	Friesland
+10213	Doorn	Sampled	44	17	Utrecht
+10069	Doornspijk	No data	32	13	Gelderland
+11304	Doorwerth	No data	36	15	Gelderland
+11157	Dordrecht	Sampled	89	30	Zuid-Holland
+10885	Dreischor	Sampled	93	32	Zeeland
+11232	Dreumel	Sampled	41	16	Gelderland
+10777	Driebergen	Sampled	44	17	Utrecht
+10341	Driel	Sampled	42	16	Gelderland
+11115	Driewegen	Sampled	97	32	Zeeland
+10111	Drongelen	Sampled	105	34	Noord-Brabant
+10428	Drunen	Sampled	106	34	Noord-Brabant
+10068	Druten	Sampled	41	15	Gelderland
+10781	Dubbeldam	Sampled	89	30	Zuid-Holland
+11028	Duiven	Sampled	26	15	Gelderland
+10335	Duivendijke	Sampled	93	32	Zeeland
+11005	Duizel en Steensel	Sampled	116	36	Noord-Brabant
+10261	Dussen	Sampled	105	34	Noord-Brabant
+10331	Dwingeloo	Sampled	17	9	Drenthe
+10941	Echt	No data	122	38	Limburg
+10832	Echteld	Sampled	37	16	Gelderland
+10884	Edam	Sampled	57	23	Noord-Holland
+10743	Ede	Sampled	31	13	Gelderland
+11128	Eede	Sampled	98	31	Zeeland
+10622	Eelde	Sampled	14	7	Drenthe
+10248	Eemnes	Sampled	43	17	Utrecht
+10904	Eenrum	Sampled	1	3	Groningen
+10741	Eersel	Sampled	116	36	Noord-Brabant
+10421	Egmond aan Zee	Sampled	55	19	Noord-Holland
+10989	Egmond-Binnen	Sampled	55	19	Noord-Holland
+10436	Eibergen	Sampled	30	14	Gelderland
+10960	Eijgelshoven	Sampled	125	39	Limburg
+10314	Eijsden	Sampled	127	39	Limburg
+11298	Eindhoven	Sampled	113	36	Noord-Brabant
+11113	Elburg	Sampled	32	13	Gelderland
+10184	Elkerzee	Sampled	93	32	Zeeland
+10102	Ellemeet	Sampled	93	32	Zeeland
+11300	Ellewoutsdijk	Sampled	97	32	Zeeland
+11187	Elsloo	No data	124	39	Limburg
+11188	Elst	Sampled	37	15	Gelderland
+11180	Emmen	Sampled	15	8	Drenthe
+10295	Empel en Meerwijk	Sampled	109	35	Noord-Brabant
+10322	Engelen	Sampled	109	35	Noord-Brabant
+10729	Enkhuizen	Sampled	54	18	Noord-Holland
+10364	Enschede	Sampled	23	12	Overijssel
+10940	Epe	Sampled	34	13	Gelderland
+10732	Ermelo	Sampled	32	13	Gelderland
+10385	Erp	Sampled	112	35	Noord-Brabant
+10709	Esch	Sampled	110	35	Noord-Brabant
+10299	Escharen	Sampled	119	35	Noord-Brabant
+11092	Est en Opijnen	Sampled	38	16	Gelderland
+10750	Etten en Leur	Sampled	104	33	Noord-Brabant
+10638	Everdingen	Sampled	78	30	Zuid-Holland
+10471	Ewijk	Sampled	41	15	Gelderland
+10136	Ezinge	Sampled	6	3	Groningen
+11284	Ferwerderadeel	Sampled	12	4	Friesland
+10206	Fijnaart en Heijningen	Sampled	101	33	Noord-Brabant
+10212	Finsterwolde	Sampled	3	1	Groningen
+11226	Franeker	Sampled	12	4	Friesland
+10404	Franekeradeel	Sampled	12	4	Friesland
+10036	Gaasterland	Sampled	10	5	Friesland
+10037	Gameren	Sampled	42	16	Gelderland
+10705	Gassel	Sampled	119	35	Noord-Brabant
+11099	Gasselte	Sampled	16	7	Drenthe
+10101	Geertruidenberg	Sampled	104	33	Noord-Brabant
+10842	Geervliet	Sampled	91	29	Zuid-Holland
+10370	Geffen	Sampled	111	35	Noord-Brabant
+10881	Geldermalsen	Sampled	38	16	Gelderland
+10529	Geldrop	Sampled	114	36	Noord-Brabant
+10048	Geleen	Sampled	124	39	Limburg
+10277	Gemert	Sampled	118	36	Noord-Brabant
+10010	Genderen	Sampled	105	34	Noord-Brabant
+10260	Gendringen	Sampled	29	14	Gelderland
+10440	Gendt	Sampled	37	15	Gelderland
+10746	Genemuiden	Sampled	20	10	Overijssel
+10542	Gennep	Sampled	120	37	Limburg
+11269	Gestel en Blaarthem	Sampled	113	36	Noord-Brabant
+10530	Geulle	Sampled	124	39	Limburg
+10193	Giessen	Sampled	105	34	Noord-Brabant
+10606	Giessendam	No data	76	30	Zuid-Holland
+10255	Giessen-Nieuwkerk	No data	76	30	Zuid-Holland
+10506	Gieten	Sampled	16	7	Drenthe
+10708	Giethoorn	Sampled	19	10	Overijssel
+11375	Gilze en Rijen	Sampled	108	34	Noord-Brabant
+10406	Ginneken en Bavel	Sampled	104	33	Noord-Brabant
+10981	Goedereede	No data	92	29	Zuid-Holland
+10674	Goes	Sampled	97	32	Zeeland
+10971	Goirle	Sampled	108	34	Noord-Brabant
+10076	Goor	Sampled	24	12	Overijssel
+10942	Gorinchem	No data	76	30	Zuid-Holland
+10085	Gorssel	No data	28	14	Gelderland
+10302	Gouda	No data	74	28	Zuid-Holland
+11258	Gouderak	No data	75	28	Zuid-Holland
+10450	Goudriaan	No data	77	30	Zuid-Holland
+10914	Goudswaard	No data	90	29	Zuid-Holland
+10312	Graauw en Langendam	Sampled	100	31	Zeeland
+10224	Grafhorst	Sampled	20	10	Overijssel
+10484	Graft	Sampled	56	23	Noord-Holland
+11339	Gramsbergen	Sampled	21	10	Overijssel
+11008	Grathem	Sampled	123	38	Limburg
+10165	Grave	Sampled	119	35	Noord-Brabant
+10624	Grevenbicht	Sampled	124	39	Limburg
+10244	Grijpskerk	Sampled	1	3	Groningen
+10801	Grijpskerke	Sampled	96	32	Zeeland
+11312	Groede	Sampled	98	31	Zeeland
+11094	Groenlo	Sampled	30	14	Gelderland
+10616	Groesbeek	Sampled	40	15	Gelderland
+10426	Groningen	Sampled	7	3	Groningen
+10323	Gronsveld	Sampled	127	39	Limburg
+11205	Groot-Ammers	No data	77	30	Zuid-Holland
+11337	Grootebroek	Sampled	54	18	Noord-Holland
+11080	Grootegast	Sampled	5	3	Groningen
+10176	Grubbenvorst	No data	120	37	Limburg
+11032	Gulpen	Sampled	127	39	Limburg
+10125	Haaften	Sampled	38	16	Gelderland
+11435	Haaksbergen	Sampled	24	12	Overijssel
+10701	Haamstede	Sampled	93	32	Zeeland
+11155	Haaren	Sampled	110	34	Noord-Brabant
+10357	Haarlem	Sampled	60	21	Noord-Holland
+10508	Haarlemmerliede en Spaarnwoude	Sampled	62	21	Noord-Holland
+11387	Haarlemmermeer	Sampled	62	21	Noord-Holland
+10737	Haarzuilens	Sampled	49	17	Utrecht
+11049	Haastrecht	No data	75	28	Zuid-Holland
+10321	Haelen	Sampled	123	38	Limburg
+10297	Hagestein	Sampled	78	30	Zuid-Holland
+10387	Halsteren	Sampled	102	33	Noord-Brabant
+11283	Haps	Sampled	119	35	Noord-Brabant
+10786	Harderwijk	Sampled	32	13	Gelderland
+10167	Hardinxveld	No data	76	30	Zuid-Holland
+11058	Haren	Sampled	8	3	Groningen
+10963	Harenkarspel	Sampled	53	18	Noord-Holland
+10909	Harlingen	Sampled	12	4	Friesland
+10183	Harmelen	Sampled	49	17	Utrecht
+10022	Haskerland	Sampled	10	6	Friesland
+10115	Hasselt	Sampled	20	10	Overijssel
+10673	Hattem	Sampled	34	13	Gelderland
+10186	Havelte	Sampled	17	9	Drenthe
+11257	Hazerswoude	No data	73	28	Zuid-Holland
+10982	Hedel	Sampled	42	16	Gelderland
+11130	Hedikhuizen	Sampled	110	35	Noord-Brabant
+11208	Heel en Panheel	No data	123	38	Limburg
+10679	Heemskerk	Sampled	59	20	Noord-Holland
+11288	Heemstede	Sampled	61	21	Noord-Holland
+10823	Heenvliet	Sampled	91	29	Zuid-Holland
+11407	Heer	Sampled	126	39	Limburg
+10291	Heerde	Sampled	34	13	Gelderland
+10067	Heerewaarden [2]	Sampled	42	16	Gelderland
+10752	Heerhugowaard	Sampled	53	19	Noord-Holland
+10540	Heerjansdam	No data	86	30	Zuid-Holland
+10902	Heerlen	Sampled	125	39	Limburg
+10149	Heesch	Sampled	111	35	Noord-Brabant
+11229	Heeswijk	Sampled	112	35	Noord-Brabant
+10462	Heeze	Sampled	117	36	Noord-Brabant
+11024	Hei- en Boeicop	Sampled	78	30	Zuid-Holland
+10793	Heiloo	Sampled	55	19	Noord-Holland
+10821	Heinenoord	No data	90	29	Zuid-Holland
+10413	Heinkenszand	Sampled	97	32	Zeeland
+10854	Heino	Sampled	20	10	Overijssel
+10873	Hekelingen	Sampled	91	29	Zuid-Holland
+10217	Hekendorp	Sampled	74	28	Zuid-Holland
+10205	Helden	Sampled	123	37	Limburg
+10806	Hellendoorn	Sampled	24	12	Overijssel
+11078	Hellevoetsluis	Sampled	91	29	Zuid-Holland
+10932	Helmond	Sampled	115	36	Noord-Brabant
+10389	Helvoirt	Sampled	110	35	Noord-Brabant
+10334	Hemelumer Oldephaert en Noordwolde	Sampled	10	5	Friesland
+11162	Hemmen	Sampled	37	15	Gelderland
+10416	Hendrik-Ido-Ambacht	No data	87	30	Zuid-Holland
+10359	Hengelo [Ge]	No data	28	14	Gelderland
+10907	Hengelo [Ov]	Sampled	24	12	Overijssel
+10636	Hengstdijk	Sampled	100	31	Zeeland
+10877	Hennaarderadeel	Sampled	10	5	Friesland
+10181	Hensbroek	Sampled	54	18	Noord-Holland
+10267	Herkingen	No data	92	29	Zuid-Holland
+11262	Herpen	Sampled	111	35	Noord-Brabant
+10845	Herpt	Sampled	110	35	Noord-Brabant
+10138	Herten	Sampled	122	38	Limburg
+10819	Herwen en Aerdt	Sampled	26	15	Gelderland
+11266	Herwijnen	Sampled	38	16	Gelderland
+10128	Het Bildt	Sampled	12	4	Friesland
+10290	Heteren	No data	37	15	Gelderland
+11308	Heukelum	No data	78	30	Zuid-Holland
+10600	Heumen	Sampled	40	15	Gelderland
+10307	Heusden	Sampled	110	34	Noord-Brabant
+10840	Heythuysen	Sampled	123	38	Limburg
+10227	Hillegersberg	Sampled	84	29	Zuid-Holland
+11236	Hillegom	Sampled	68	25	Zuid-Holland
+11297	Hilvarenbeek	Sampled	108	34	Noord-Brabant
+11285	Hilversum	Sampled	66	24	Noord-Holland
+10672	Hindeloopen	Sampled	10	5	Friesland
+11072	Hoedekenskerke	Sampled	97	32	Zeeland
+10038	Hoek	Sampled	99	31	Zeeland
+10611	Hoenkoop	Sampled	49	17	Utrecht
+11177	Hoensbroek	Sampled	125	39	Limburg
+11358	Hoevelaken	Sampled	31	13	Gelderland
+10065	Hoeven	Sampled	102	33	Noord-Brabant
+10089	Hof van Delft	No data	82	27	Zuid-Holland
+11246	Holten	Sampled	22	11	Overijssel
+11123	Hontenisse	Sampled	100	31	Zeeland
+10147	Hoofdplaat	Sampled	98	31	Zeeland
+11040	Hoogblokland	No data	77	30	Zuid-Holland
+10476	Hooge en Lage Mierde	Sampled	108	34	Noord-Brabant
+11318	Hooge en Lage Zwaluwe	Sampled	101	33	Noord-Brabant
+10657	Hoogeloon, Hapert en Casteren	Sampled	116	36	Noord-Brabant
+10839	Hoogeveen	Sampled	18	9	Drenthe
+10410	Hoogezand	Sampled	4	3	Groningen
+10642	Hoogkarspel	Sampled	54	18	Noord-Holland
+10953	Hoogkerk	Sampled	8	3	Groningen
+10545	Hoogland	Sampled	43	17	Utrecht
+10348	Hoogvliet	No data	91	29	Zuid-Holland
+11029	Hoogwoud	Sampled	54	18	Noord-Holland
+11392	Hoorn	Sampled	54	18	Noord-Holland
+10516	Hoornaar	No data	77	30	Zuid-Holland
+11176	Horn	Sampled	123	38	Limburg
+10607	Horssen	Sampled	41	15	Gelderland
+11108	Horst	Sampled	120	37	Limburg
+10230	Houten	Sampled	45	17	Utrecht
+11111	Houthem	Sampled	127	39	Limburg
+10466	Huijbergen	Sampled	102	33	Noord-Brabant
+10049	Huisseling en Neerloon	Sampled	111	35	Noord-Brabant
+11047	Huissen	No data	37	15	Gelderland
+11170	Huizen	Sampled	67	24	Noord-Holland
+11216	Hulsberg	Sampled	125	39	Limburg
+11408	Hulst	Sampled	100	31	Zeeland
+11235	Hummelo en Keppel	No data	27	14	Gelderland
+10784	Hunsel	Sampled	123	38	Limburg
+11432	Hurwenen [2]	No data	42	16	Gelderland
+10815	Idaarderadeel	Sampled	10	4	Friesland
+11062	IJlst	Sampled	10	5	Friesland
+11357	IJsselmonde	Sampled	84	29	Zuid-Holland
+10641	IJsselmuiden	Sampled	20	10	Overijssel
+10152	IJsselstein	Sampled	46	17	Utrecht
+10688	IJzendijke	Sampled	98	31	Zeeland
+11430	IJzendoorn	No data	37	16	Gelderland
+10809	Ilpendam	Sampled	57	23	Noord-Holland
+10458	Itteren	No data	127	39	Limburg
+10190	Ittervoort	No data	123	38	Limburg
+10847	Jaarsveld	Sampled	49	17	Utrecht
+10256	Jabeek	Sampled	125	39	Limburg
+10481	Jisp	No data	58	22	Noord-Holland
+10374	Jutphaas	Sampled	46	17	Utrecht
+10554	Kamerik [2]	Sampled	49	17	Utrecht
+10253	Kampen	Sampled	20	10	Overijssel
+10443	Kamperveen	Sampled	20	10	Overijssel
+10372	Kantens	Sampled	1	3	Groningen
+11223	Kapelle	Sampled	97	32	Zeeland
+10919	Kats	Sampled	97	32	Zeeland
+11218	Kattendijke	Sampled	97	32	Zeeland
+10707	Katwijk	No data	69	25	Zuid-Holland
+11136	Katwoude	Sampled	57	23	Noord-Holland
+10280	Kedichem	Sampled	78	30	Zuid-Holland
+10313	Kerkrade	Sampled	125	39	Limburg
+10837	Kerkwerve	Sampled	93	32	Zeeland
+10791	Kerkwijk	Sampled	42	16	Gelderland
+10890	Kessel [Li]	Sampled	123	37	Limburg
+10916	Kesteren	Sampled	37	16	Gelderland
+10551	Kethel en Spaland	Sampled	85	29	Zuid-Holland
+10284	Klaaswaal	No data	90	29	Zuid-Holland
+10977	Klimmen	Sampled	125	39	Limburg
+10155	Kloetinge	Sampled	97	32	Zeeland
+10628	Kloosterburen	Sampled	1	3	Groningen
+10656	Klundert	Sampled	101	33	Noord-Brabant
+10765	Kockengen	Sampled	49	17	Utrecht
+10510	Koedijk	Sampled	55	19	Noord-Holland
+10892	Koewacht	Sampled	100	31	Zeeland
+10984	Kollumerland en Nieuwkruisland	Sampled	12	4	Friesland
+10776	Koog aan de Zaan	Sampled	58	22	Noord-Holland
+10467	Kortenhoef	Sampled	65	18	Noord-Holland
+10250	Kortgene	Sampled	97	32	Zeeland
+10029	Koudekerk [ZH]	No data	73	28	Zuid-Holland
+11428	Koudekerke [Walcheren]	Sampled	96	32	Zeeland
+11038	Krabbendijke	Sampled	97	32	Zeeland
+10617	Krimpen aan de Lek	No data	75	29	Zuid-Holland
+10859	Krimpen aan den IJssel	No data	88	29	Zuid-Holland
+10373	Krommenie	Sampled	58	22	Noord-Holland
+10077	Kruiningen	Sampled	97	32	Zeeland
+11148	Kuinre	Sampled	19	10	Overijssel
+10775	Kwadijk	Sampled	56	23	Noord-Holland
+10305	Laag-Nieuwkoop	Sampled	49	17	Utrecht
+11225	Landsmeer	Sampled	57	23	Noord-Holland
+11413	Langbroek	Sampled	45	17	Utrecht
+10900	Lange Ruige Weide	Sampled	74	28	Zuid-Holland
+11127	Langerak	No data	77	30	Zuid-Holland
+10098	Laren [Ge]	Sampled	28	14	Gelderland
+10649	Laren [NH]	Sampled	67	24	Noord-Holland
+10604	Leek	Sampled	5	3	Groningen
+11017	Leende	Sampled	117	36	Noord-Brabant
+11050	Leens	Sampled	1	3	Groningen
+10465	Leerbroek	Sampled	78	30	Zuid-Holland
+10685	Leerdam	Sampled	78	30	Zuid-Holland
+11142	Leersum	Sampled	44	17	Utrecht
+11228	Leeuwarden	Sampled	11	4	Friesland
+10851	Leeuwarderadeel	Sampled	12	4	Friesland
+10702	Leiden	Sampled	70	25	Zuid-Holland
+10058	Leiderdorp	Sampled	71	25	Zuid-Holland
+11351	Leimuiden	Sampled	72	28	Zuid-Holland
+10050	Lekkerkerk	No data	75	29	Zuid-Holland
+10142	Lemsterland	Sampled	10	5	Friesland
+10978	Leusden	Sampled	43	17	Utrecht
+10930	Lexmond	Sampled	78	30	Zuid-Holland
+10242	Lichtenvoorde	No data	30	14	Gelderland
+10390	Liempde	Sampled	110	35	Noord-Brabant
+11093	Lienden	No data	37	16	Gelderland
+11279	Lierop	Sampled	118	36	Noord-Brabant
+10637	Lieshout	Sampled	115	36	Noord-Brabant
+11124	Limbricht	Sampled	124	39	Limburg
+11370	Limmen	Sampled	55	19	Noord-Holland
+11305	Linden	Sampled	119	35	Noord-Brabant
+10990	Linne	Sampled	122	38	Limburg
+11324	Linschoten	Sampled	49	17	Utrecht
+10197	Lisse	Sampled	68	25	Zuid-Holland
+11219	Lith	Sampled	111	35	Noord-Brabant
+10024	Lithoijen	Sampled	111	35	Noord-Brabant
+11263	Lochem	Sampled	28	14	Gelderland
+11202	Loenen [2]	Sampled	48	15	Utrecht
+10208	Loenersloot	Sampled	48	15	Utrecht
+11045	Lonneker	Sampled	24	12	Overijssel
+11259	Loon op Zand	Sampled	108	34	Noord-Brabant
+10639	Loosdrecht	Sampled	48	17	Utrecht
+10997	Loosduinen	Sampled	79	26	Zuid-Holland
+10333	Lopik	Sampled	49	17	Utrecht
+10934	Loppersum	Sampled	1	2	Groningen
+11166	Losser	Sampled	24	12	Overijssel
+10011	Luyksgestel	Sampled	116	36	Noord-Brabant
+11143	Maarheeze	Sampled	117	36	Noord-Brabant
+10392	Maarn	Sampled	44	17	Utrecht
+10191	Maarssen	Sampled	48	17	Utrecht
+10874	Maarsseveen	Sampled	48	17	Utrecht
+10691	Maartensdijk	Sampled	48	17	Utrecht
+10964	Maasbracht	Sampled	122	38	Limburg
+11352	Maasbree	No data	123	37	Limburg
+11019	Maasdam	No data	90	29	Zuid-Holland
+10532	Maashees en Overloon	Sampled	119	35	Noord-Brabant
+10393	Maasland	No data	81	27	Zuid-Holland
+11261	Maasniel	Sampled	122	38	Limburg
+10880	Maassluis	No data	85	29	Zuid-Holland
+10182	Maastricht	Sampled	126	39	Limburg
+10258	Made en Drimmelen	Sampled	101	33	Noord-Brabant
+11243	Margraten	Sampled	127	39	Limburg
+11382	Markelo	Sampled	24	12	Overijssel
+10901	Marken	Sampled	57	23	Noord-Holland
+11431	Marum	Sampled	5	3	Groningen
+10300	Maurik	No data	37	16	Gelderland
+11215	Medemblik	Sampled	54	18	Noord-Holland
+10304	Meeden	Sampled	3	1	Groningen
+10618	Meerkerk	Sampled	77	30	Zuid-Holland
+11416	Meerlo	Sampled	120	37	Limburg
+10494	Meerssen	Sampled	127	39	Limburg
+10216	Meeuwen	Sampled	105	34	Noord-Brabant
+10988	Megen, Haren en Macharen	Sampled	111	35	Noord-Brabant
+10925	Meijel	Sampled	123	37	Limburg
+10196	Melick en Herkenbosch	Sampled	122	38	Limburg
+11221	Meliskerke	Sampled	96	32	Zeeland
+10918	Melissant	No data	92	18	Zuid-Holland
+11144	Menaldumadeel	Sampled	12	4	Friesland
+11204	Meppel	Sampled	18	9	Drenthe
+10763	Merkelbeek	Sampled	125	39	Limburg
+11070	Mesch	Sampled	123	39	Limburg
+10538	Mheer	Sampled	127	39	Limburg
+10122	Middelburg [Ze]	Sampled	95	32	Zeeland
+11067	Middelharnis	No data	92	29	Zuid-Holland
+10452	Middelie	Sampled	56	23	Noord-Holland
+11199	Middelstum	Sampled	1	3	Groningen
+10356	Midwolda	Sampled	3	1	Groningen
+10924	Midwoud	No data	54	18	Noord-Holland
+10215	Mierlo	Sampled	115	36	Noord-Brabant
+11379	Mijdrecht	Sampled	49	17	Utrecht
+11112	Mijnsheerenland	No data	90	29	Zuid-Holland
+10535	Mill en Sint Hubert	Sampled	119	35	Noord-Brabant
+10072	Millingen	Sampled	40	15	Gelderland
+11191	Moergestel	Sampled	108	34	Noord-Brabant
+11383	Moerkapelle	No data	83	28	Zuid-Holland
+10166	Molenaarsgraaf	No data	77	30	Zuid-Holland
+10983	Monnickendam	Sampled	57	23	Noord-Holland
+10019	Monster	Sampled	81	27	Zuid-Holland
+10033	Montfoort	Sampled	49	17	Utrecht
+10266	Montfort	No data	122	38	Limburg
+10271	Mook en Middelaar	Sampled	120	37	Limburg
+10120	Moordrecht	No data	74	28	Zuid-Holland
+10958	Muiden	Sampled	65	24	Noord-Holland
+10273	Munstergeleen	Sampled	124	39	Limburg
+10550	Muntendam	Sampled	4	1	Groningen
+11418	Naaldwijk	No data	81	27	Zuid-Holland
+10187	Naarden	Sampled	67	24	Noord-Holland
+10310	Nederhemert	Sampled	42	16	Gelderland
+10715	Nederhorst den Berg	Sampled	65	24	Noord-Holland
+10681	Nederweert	Sampled	123	38	Limburg
+10367	Neede	Sampled	30	14	Gelderland
+10682	Neer	Sampled	123	38	Limburg
+11001	Neeritter	Sampled	123	38	Limburg
+10091	Nibbixwoud	Sampled	54	18	Noord-Holland
+11340	Nieuw- en Sint Joosland	Sampled	96	32	Zeeland
+10092	Nieuw-Beijerland	No data	90	29	Zuid-Holland
+10073	Nieuwe Niedorp	Sampled	53	18	Noord-Holland
+10950	Nieuwe Pekela	Sampled	4	1	Groningen
+10502	Nieuwe Tonge	No data	92	29	Zuid-Holland
+10177	Nieuwendam	Sampled	63	23	Noord-Holland
+10088	Nieuwenhagen	Sampled	125	39	Limburg
+10338	Nieuwenhoorn	Sampled	91	29	Zuid-Holland
+10799	Nieuwer-Amstel	Sampled	64	23	Noord-Holland
+10911	Nieuwerkerk [Duiveland]	Sampled	93	32	Zeeland
+10855	Nieuwerkerk aan den IJssel	No data	88	29	Zuid-Holland
+10008	Nieuweschans	Sampled	3	1	Groningen
+10264	Nieuw-Helvoet	Sampled	91	29	Zuid-Holland
+10728	Nieuwkoop	Sampled	72	28	Zuid-Holland
+11278	Nieuwkuyk	No data	110	35	Noord-Brabant
+11213	Nieuwland [bij Leerdam]	Sampled	78	30	Zuid-Holland
+10547	Nieuw-Lekkerland	No data	76	30	Zuid-Holland
+10384	Nieuwleusen	Sampled	20	10	Overijssel
+10126	Nieuwolda	Sampled	3	1	Groningen
+10748	Nieuwpoort	No data	77	30	Zuid-Holland
+11140	Nieuwstadt	Sampled	124	39	Limburg
+10487	Nieuwveen	Sampled	72	28	Zuid-Holland
+11165	Nieuwvliet	Sampled	98	31	Zeeland
+10401	Nieuw-Vossemeer	Sampled	101	33	Noord-Brabant
+10160	Nigtevecht	Sampled	48	17	Utrecht
+10774	Nijeveen	Sampled	17	9	Drenthe
+10446	Nijkerk	Sampled	31	13	Gelderland
+11209	Nijmegen	Sampled	39	15	Gelderland
+11086	Nisse	Sampled	97	32	Zeeland
+10094	Nistelrode	Sampled	112	35	Noord-Brabant
+10283	Noorbeek	Sampled	127	39	Limburg
+10814	Noordbroek	Sampled	3	3	Groningen
+10979	Noorddijk	Sampled	8	3	Groningen
+10296	Noordeloos	No data	77	30	Zuid-Holland
+11107	Noordgouwe	Sampled	93	32	Zeeland
+10075	Noord-Scharwoude	Sampled	53	19	Noord-Holland
+10055	Noordwelle	Sampled	93	32	Zeeland
+10769	Noordwijk	Sampled	68	25	Zuid-Holland
+11134	Noordwijkerhout	Sampled	68	25	Zuid-Holland
+10601	Nootdorp	No data	83	26	Zuid-Holland
+10608	Norg	Sampled	17	7	Drenthe
+10761	Nuenen, Gerwen en Nederwetten	Sampled	114	36	Noord-Brabant
+10118	Nuland	Sampled	111	35	Noord-Brabant
+11346	Numansdorp	No data	90	29	Zuid-Holland
+10736	Nunhem	Sampled	123	38	Limburg
+10104	Nuth	Sampled	125	39	Limburg
+10388	Obbicht en Papenhoven	No data	124	39	Limburg
+11338	Obdam	Sampled	54	18	Noord-Holland
+11003	Odijk	Sampled	45	17	Utrecht
+11320	Odoorn	Sampled	16	8	Drenthe
+10360	Oeffelt	Sampled	119	35	Noord-Brabant
+10287	Oegstgeest	No data	71	25	Zuid-Holland
+10119	Oerle	Sampled	114	36	Noord-Brabant
+10420	Ohé en Laak	Sampled	122	38	Limburg
+10869	Oijen en Teeffelen	Sampled	111	35	Noord-Brabant
+10504	Oirsbeek	Sampled	125	39	Limburg
+10225	Oirschot	Sampled	114	36	Noord-Brabant
+10103	Oisterwijk	Sampled	108	34	Noord-Brabant
+11106	Oldebroek	Sampled	32	13	Gelderland
+10298	Oldehove	Sampled	1	3	Groningen
+11332	Oldekerk	Sampled	5	3	Groningen
+10858	Oldemarkt	Sampled	19	10	Overijssel
+11100	Oldenzaal	Sampled	24	12	Overijssel
+10409	Olst	Sampled	22	11	Overijssel
+10610	Onstwedde	Sampled	4	1	Groningen
+11163	Ooltgensplaat	No data	92	29	Zuid-Holland
+11396	Oost- en West-Souburg	Sampled	95	32	Zeeland
+10220	Oost-, West- en Middelbeers	Sampled	116	34	Noord-Brabant
+10782	Oostburg	Sampled	98	31	Zeeland
+11102	Oostdongeradeel	Sampled	12	4	Friesland
+10490	Oosterhesselen	Sampled	17	8	Drenthe
+11280	Oosterhout	Sampled	104	33	Noord-Brabant
+11237	Oosterland	Sampled	93	32	Zeeland
+11121	Oosthuizen	Sampled	56	23	Noord-Holland
+10720	Oostkapelle	Sampled	96	32	Zeeland
+10836	Ooststellingwerf	Sampled	9	6	Friesland
+10009	Oostvoorne	Sampled	91	29	Zuid-Holland
+11303	Oostzaan	Sampled	57	23	Noord-Holland
+11079	Ootmarsum	Sampled	24	12	Overijssel
+10829	Ophemert	Sampled	38	16	Gelderland
+11415	Oploo, Sint Anthonis en Ledeacker	Sampled	119	35	Noord-Brabant
+10609	Opmeer	Sampled	54	18	Noord-Holland
+10523	Opperdoes	Sampled	54	18	Noord-Holland
+10005	Opsterland	Sampled	9	6	Friesland
+10834	Oss	Sampled	111	35	Noord-Brabant
+10929	Ossendrecht	Sampled	102	33	Noord-Brabant
+10841	Ossenisse	Sampled	100	31	Zeeland
+10133	Oterleek	Sampled	56	19	Noord-Holland
+10862	Ottersum	Sampled	120	37	Limburg
+10097	Ottoland	No data	77	30	Zuid-Holland
+11363	Oud- en Nieuw-Gastel	Sampled	102	33	Noord-Brabant
+10826	Oud-Alblas	No data	77	30	Zuid-Holland
+11301	Oud-Beijerland	Sampled	90	29	Zuid-Holland
+11126	Ouddorp	No data	92	29	Zuid-Holland
+10896	Oude Niedorp	Sampled	53	18	Noord-Holland
+10848	Oude Pekela	Sampled	4	1	Groningen
+10714	Oude Tonge	No data	92	29	Zuid-Holland
+11139	Oudelande	Sampled	97	32	Zeeland
+10397	Oudenbosch	Sampled	102	33	Noord-Brabant
+11090	Oudendijk	Sampled	54	18	Noord-Holland
+10380	Oudenhoorn	Sampled	91	29	Zuid-Holland
+10114	Oudenrijn	Sampled	49	17	Utrecht
+10998	Ouder-Amstel	Sampled	64	23	Noord-Holland
+10095	Ouderkerk aan den IJssel	No data	75	29	Zuid-Holland
+10188	Oudewater	Sampled	49	17	Zuid-Holland
+10812	Oudheusden	Sampled	110	35	Noord-Brabant
+11051	Oudkarspel	Sampled	53	19	Noord-Holland
+10363	Oudorp	Sampled	55	19	Noord-Holland
+10868	Oud-Valkenburg	Sampled	127	39	Limburg
+10134	Oud-Vossemeer	Sampled	94	32	Zeeland
+11348	Oud-Vroenhoven	Sampled	126	39	Limburg
+10968	Ouwerkerk	Sampled	93	32	Zeeland
+10952	Overasselt	No data	40	15	Gelderland
+10683	Overschie	Sampled	84	29	Zuid-Holland
+10730	Overslag	Sampled	100	31	Zeeland
+11422	Ovezande	Sampled	97	32	Zeeland
+10518	Pannerden	Sampled	26	15	Gelderland
+11244	Papekop	Sampled	74	30	Zuid-Holland
+10427	Papendrecht	No data	76	30	Zuid-Holland
+10501	Peize	Sampled	14	7	Drenthe
+11245	Pernis	Sampled	91	29	Zuid-Holland
+11057	Petten	Sampled	52	18	Noord-Holland
+10391	Peursum	No data	77	30	Zuid-Holland
+10486	Philippine	Sampled	99	31	Zeeland
+10179	Piershil	No data	90	29	Zuid-Holland
+10031	Pijnacker	No data	83	27	Zuid-Holland
+10135	Poederoijen	Sampled	42	16	Gelderland
+10993	Polsbroek [2]	Sampled	49	17	Utrecht
+11395	Poortugaal	Sampled	86	29	Zuid-Holland
+11181	Poortvliet	Sampled	94	32	Zeeland
+10456	Posterholt	Sampled	122	38	Limburg
+10762	Princenhage	Sampled	104	33	Noord-Brabant
+11066	Purmerend	Sampled	57	23	Noord-Holland
+10099	Putte	Sampled	102	33	Noord-Brabant
+11109	Putten	Sampled	32	13	Gelderland
+10222	Puttershoek	No data	90	30	Zuid-Holland
+10279	Raalte	Sampled	22	11	Overijssel
+11391	Raamsdonk	Sampled	104	33	Noord-Brabant
+10789	Ransdorp	Sampled	63	23	Noord-Holland
+10330	Rauwerderhem	Sampled	10	5	Friesland
+10805	Ravenstein	Sampled	111	35	Noord-Brabant
+10671	Reek	Sampled	111	35	Noord-Brabant
+10485	Reeuwijk	Sampled	74	28	Zuid-Holland
+10412	Renesse	Sampled	93	32	Zeeland
+11325	Renkum	Sampled	36	15	Gelderland
+10269	Renswoude	Sampled	43	17	Utrecht
+10400	Retranchement	Sampled	98	31	Zeeland
+10162	Reusel	Sampled	116	36	Noord-Brabant
+11355	Rheden	Sampled	36	15	Gelderland
+10309	Rhenen	Sampled	44	17	Utrecht
+10903	Rhoon	Sampled	86	29	Zuid-Holland
+10646	Ridderkerk	Sampled	87	29	Zuid-Holland
+10455	Riethoven	Sampled	116	36	Noord-Brabant
+10828	Rietveld	Sampled	73	28	Zuid-Holland
+10824	Rijckholt	Sampled	127	39	Limburg
+11129	Rijnsaterwoude	Sampled	72	28	Zuid-Holland
+11118	Rijnsburg	Sampled	69	25	Zuid-Holland
+10866	Rijsbergen	Sampled	104	33	Noord-Brabant
+10613	Rijsenburg	Sampled	44	17	Utrecht
+10358	Rijssen	Sampled	24	12	Overijssel
+11016	Rijswijk [NB]	Sampled	105	34	Noord-Brabant
+11133	Rijswijk [ZH]	Sampled	80	26	Zuid-Holland
+10479	Rilland-Bath	Sampled	97	32	Zeeland
+10652	Ritthem	Sampled	96	32	Zeeland
+10464	Rockanje	Sampled	91	29	Zuid-Holland
+10699	Roden	Sampled	14	7	Drenthe
+11313	Roermond	Sampled	122	38	Limburg
+10505	Roggel	Sampled	123	38	Limburg
+10470	Rolde	Sampled	17	7	Drenthe
+10407	Roosendaal en Nispen	Sampled	102	33	Noord-Brabant
+10954	Roosteren	Sampled	124	39	Limburg
+10684	Rosendaal [Ge]	Sampled	36	15	Gelderland
+10970	Rosmalen	Sampled	110	35	Noord-Brabant
+10860	Rossum	Sampled	42	16	Gelderland
+10345	Rotterdam	Sampled	84	29	Zuid-Holland
+11314	Rozenburg	No data	91	29	Zuid-Holland
+11152	Rucphen	Sampled	102	33	Noord-Brabant
+10629	Ruinen	Sampled	17	9	Drenthe
+10944	Ruinerwold	Sampled	17	9	Drenthe
+10879	Ruurlo	No data	28	14	Gelderland
+10526	Ruwiel	Sampled	48	17	Utrecht
+10339	Sambeek	Sampled	119	35	Noord-Brabant
+10080	Sappemeer	Sampled	4	3	Groningen
+11405	Sas van Gent	Sampled	99	31	Zeeland
+10612	Sassenheim	Sampled	68	25	Zuid-Holland
+11335	Schaesberg	Sampled	125	39	Limburg
+10511	Schagen	Sampled	53	18	Noord-Holland
+10276	Schaijk	Sampled	111	35	Noord-Brabant
+10378	Schalkwijk	Sampled	45	17	Utrecht
+10711	Scheemda	Sampled	3	1	Groningen
+10772	Schellinkhout	Sampled	54	18	Noord-Holland
+11399	Schelluinen	No data	77	30	Zuid-Holland
+10308	Schermerhorn	Sampled	56	19	Noord-Holland
+10375	Scherpenisse	Sampled	94	32	Zeeland
+11146	Scherpenzeel	Sampled	31	13	Gelderland
+11306	Schiebroek	Sampled	84	29	Zuid-Holland
+11260	Schiedam	Sampled	85	29	Zuid-Holland
+10355	Schiermonnikoog	Sampled	13	4	Friesland
+11178	Schijndel	Sampled	112	35	Noord-Brabant
+11076	Schimmert	Sampled	124	39	Limburg
+10780	Schin op Geul	Sampled	127	39	Limburg
+10132	Schinnen	Sampled	124	39	Limburg
+10492	Schinveld	Sampled	125	39	Limburg
+10130	Schipluiden	No data	81	27	Zuid-Holland
+10189	Schoondijke	Sampled	98	31	Zeeland
+10064	Schoonebeek	Sampled	15	8	Drenthe
+10980	Schoonhoven	No data	75	28	Zuid-Holland
+10214	Schoonrewoerd	Sampled	78	30	Zuid-Holland
+10627	Schoorl	Sampled	55	19	Noord-Holland
+10544	Schore	Sampled	97	32	Zeeland
+10382	Schoten	Sampled	60	21	Noord-Holland
+10680	Schoterland	Sampled	9	6	Friesland
+11014	Serooskerke [Schouwen]	No data	93	32	Zeeland
+11256	Serooskerke [Walcheren]	No data	96	32	Zeeland
+10045	Sevenum	Sampled	120	37	Limburg
+10534	s-Graveland	Sampled	65	24	Noord-Holland
+10052	s-Gravendeel	No data	90	30	Zuid-Holland
+11434	s-Gravenhage	Sampled	79	26	Zuid-Holland
+10469	s-Gravenmoer	Sampled	106	33	Noord-Brabant
+11059	s-Gravenpolder	Sampled	97	32	Zeeland
+10640	s-Gravenzande	Sampled	81	27	Zuid-Holland
+10337	s-Heer Abtskerke	Sampled	97	32	Zeeland
+10875	s-Heer Arendskerke	Sampled	97	32	Zeeland
+10721	s-Heerenhoek	Sampled	97	32	Zeeland
+10054	s-Hertogenbosch	Sampled	109	35	Noord-Brabant
+11167	Sijbekarspel	No data	54	18	Noord-Holland
+10515	Simpelveld	Sampled	125	39	Limburg
+11200	Sint Annaland	Sampled	94	32	Zeeland
+10288	Sint Geertruid	Sampled	127	39	Limburg
+10864	Sint Jansteen	Sampled	100	31	Zeeland
+10235	Sint Kruis	Sampled	98	31	Zeeland
+10106	Sint Laurens	Sampled	96	32	Zeeland
+10740	Sint Maarten	Sampled	53	18	Noord-Holland
+10716	Sint Maartensdijk	Sampled	94	32	Zeeland
+10278	Sint Odiliënberg	No data	122	38	Limburg
+10513	Sint Pancras	Sampled	53	19	Noord-Holland
+10394	Sint Philipsland	Sampled	94	32	Zeeland
+10137	Sint Pieter	Sampled	126	39	Limburg
+10496	Sint-Michielsgestel	Sampled	110	35	Noord-Brabant
+10399	Sint-Oedenrode	Sampled	112	35	Noord-Brabant
+11230	Sittard	Sampled	124	39	Limburg
+10489	Sleen	Sampled	17	8	Drenthe
+11274	Slenaken	Sampled	127	39	Limburg
+11331	Sliedrecht	No data	76	30	Zuid-Holland
+10747	Slochteren	Sampled	4	3	Groningen
+10867	Sloten [Fr]	Sampled	10	5	Friesland
+10148	Sloten [NH]	Sampled	63	23	Noord-Holland
+10895	Sluis [1]	Sampled	98	31	Zeeland
+10405	Smallingerland	Sampled	9	6	Friesland
+11033	Smilde	Sampled	17	7	Drenthe
+11421	Sneek	Sampled	10	5	Friesland
+10802	Snelrewaard	Sampled	49	17	Utrecht
+10047	Soerendonk, Sterksel en Gastel	No data	117	36	Noord-Brabant
+11021	Soest	Sampled	44	17	Utrecht
+10203	Someren	Sampled	118	36	Noord-Brabant
+11097	Sommelsdijk	No data	92	29	Zuid-Holland
+10549	Son en Breugel	Sampled	114	36	Noord-Brabant
+10192	Spaarndam	Sampled	60	21	Noord-Holland
+10063	Spanbroek	Sampled	54	18	Noord-Holland
+10552	Spaubeek	Sampled	124	39	Limburg
+10735	Spijkenisse	Sampled	91	29	Zuid-Holland
+10659	Sprang	Sampled	106	34	Noord-Brabant
+11239	Stad aan 't Haringvliet	No data	92	29	Zuid-Holland
+10913	Stad Delden	Sampled	24	12	Overijssel
+10603	Stad Doetinchem	Sampled	27	14	Gelderland
+11169	Stad Hardenberg	No data	21	10	Overijssel
+10381	Stad Ommen	No data	21	10	Overijssel
+11183	Stad Vollenhove	No data	19	10	Overijssel
+11212	Standdaarbuiten	Sampled	101	33	Noord-Brabant
+11362	Staphorst	Sampled	20	10	Overijssel
+10619	Stavenisse	Sampled	94	32	Zeeland
+10240	Staveren	Sampled	10	5	Friesland
+10771	Stedum	Sampled	1	2	Groningen
+10731	Steenbergen	Sampled	101	33	Noord-Brabant
+10497	Steenderen	Sampled	28	14	Gelderland
+10546	Steenwijk	Sampled	19	10	Overijssel
+11347	Steenwijkerwold	Sampled	19	10	Overijssel
+11319	Stein [Li]	No data	124	39	Limburg
+10087	Stellendam	No data	92	29	Zuid-Holland
+11203	Stevensweert	Sampled	122	38	Limburg
+11386	Stiphout	Sampled	115	36	Noord-Brabant
+11250	Stolwijk	No data	75	28	Zuid-Holland
+10742	Stompwijk	Sampled	80	26	Zuid-Holland
+10100	Stoppeldijk	Sampled	100	31	Zeeland
+10438	Stoutenburg	Sampled	43	17	Utrecht
+11186	Stramproy	Sampled	123	38	Limburg
+10172	Stratum	Sampled	113	36	Noord-Brabant
+11105	Streefkerk	No data	77	30	Zuid-Holland
+10558	Strijen	No data	90	29	Zuid-Holland
+10521	Strijp	Sampled	113	36	Noord-Brabant
+10457	Susteren	Sampled	124	39	Limburg
+10474	Swalmen	Sampled	122	38	Limburg
+10956	't Zandt	Sampled	1	2	Groningen
+11333	Tegelen	Sampled	121	37	Limburg
+10891	Ten Boer	Sampled	1	3	Groningen
+11104	Ter Aar	Sampled	72	28	Zuid-Holland
+10704	Ter Neuzen	Sampled	99	31	Zeeland
+10905	Terheijden	Sampled	104	33	Noord-Brabant
+11023	Termunten	Sampled	3	2	Groningen
+11210	Terschelling	Sampled	13	4	Noord-Holland
+10677	Teteringen	Sampled	104	33	Noord-Brabant
+10237	Texel	Sampled	50	18	Noord-Holland
+10376	Tholen	Sampled	94	32	Zeeland
+11195	Thorn	Sampled	123	38	Limburg
+10027	Tiel	Sampled	38	16	Gelderland
+10035	Tienhoven [Ut]	Sampled	48	17	Utrecht
+10706	Tienhoven [ZH]	Sampled	77	30	Zuid-Holland
+11241	Tietjerksteradeel	Sampled	9	4	Friesland
+10792	Tilburg	Sampled	107	34	Noord-Brabant
+11240	Tongelre	Sampled	113	36	Noord-Brabant
+10694	Tubbergen	Sampled	24	12	Overijssel
+11022	Tull en 't Waal	Sampled	45	17	Utrecht
+10371	Twisk	Sampled	54	18	Noord-Holland
+10146	Ubach over Worms	No data	125	39	Limburg
+10408	Ubbergen	Sampled	40	15	Gelderland
+11141	Uden	Sampled	112	35	Noord-Brabant
+11268	Udenhout	Sampled	108	34	Noord-Brabant
+11238	Uitgeest	Sampled	55	20	Noord-Holland
+11206	Uithoorn	Sampled	62	23	Noord-Holland
+11137	Uithuizen	Sampled	1	3	Groningen
+10246	Uithuizermeeden	Sampled	1	3	Groningen
+11220	Ulestraten	Sampled	124	39	Limburg
+10180	Ulrum	Sampled	1	3	Groningen
+10783	Urk	Sampled	25	10	Noord-Holland
+10700	Urmond	Sampled	124	39	Limburg
+10696	Ursem	Sampled	54	18	Noord-Holland
+11035	Usquert	Sampled	1	3	Groningen
+10140	Utingeradeel	Sampled	10	6	Friesland
+10722	Utrecht	No data	47	17	Utrecht
+10007	Vaals	Sampled	127	39	Limburg
+11071	Valburg	No data	37	15	Gelderland
+11077	Valkenburg [Li]	Sampled	127	39	Limburg
+10028	Valkenburg [ZH]	No data	69	25	Zuid-Holland
+11031	Valkenswaard	Sampled	117	36	Noord-Brabant
+11064	Varik	No data	38	16	Gelderland
+10015	Veen	Sampled	105	34	Noord-Brabant
+11292	Veendam	Sampled	4	1	Groningen
+11052	Veenendaal	Sampled	43	17	Utrecht
+10369	Veere	Sampled	96	32	Zeeland
+10985	Veghel	Sampled	112	35	Noord-Brabant
+10071	Veldhoven en Meerveldhoven	Sampled	114	36	Noord-Brabant
+10713	Veldhuizen	Sampled	49	17	Utrecht
+10170	Velp [NB]	Sampled	119	35	Noord-Brabant
+10620	Velsen	Sampled	59	20	Noord-Holland
+10433	Venhuizen	Sampled	54	18	Noord-Holland
+10477	Venlo	Sampled	121	37	Limburg
+11222	Venray	Sampled	120	37	Limburg
+11414	Vessem, Wintelre en Knegsel	Sampled	116	36	Noord-Brabant
+10366	Veur	Sampled	80	26	Zuid-Holland
+10887	Vianen	Sampled	78	30	Zuid-Holland
+10066	Vierlingsbeek	Sampled	119	35	Noord-Brabant
+11056	Vierpolders	Sampled	91	29	Zuid-Holland
+11048	Vinkeveen en Waverveen	Sampled	48	17	Utrecht
+10811	Vlaardingen	No data	85	29	Zuid-Holland
+10790	Vlaardinger-Ambacht	No data	85	29	Zuid-Holland
+11249	Vlagtwedde	Sampled	4	1	Groningen
+11120	Vledder	Sampled	17	9	Drenthe
+10658	Vleuten	Sampled	49	17	Utrecht
+10211	Vlieland	Sampled	13	4	Noord-Holland
+10268	Vlierden	Sampled	118	36	Noord-Brabant
+11293	Vlijmen	Sampled	110	35	Noord-Brabant
+10270	Vlissingen	Sampled	95	32	Zeeland
+11174	Vlist	No data	75	28	Zuid-Holland
+10644	Vlodrop	Sampled	122	38	Limburg
+11341	Voerendaal	Sampled	125	39	Limburg
+11103	Voorburg	No data	80	26	Zuid-Holland
+10017	Voorhout	Sampled	68	25	Zuid-Holland
+10537	Voorschoten	Sampled	71	25	Zuid-Holland
+10912	Voorst	Sampled	34	13	Gelderland
+10957	Vorden	No data	28	14	Gelderland
+10898	Vreeland	Sampled	48	17	Utrecht
+10441	Vreeswijk	Sampled	46	17	Utrecht
+10630	Vries	Sampled	17	7	Drenthe
+10643	Vriezenveen	Sampled	24	12	Overijssel
+10853	Vrijenban	Sampled	82	27	Zuid-Holland
+10870	Vrijhoeve-Capelle	Sampled	106	34	Noord-Brabant
+10635	Vrouwenpolder	Sampled	96	32	Zeeland
+11224	Vught	Sampled	109	35	Noord-Brabant
+11376	Vuren	Sampled	38	16	Gelderland
+10959	Waalre	Sampled	114	36	Noord-Brabant
+11359	Waalwijk	Sampled	106	34	Noord-Brabant
+10082	Waarde	Sampled	97	32	Zeeland
+10238	Waardenburg	No data	38	16	Gelderland
+10830	Waarder	Sampled	74	28	Zuid-Holland
+10081	Waddinxveen [2]	No data	74	28	Zuid-Holland
+10201	Wadenoijen	No data	38	16	Gelderland
+11010	Wageningen	Sampled	36	13	Gelderland
+10042	Wamel	Sampled	41	16	Gelderland
+10105	Wanneperveen	No data	19	10	Overijssel
+10265	Wanroij	Sampled	119	35	Noord-Brabant
+10991	Wanssum	Sampled	120	37	Limburg
+11073	Warder	Sampled	56	23	Noord-Holland
+10498	Warffum	Sampled	1	3	Groningen
+10221	Warmenhuizen	Sampled	53	19	Noord-Holland
+10204	Warmond	Sampled	71	25	Zuid-Holland
+10838	Warnsveld	No data	28	14	Gelderland
+10402	Waspik	Sampled	106	34	Noord-Brabant
+10164	Wassenaar	No data	80	26	Zuid-Holland
+11122	Watergraafsmeer	Sampled	63	23	Noord-Holland
+11329	Wateringen	No data	81	27	Zuid-Holland
+10352	Waterlandkerkje	Sampled	98	31	Zeeland
+10247	Wedde	Sampled	3	1	Groningen
+10893	Weerselo	No data	24	12	Overijssel
+11081	Weert	Sampled	123	38	Limburg
+10773	Weesp	Sampled	65	24	Noord-Holland
+10377	Weesperkarspel	Sampled	65	24	Noord-Holland
+11116	Wehl	No data	26	14	Gelderland
+11145	Wemeldinge	Sampled	97	32	Zeeland
+10078	Werkendam	Sampled	105	34	Noord-Brabant
+11299	Werkhoven	Sampled	45	17	Utrecht
+11270	Wervershoof	Sampled	54	18	Noord-Holland
+10127	Wessem	Sampled	123	38	Limburg
+10145	Westbroek	Sampled	48	17	Utrecht
+10129	Westdongeradeel	Sampled	12	4	Friesland
+10915	Westdorpe	Sampled	99	31	Zeeland
+11095	Westerbork	Sampled	17	9	Drenthe
+11041	Westerhoven	Sampled	116	36	Noord-Brabant
+11085	Westervoort	Sampled	26	15	Gelderland
+10931	Westkapelle	Sampled	96	32	Zeeland
+10695	Westmaas	No data	90	29	Zuid-Holland
+11322	Weststellingwerf	Sampled	9	6	Friesland
+11101	Westwoud	Sampled	54	18	Noord-Holland
+11381	Westzaan	Sampled	58	22	Noord-Holland
+10676	Wierden	Sampled	24	12	Overijssel
+11277	Wieringen	Sampled	51	18	Noord-Holland
+11164	Wieringerwaard	Sampled	53	18	Noord-Holland
+10723	Wijchen	Sampled	40	15	Gelderland
+10631	Wijdenes	Sampled	54	18	Noord-Holland
+10434	Wijdewormer	Sampled	57	23	Noord-Holland
+10888	Wijhe	Sampled	22	10	Overijssel
+11366	Wijk aan Zee en Duin	Sampled	59	20	Noord-Holland
+10760	Wijk bij Duurstede	Sampled	45	17	Utrecht
+11084	Wijk en Aalburg	Sampled	105	34	Noord-Brabant
+10131	Wijlre	Sampled	127	39	Limburg
+10992	Wijnandsrade	Sampled	125	39	Limburg
+10263	Wijngaarden	No data	77	30	Zuid-Holland
+10825	Wildervank	Sampled	4	1	Groningen
+10827	Willemstad	Sampled	101	33	Noord-Brabant
+10758	Willeskop	Sampled	49	17	Utrecht
+10368	Willige Langerak	Sampled	49	17	Utrecht
+10365	Wilnis	Sampled	49	17	Utrecht
+10194	Wilsum	Sampled	20	10	Overijssel
+10923	Winkel	Sampled	53	18	Noord-Holland
+10453	Winschoten	Sampled	3	1	Groningen
+11135	Winsum	Sampled	6	3	Groningen
+11119	Winterswijk	Sampled	30	14	Gelderland
+10318	Wisch	No data	29	14	Gelderland
+10243	Wissenkerke [NBev]	Sampled	97	32	Zeeland
+11371	Wittem	No data	127	39	Limburg
+10602	Woensdrecht	Sampled	102	33	Noord-Brabant
+10894	Woensel	Sampled	113	36	Noord-Brabant
+10974	Woerden	Sampled	73	28	Zuid-Holland
+10818	Wognum	Sampled	54	18	Noord-Holland
+10543	Wolphaartsdijk	Sampled	97	32	Zeeland
+10454	Wonseradeel	Sampled	10	5	Friesland
+10768	Workum	Sampled	10	5	Friesland
+10648	Wormer	Sampled	58	22	Noord-Holland
+10361	Wormerveer	Sampled	58	22	Noord-Holland
+10461	Woubrugge	Sampled	72	28	Zuid-Holland
+11398	Woudenberg	Sampled	43	17	Utrecht
+10282	Woudrichem	Sampled	105	34	Noord-Brabant
+10808	Wouw	Sampled	102	33	Noord-Brabant
+11427	Wymbritseradeel	Sampled	10	5	Friesland
+11247	Yerseke	Sampled	97	32	Zeeland
+11173	Zaamslag	Sampled	99	31	Zeeland
+11044	Zaandam	Sampled	58	22	Noord-Holland
+11404	Zaandijk	Sampled	58	22	Noord-Holland
+10633	Zalk en Veecaten	No data	20	10	Overijssel
+10557	Zaltbommel	Sampled	42	16	Gelderland
+10910	Zandvoort	Sampled	61	21	Noord-Holland
+10759	Zeeland	Sampled	112	35	Noord-Brabant
+10096	Zeelst	Sampled	114	36	Noord-Brabant
+10949	Zegveld	Sampled	49	17	Utrecht
+10185	Zegwaart	Sampled	83	26	Zuid-Holland
+10324	Zeist	Sampled	44	17	Utrecht
+11159	Zelhem	Sampled	28	14	Gelderland
+10329	Zesgehuchten	Sampled	114	36	Noord-Brabant
+10938	Zevenaar	Sampled	26	15	Gelderland
+10046	Zevenbergen	Sampled	101	33	Noord-Brabant
+11317	Zevenhoven	Sampled	72	28	Zuid-Holland
+11377	Zevenhuizen	No data	83	29	Zuid-Holland
+10843	Zierikzee	Sampled	93	32	Zeeland
+10004	Zijpe	Sampled	52	18	Noord-Holland
+10897	Zoelen	No data	38	16	Gelderland
+10766	Zoetermeer	Sampled	83	26	Zuid-Holland
+11074	Zoeterwoude	Sampled	71	25	Zuid-Holland
+10040	Zonnemaire	Sampled	93	32	Zeeland
+10779	Zoutelande	Sampled	96	32	Zeeland
+11311	Zuid- en Noord-Schermer	Sampled	56	19	Noord-Holland
+10917	Zuid-Beijerland	No data	90	29	Zuid-Holland
+11282	Zuidbroek [Gr]	Sampled	3	3	Groningen
+11087	Zuiddorpe	Sampled	100	31	Zeeland
+10021	Zuidhorn	Sampled	1	3	Groningen
+10316	Zuidland	Sampled	91	29	Zuid-Holland
+10002	Zuidlaren	Sampled	16	7	Drenthe
+10159	Zuid-Scharwoude	Sampled	53	19	Noord-Holland
+10262	Zuidwolde	Sampled	18	9	Drenthe
+10437	Zuidzande	Sampled	98	31	Zeeland
+10059	Zuilen	Sampled	48	17	Utrecht
+11036	Zuilichem	Sampled	42	16	Gelderland
+11192	Zundert	Sampled	104	33	Noord-Brabant
+10254	Zutphen	Sampled	28	14	Gelderland
+10218	Zwaag	Sampled	54	18	Noord-Holland
+10675	Zwammerdam	No data	73	28	Zuid-Holland
+10703	Zwartewaal	Sampled	91	29	Zuid-Holland
+10303	Zwartsluis	Sampled	20	10	Overijssel
+10872	Zweeloo	Sampled	17	8	Drenthe
+10468	Zwijndrecht	No data	87	30	Zuid-Holland
+10093	Zwolle	Sampled	20	10	Overijssel
+10654	Zwollerkerspel	Sampled	20	10	Overijssel
