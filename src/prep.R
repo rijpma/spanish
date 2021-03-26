@@ -92,38 +92,10 @@ deaths191030[, death_date := as.Date(
   stri_join(event_year, "-", event_month, "-", event_day),
   format = "%Y-%m-%d")]
 
-fwrite(deaths191030, "../dat/deaths.csv")
-
-# aggregate and calc excess mortality
-deaths191030[, flu := between(death_date, as.Date("1918-09-01"), as.Date("1918-12-31"))]
-
-agebin = 10
-deaths191030[, agegroup := floor(pr_age / agebin) * agebin]
 deaths191030[, plus40 := pr_age >= 40]
 deaths191030[, year := year(death_date)]
 deaths191030[is.na(year), year := event_year] # bit pointless as we'll need a date?
+deaths191030[, flu := between(death_date, as.Date("1918-09-01"), as.Date("1918-12-31"))]
+deaths191030[, compmonth := between(event_month, 9, 12) & year != 1918]
 
-aggvrbs = c("year", "agegroup", "pr_gender", "amco", "skill_level", "final_under_roof", "final_meet_strangers")
-
-# omit 1914 because belgian refugees
-dg = deaths191030[year <= 1918 & year != 1914, list(deaths = .N), by = aggvrbs]
-
-# cross-join to get a row for groups with zero deaths
-tojoin = deaths191030[year <= 1918, do.call(CJ, c(.SD, unique = TRUE)), .SDcols = aggvrbs]
-# tojoin = na.omit(tojoin)
-
-dg = merge(dg, tojoin, by = aggvrbs, all = TRUE)
-dg[is.na(deaths), deaths := 0]
-
-dg[, y1918 := year == 1918]
-dg = dg[between(agegroup, 10, 70),
-    list(flu = mean(deaths[y1918 == TRUE]), 
-        baseline = mean(deaths[y1918 == FALSE])),
-    by = c(aggvrbs[aggvrbs != "year"])]
-
-# drop if no deaths 1910-1917
-dg = dg[baseline > 0]
-
-dg[, emr := flu / baseline]
-
-fwrite(dg, "../dat/excess.csv")
+fwrite(deaths191030, "../dat/deaths.csv")
