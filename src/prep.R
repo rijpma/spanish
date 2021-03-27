@@ -78,7 +78,7 @@ deaths191030[occtitle_st == "herbergierster" | occtitle_st == "koffiehuishoudste
 deaths191030[occtitle_st == "herbergierster" | occtitle_st == "koffiehuishoudster", final_meet_strangers := 1]
 
 # drop HISCO 99999, -2, -3
-deaths191030 <- deaths191030[HISCO != 99999 & HISCO != -2 & HISCO != -3,]
+deaths191030[HISCO == 99999 | HISCO == -2 | HISCO == -3, HISCO := NA]
 
 # code exposure
 deaths191030[final_under_roof == 0 & final_meet_strangers == 0, exposure := 0]
