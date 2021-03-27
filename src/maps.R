@@ -27,11 +27,16 @@ dev.off()
 # occupations coverage
 toplot = merge(
     nl,
-    deaths[, mean(HISCO > 0) > 0.8, by = list(acode = amco)],
+    deaths[, 
+        list(hisco = mean(!is.na(HISCO)),
+             age = mean(!is.na(pr_age)),
+             sex = mean(!is.na(pr_gender) | pr_gender != ""),
+             date = mean(!is.na(death_date))), 
+         by = list(acode = amco)],
     by = "acode",
     all.x = TRUE)
 pdf("../out/occupations_coverage.pdf", width = 6)
-plot(toplot[, "V1"], pal = viridisLite::viridis)
+plot(toplot[, "hisco"], pal = viridisLite::viridis)
 dev.off()
 
 # emr plot
