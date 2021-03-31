@@ -77,6 +77,9 @@ deaths191030[occtitle_st == "herbergierster" | occtitle_st == "koffiehuishoudste
 deaths191030[occtitle_st == "herbergierster" | occtitle_st == "koffiehuishoudster", final_under_roof := 1]
 deaths191030[occtitle_st == "herbergierster" | occtitle_st == "koffiehuishoudster", final_meet_strangers := 1]
 
+deaths191030[HISCO == 12310, skill_level := "higher_skilled"] # candidate notaries should have a skill level
+deaths191030[HISCO == 92120, skill_level := "medium_skilled"] # letter setters should have a skill level
+
 # drop HISCO 99999, -2, -3
 deaths191030[HISCO == 99999 | HISCO == -2 | HISCO == -3, HISCO := NA]
 
