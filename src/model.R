@@ -103,7 +103,7 @@ texreg::texreg(modlist_base,
     custom.coef.map = coefmap,
     override.se = lapply(coeflist, `[`, i = , j = 2),
     override.pval = lapply(coeflist, `[`, i = , j = 4),
-    file = "../out/models_base.txt")
+    file = "../out/models_base.tex")
 
 # check model outcomes at different aggregation levels
 # 10 year age bins, municipalities
@@ -140,4 +140,4 @@ texreg::texreg(modlist_regions,
     custom.coef.map = coefmap,
     override.se = lapply(coeflist, `[`, i = , j = 2),
     override.pval = lapply(coeflist, `[`, i = , j = 4),
-    file = "../out/models_regions.txt")
+    file = "../out/models_regions.tex")
