@@ -10,6 +10,8 @@ deaths = data.table::fread("../dat/deaths.csv")
 municipalities = data.table::fread("../dat/spatialagg.txt")
 coverage = fread("../dat/HDNG_OpenArch.txt")
 
+deaths[death_date == "", death_date := NA]
+
 deaths = municipalities[, list(amco = ACODE, corop = Corop, egg = EGG)][deaths, on = "amco"]
 
 nl = read_sf("../dat/nl_1918/nl_1918.shp")
