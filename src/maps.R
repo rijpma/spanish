@@ -6,11 +6,9 @@ library("viridisLite")
 
 source("fun.R")
 
-deaths = data.table::fread("../dat/deaths.csv")
+deaths = data.table::fread("../dat/deaths.csv", na.strings = "")
 municipalities = data.table::fread("../dat/spatialagg.txt")
 coverage = fread("../dat/HDNG_OpenArch.txt")
-
-deaths[death_date == "", death_date := NA]
 
 deaths = municipalities[, list(amco = ACODE, corop = Corop, egg = EGG)][deaths, on = "amco"]
 
@@ -33,7 +31,7 @@ toplot = merge(
     deaths[, 
         list(hisco = mean(!is.na(HISCO), na.rm = TRUE),
              age = mean(!is.na(pr_age), na.rm = TRUE),
-             sex = mean(!is.na(pr_gender) | pr_gender != "", na.rm = TRUE),
+             sex = mean(!is.na(pr_gender), na.rm = TRUE),
              date = mean(!is.na(death_date), na.rm = TRUE)), 
          by = list(acode = amco)],
     by = "acode",
