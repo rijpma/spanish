@@ -12,36 +12,58 @@ coverage = fread("../dat/HDNG_OpenArch.txt")
 
 deaths = municipalities[, list(amco = ACODE, corop = Corop, egg = EGG)][deaths, on = "amco"]
 
-nl = read_sf("~/data/nlgis/Gemeentegeschiedenis/nl_1918/nl_1918.shp")
+nl = read_sf("../dat/nl_1918/nl_1918.shp")
 
 # death certificate coverage
 toplot = merge(
     nl,
-    coverage[, list(coverage = 100 - mean(diffperc)), by = list(acode = ACODE)],
+    coverage[, list(coverage = 1 - mean(diffperc / 100)), by = list(acode = ACODE)],
     by = "acode",
     all.x = TRUE)
+
 pdf("../out/certificate_coverage.pdf", width = 6)
 plot(toplot[, "coverage"], pal = viridisLite::viridis)
 dev.off()
 
-# occupations coverage
+# coverage other variables
 toplot = merge(
     nl,
     deaths[, 
-        list(hisco = mean(!is.na(HISCO)),
-             age = mean(!is.na(pr_age)),
-             sex = mean(!is.na(pr_gender) | pr_gender != ""),
-             date = mean(!is.na(death_date))), 
+        list(hisco = mean(!is.na(HISCO), na.rm = TRUE),
+             age = mean(!is.na(pr_age), na.rm = TRUE),
+             sex = mean(!is.na(pr_gender) | pr_gender != "", na.rm = TRUE),
+             date = mean(!is.na(death_date), na.rm = TRUE)), 
          by = list(acode = amco)],
     by = "acode",
     all.x = TRUE)
+
+# fix scales by setting smallest munic
+toplot[toplot$acode == 10980, c("hisco", "age", "sex", "date")] <- 0
+
+pdf("../out/age_coverage.pdf", width = 6)
+plot(toplot[, "age"], pal = viridisLite::viridis)
+dev.off()
+pdf("../out/sex_coverage.pdf", width = 6)
+plot(toplot[, "sex"], pal = viridisLite::viridis)
+dev.off()
+pdf("../out/date_coverage.pdf", width = 6)
+plot(toplot[, "date"], pal = viridisLite::viridis)
+dev.off()
 pdf("../out/occupations_coverage.pdf", width = 6)
 plot(toplot[, "hisco"], pal = viridisLite::viridis)
 dev.off()
+# occupations range 0-0.4 because age < 20 age > 60 and f age > 40 rarely have one
+
+# age should be bigger than say 0.2
+# hisco should be bigger than say 0.1
+# sex and date should be present
+# and it should be in the coverage list
 
 # emr plot
 deaths[, agegroup := pr_age]
+deaths[data.table::between(pr_age, 10, 70), agegroup := 40]
 toplot = excess(deaths[sep_dec == TRUE], aggvrbs = c("year", "amco", "agegroup"))
+
 toplot = merge(
     nl,
     toplot,
