@@ -98,9 +98,19 @@ deaths191030[, death_date := as.Date(
 deaths191030[, plus40 := pr_age >= 40]
 deaths191030[, year := year(death_date)]
 deaths191030[is.na(year), year := event_year] # bit pointless as we'll need a date?
-deaths191030[, flu := between(death_date, as.Date("1918-09-01"), as.Date("1918-12-31"))]
-deaths191030[, sep_dec := between(event_month, 9, 12)]
+deaths191030[, flu := data.table::between(death_date, as.Date("1918-09-01"), as.Date("1918-12-31"))]
+deaths191030[, sep_dec := data.table::between(event_month, 9, 12)]
 
 deaths191030[pr_gender == "", pr_gender := NA]
 
 fwrite(deaths191030, "../dat/deaths.csv")
+
+coverage = deaths191030[, 
+    list(hisco = mean(!is.na(HISCO), na.rm = TRUE),
+         age = mean(!is.na(pr_age), na.rm = TRUE),
+         sex = mean(!is.na(pr_gender), na.rm = TRUE),
+         date = mean(!is.na(death_date), na.rm = TRUE)), 
+     by = list(amco)]
+coverage[, drop := hisco <= 0.1 | age <= 0.2 | date <= 0.4]
+
+fwrite(coverage, "../dat/coverage.csv")
