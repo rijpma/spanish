@@ -13,11 +13,20 @@ source("fun.R")
 
 deaths = data.table::fread("../dat/deaths.csv", na.strings = "")
 municipalities = data.table::fread("../dat/spatialagg.txt")
+coverage = data.table::fread("../dat/coverage.csv")
 
 deaths = deaths[sep_dec == TRUE]
 
-deaths = municipalities[, list(amco = ACODE, corop = Corop, egg = EGG, province = Provincie)
-    ][ deaths, on = "amco"]
+deaths = merge(
+    x = deaths,
+    y = municipalities[Sampled == "Sampled", list(amco = ACODE, corop = Corop, egg = EGG, province = Provincie)],
+    by = "amco",
+    all.x = FALSE, all.y = FALSE)
+deaths = merge(
+    x = deaths,
+    y = coverage[drop == FALSE],
+    by = "amco",
+    all.x = FALSE, all.y = FALSE)
 
 deaths[, skill_level := factor(skill_level, 
     levels = c("higher_skilled", "medium_skilled", "lower_skilled", "unskilled"))]
@@ -68,26 +77,26 @@ modlist_base = list(
 # varnames = texreg::extract(modlist_base[["+ region FE"]])@coef.names
 # cat(varnames[!grepl("egg", varnames)], sep = "\n")
 coefmap = list(
-    "skill_levelmedium_skilled" = "skill_levelmedium_skilled",
-    "skill_levellower_skilled" = "skill_levellower_skilled",
-    "skill_levelunskilled" = "skill_levelunskilled",
+    "skill_levelmedium_skilled" = "medium_skilled",
+    "skill_levellower_skilled" = "lower_skilled",
+    "skill_levelunskilled" = "unskilled",
 
     "final_under_roof" = "indoor",
     "final_meet_strangers" = "strangers",
     "final_under_roof:final_meet_strangers" = "indoor x strangers",
     
-    "factor(agegroup)20" = "factor(agegroup)20",
-    "factor(agegroup)30" = "factor(agegroup)30",
-    "factor(agegroup)40" = "factor(agegroup)40",
-    "factor(agegroup)50" = "factor(agegroup)50",
-    "factor(agegroup)60" = "factor(agegroup)60",
-    "factor(agegroup)70" = "factor(agegroup)70",
+    "factor(agegroup)20" = "agegroup 20",
+    "factor(agegroup)30" = "agegroup 30",
+    "factor(agegroup)40" = "agegroup 40",
+    "factor(agegroup)50" = "agegroup 50",
+    "factor(agegroup)60" = "agegroup 60",
+    "factor(agegroup)70" = "agegroup 70",
     
     "pr_genderm" = "pr_genderm",
     
-    "factor(event_month)10" = "factor(event_month)10",
-    "factor(event_month)11" = "factor(event_month)11",
-    "factor(event_month)12" = "factor(event_month)12",
+    "factor(event_month)10" = "event_month10",
+    "factor(event_month)11" = "event_month11",
+    "factor(event_month)12" = "event_month12",
     
     "(Intercept)" = "(Intercept)"
 )
@@ -137,6 +146,49 @@ modlist_regions = list(
 coeflist = lapply(modlist_regions, coeftest, vcov. = sandwich::vcovCL, cluster = ~ region)
 
 texreg::texreg(modlist_regions, 
+    custom.coef.map = coefmap,
+    override.se = lapply(coeflist, `[`, i = , j = 2),
+    override.pval = lapply(coeflist, `[`, i = , j = 4),
+    file = "../out/models_regions.tex")
+
+
+# models for high mortality regions only
+# or maybe do this on amco level first?
+deaths[data.table::between(pr_age, 10, 79), agegroup := 40]
+excess_egg = excess(deaths,
+    aggvrbs = c("egg", "year", "agegroup"))
+hist(excess_egg$emr, breaks = 20)
+plot(ecdf(excess_egg$emr))
+quantile(excess_egg$emr, 1:9 / 10)
+mean(excess_egg$emr)
+
+
+excess_amco = excess(deaths,
+    aggvrbs = c("amco", "year", "agegroup"))
+hist(excess_amco$emr, breaks = 20)
+plot(ecdf(excess_amco$emr))
+quantile(excess_amco$emr, 1:9 / 10)
+mean(excess_amco$emr)
+
+# 2-3 are very normal, med = 2.6ish, mean = 3
+# so let's go higher than 2.5 = high
+
+excess_egg10 = merge(
+    excess_egg10,
+    excess_egg[, list(egg, eggemr = emr)], 
+    by = "egg",
+    all.x = TRUE)
+
+modlist_high = list(
+    `low EM` = lm(log1p(emr) ~ skill_level + final_under_roof*final_meet_strangers + factor(agegroup) + pr_gender + factor(event_month) + factor(region),
+        data = excess_egg10[eggemr <= 2.5]),
+    `high EM` = lm(log1p(emr) ~ skill_level + final_under_roof*final_meet_strangers + factor(agegroup) + pr_gender + factor(event_month) + factor(region),
+        data = excess_egg10[eggemr > 2.5])
+
+modlist_high = lapply(modlist_base, stats::update, data = excess_egg10[eggemr > 2.5])
+coeflist = lapply(modlist_high, coeftest, vcov. = sandwich::vcovCL, cluster = ~ egg)
+
+texreg::texreg(modlist_high, 
     custom.coef.map = coefmap,
     override.se = lapply(coeflist, `[`, i = , j = 2),
     override.pval = lapply(coeflist, `[`, i = , j = 4),
