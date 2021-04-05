@@ -92,7 +92,7 @@ coefmap = list(
     "factor(agegroup)60" = "agegroup 60",
     "factor(agegroup)70" = "agegroup 70",
     
-    "pr_genderm" = "pr_genderm",
+    "pr_genderm" = "male",
     
     "factor(event_month)10" = "event_month10",
     "factor(event_month)11" = "event_month11",
@@ -112,6 +112,8 @@ texreg::texreg(modlist_base,
     custom.coef.map = coefmap,
     override.se = lapply(coeflist, `[`, i = , j = 2),
     override.pval = lapply(coeflist, `[`, i = , j = 4),
+    caption = "Regression models of log excess mortality rate. Region-clustered standard errors between parentheses.",
+    label = "tab:basemodels",
     file = "../out/models_base.tex")
 
 # check model outcomes at different aggregation levels
@@ -149,6 +151,8 @@ texreg::texreg(modlist_regions,
     custom.coef.map = coefmap,
     override.se = lapply(coeflist, `[`, i = , j = 2),
     override.pval = lapply(coeflist, `[`, i = , j = 4),
+    caption = "Regression models of log excess mortality rate at different levels of aggregation. Region-clustered standard errors between parentheses.",
+    label = "tab:regionmodels",
     file = "../out/models_regions.tex")
 
 
@@ -183,13 +187,14 @@ modlist_high = list(
     `low EM` = lm(log1p(emr) ~ skill_level + final_under_roof*final_meet_strangers + factor(agegroup) + pr_gender + factor(event_month) + factor(region),
         data = excess_egg10[eggemr <= 2.5]),
     `high EM` = lm(log1p(emr) ~ skill_level + final_under_roof*final_meet_strangers + factor(agegroup) + pr_gender + factor(event_month) + factor(region),
-        data = excess_egg10[eggemr > 2.5])
+        data = excess_egg10[eggemr > 2.5]))
 
-modlist_high = lapply(modlist_base, stats::update, data = excess_egg10[eggemr > 2.5])
 coeflist = lapply(modlist_high, coeftest, vcov. = sandwich::vcovCL, cluster = ~ egg)
 
 texreg::texreg(modlist_high, 
     custom.coef.map = coefmap,
     override.se = lapply(coeflist, `[`, i = , j = 2),
     override.pval = lapply(coeflist, `[`, i = , j = 4),
-    file = "../out/models_regions.tex")
+    caption = "Regression models of log excess mortality rate for low and high excess mortality regions. Region-clustered standard errors between parentheses.",
+    label = "tab:hilomodels",
+    file = "../out/models_hilo.tex")
