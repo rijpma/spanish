@@ -74,8 +74,10 @@ deaths2[HISCO == "99999" | grepl("-", HISCO), HISCO := NA,]
 
 toplot3 = merge(
   nl,
-  deaths2[pr_age >= 15 & pr_age < 70, list(hisco = mean(!is.na(HISCO)), na.rm = TRUE), by = list(acode = amco)],
+  deaths2[pr_age >= 15 & pr_age <= 80, list(hisco = mean(!is.na(HISCO)), na.rm = TRUE), by = list(acode = amco)],
   by = "acode", all.x = TRUE)
+
+toplot[toplot$acode == 10980, c("hisco", "age", "sex", "date")] <- 0
 
 pdf("occupations_coverage_2.pdf", width = 6)
 plot(toplot3[, "hisco"], pal = viridisLite::viridis)
