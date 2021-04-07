@@ -14,7 +14,7 @@ deaths = municipalities[, list(amco = ACODE, corop = Corop, egg = EGG)][deaths, 
 
 nl = read_sf("../dat/nl_1918/nl_1918.shp")
 
-# death certificate coverage
+# death certificate coverage v1
 toplot = merge(
     nl,
     coverage[, list(coverage = 1 - mean(diffperc / 100)), by = list(acode = ACODE)],
@@ -23,6 +23,17 @@ toplot = merge(
 
 pdf("../out/certificate_coverage.pdf", width = 6)
 plot(toplot[, "coverage"], pal = viridisLite::viridis)
+dev.off()
+
+# death certificate coverage v2 to get rid of yellow Buren and 1/0 scale
+toplot2 = merge(
+  nl,
+  coverage[, list(coverage = 1 ), by = list(acode = ACODE)],
+  by = "acode",
+  all.x = TRUE)
+
+pdf("../out/certificate_coverage_2.pdf", width = 6)
+plot(toplot2[, "coverage"], pal = viridisLite::viridis)
 dev.off()
 
 # coverage other variables
@@ -53,6 +64,20 @@ pdf("../out/occupations_coverage.pdf", width = 6)
 plot(toplot[, "hisco"], pal = viridisLite::viridis)
 dev.off()
 # occupations range 0-0.4 because age < 20 age > 60 and f age > 40 rarely have one
+
+# hisco_2 map to get only usable occs for pr_age >= 15
+
+deaths2 <- deaths
+deaths2[HISCO == "99999" | grepl("-", HISCO), HISCO := NA,]
+
+toplot = merge(
+  nl,
+  deaths2[pr_age >= 15, list(hisco = mean(!is.na(HISCO)), na.rm = TRUE), by = list(acode = amco)],
+  by = "acode", all.x = TRUE)
+
+pdf("occupations_coverage_2.jpeg", width = 6)
+plot(toplot[, "hisco"], pal = viridisLite::viridis)
+dev.off()
 
 # age should be bigger than say 0.2
 # hisco should be bigger than say 0.1
