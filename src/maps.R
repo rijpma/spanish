@@ -36,6 +36,8 @@ pdf("../out/certificate_coverage_2.pdf", width = 6)
 plot(toplot2[, "coverage"], pal = viridisLite::viridis)
 dev.off()
 
+rm(toplot2)
+
 # coverage other variables
 toplot = merge(
     nl,
@@ -70,14 +72,16 @@ dev.off()
 deaths2 <- deaths
 deaths2[HISCO == "99999" | grepl("-", HISCO), HISCO := NA,]
 
-toplot = merge(
+toplot3 = merge(
   nl,
   deaths2[pr_age >= 15, list(hisco = mean(!is.na(HISCO)), na.rm = TRUE), by = list(acode = amco)],
   by = "acode", all.x = TRUE)
 
-pdf("occupations_coverage_2.jpeg", width = 6)
-plot(toplot[, "hisco"], pal = viridisLite::viridis)
+pdf("occupations_coverage_2.pdf", width = 6)
+plot(toplot3[, "hisco"], pal = viridisLite::viridis)
 dev.off()
+
+rm(deaths2, toplot3)
 
 # age should be bigger than say 0.2
 # hisco should be bigger than say 0.1
