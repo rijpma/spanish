@@ -83,7 +83,7 @@ coefmap = list(
 
     "final_under_roof" = "indoor",
     "final_meet_strangers" = "strangers",
-    "final_under_roof:final_meet_strangers" = "indoor x strangers",
+    "final_under_roof:final_meet_strangers" = "indoor and strangers",
     
     "factor(agegroup)20" = "agegroup 20",
     "factor(agegroup)30" = "agegroup 30",
