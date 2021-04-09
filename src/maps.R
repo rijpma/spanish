@@ -26,17 +26,17 @@ plot(toplot[, "coverage"], pal = viridisLite::viridis)
 dev.off()
 
 # death certificate coverage v2 to get rid of yellow Buren and 1/0 scale
-toplot2 = merge(
+toplot = merge(
   nl,
   coverage[, list(coverage = 1 ), by = list(acode = ACODE)],
   by = "acode",
   all.x = TRUE)
 
-pdf("../out/certificate_coverage_2.pdf", width = 6)
-plot(toplot2[, "coverage"], pal = viridisLite::viridis)
-dev.off()
+toplot[toplot$acode == 10980, c("coverage")] <- 0
 
-rm(toplot2)
+pdf("../out/certificate_coverage.pdf", width = 6)
+plot(toplot[, "coverage"], pal = viridisLite::viridis)
+dev.off()
 
 # coverage other variables
 toplot = merge(
