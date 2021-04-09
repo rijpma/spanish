@@ -38,11 +38,14 @@ pdf("../out/certificate_coverage.pdf", width = 6)
 plot(toplot[, "coverage"], pal = viridisLite::viridis)
 dev.off()
 
+# hisco_2 map to get only usable occs for pr_age >= 15
+deaths[HISCO == "99999" | grepl("-", HISCO), HISCO := NA,]
+
 # coverage other variables
 toplot = merge(
     nl,
     deaths[, 
-        list(hisco = mean(!is.na(HISCO), na.rm = TRUE),
+        list(hisco = mean(!is.na(HISCO[pr_age >= 15 & pr_age <= 80]), na.rm = TRUE),
              age = mean(!is.na(pr_age), na.rm = TRUE),
              sex = mean(!is.na(pr_gender), na.rm = TRUE),
              date = mean(!is.na(death_date), na.rm = TRUE)), 
@@ -69,24 +72,11 @@ dev.off()
 
 # hisco_2 map to get only usable occs for pr_age >= 15
 
-deaths2 <- deaths
-deaths2[HISCO == "99999" | grepl("-", HISCO), HISCO := NA,]
-
-toplot3 = merge(
-  nl,
-  deaths2[pr_age >= 15 & pr_age <= 80, list(hisco = mean(!is.na(HISCO)), na.rm = TRUE), by = list(acode = amco)],
-  by = "acode", all.x = TRUE)
-
-toplot[toplot$acode == 10980, c("hisco", "age", "sex", "date")] <- 0
-
-pdf("occupations_coverage_2.pdf", width = 6)
-plot(toplot3[, "hisco"], pal = viridisLite::viridis)
-dev.off()
-
-rm(deaths2, toplot3)
+plot(ecdf(toplot$hisco))
+as.data.table(toplot)[, .N, by = round(hisco, 1)][order(round)]
 
 # age should be bigger than say 0.2
-# hisco should be bigger than say 0.1
+# hisco should be bigger than say 0.2 for the relevant agegroup (0.1 overall)
 # sex and date should be present
 # and it should be in the coverage list
 
