@@ -41,8 +41,21 @@ deaths[, agegroup := floor(pr_age / agebin) * agebin]
 excess_egg10 = excess(deaths,
     aggvrbs = c("egg", aggvrbs))
 
-# ma5 = lm(emr ~ factor(agegroup) + skill_level + pr_gender , data = excess_amco5)
-# ma5l = lm(log1p(emr) ~ factor(agegroup) + skill_level + pr_gender , data = excess_amco5)
+# example data set
+out = na.omit(excess_egg10[order(-emr)])
+out = out[, list(EGG = egg, 
+    indoor = final_under_roof,
+    strangers = final_meet_strangers,
+    sex = pr_gender,
+    month = event_month, agegroup, baseline, flu, emr)]
+set.seed(232)
+writeLines(
+    knitr::kable(out[sample(.N, 5)], 
+        format = "latex", 
+        lab = "tab:example",
+        caption = "Example excess mortality dataset",
+        digits = 2),
+    con = "../out/data_example.tex")
 
 # check correlations
 m = model.matrix(log1p(emr) ~ factor(agegroup) + pr_gender + factor(event_month) + skill_level + final_under_roof + final_meet_strangers, data = excess_egg10)
