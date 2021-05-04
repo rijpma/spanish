@@ -28,14 +28,14 @@ occs = deaths[!is.na(HISCO) & sep_dec == TRUE & data.table::between(pr_age, 10, 
         strangers = sum(final_meet_strangers),
         indoors = sum(final_under_roof),
         both = sum(final_meet_strangers * final_under_roof),
-        neither = sum(final_meet_strangers + final_under_roof == 0)),
+        neither = sum(final_meet_strangers + final_under_roof == 0),
+        skill = skill_level[1]),
     by = HISCO]
 out = knitr::kable(
     x = occs[order(-N)][1:20],
     caption = "Most frequent occupations on death certificates for deceased age 10-70, september-december 1910–1918.",
     label = "tab:topoccs_selected",
     format = "latex")
-
 writeLines(out, "../out/topoccs_sepdec.tex")
 
 out = knitr::kable(
