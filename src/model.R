@@ -6,6 +6,7 @@ library("plm")
 library("sandwich")
 library("lmtest")
 library("ggplot2")
+library("mgcv")
 
 data.table::setDTthreads(2)
 
@@ -15,8 +16,8 @@ deaths = data.table::fread("../dat/deaths.csv", na.strings = "")
 municipalities = data.table::fread("../dat/spatialagg.txt")
 coverage = data.table::fread("../dat/coverage.csv")
 
+# subset dataset
 deaths = deaths[sep_dec == TRUE]
-
 deaths = merge(
     x = deaths,
     y = municipalities[Sampled == "Sampled", list(amco = ACODE, corop = Corop, egg = EGG, province = Provincie)],
@@ -28,9 +29,6 @@ deaths = merge(
     by = "amco",
     all.x = FALSE, all.y = FALSE)
 
-deaths[, skill_level := factor(skill_level, 
-    levels = c("higher_skilled", "medium_skilled", "lower_skilled", "unskilled"))]
-
 aggvrbs = c("year", "event_month", "agegroup", "pr_gender", "skill_level", "final_under_roof", "final_meet_strangers")
 
 # 10 year age bins, municipalities
@@ -40,35 +38,6 @@ deaths[, agegroup := floor(pr_age / agebin) * agebin]
 # 10 year age bins, egg regions
 excess_egg10 = excess(deaths,
     aggvrbs = c("egg", aggvrbs))
-
-# example data set
-out = na.omit(excess_egg10[order(-emr)])
-out = out[, list(EGG = egg, 
-    indoor = final_under_roof,
-    strangers = final_meet_strangers,
-    sex = pr_gender,
-    month = event_month, agegroup, baseline, flu, emr)]
-set.seed(232)
-writeLines(
-    knitr::kable(out[sample(.N, 5)], 
-        format = "latex", 
-        lab = "tab:example",
-        caption = "Example excess mortality dataset",
-        digits = 2),
-    con = "../out/data_example.tex")
-
-# check correlations
-m = model.matrix(log1p(emr) ~ factor(agegroup) + pr_gender + factor(event_month) + skill_level + final_under_roof + final_meet_strangers, data = excess_egg10)
-# as.data.table(m)[, cor(.SD, .SD), .SDcols = -1]
-cm = round(cor(m[-1, -1]), digits = 2)
-cm = data.table(row = rep(rownames(cm), ncol(cm)),
-    col = rep(colnames(cm), each = nrow(cm)),
-    value = c(cm))
-pdf("../out/cormat.pdf")
-ggplot(cm, aes(row, col, fill = value)) + geom_tile() + 
-    theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) + 
-    scale_fill_viridis_c()
-dev.off()
 
 modlist_base = list(
     `skill` = lm(log1p(emr) ~ skill_level, 
@@ -85,7 +54,7 @@ modlist_base = list(
         data = excess_egg10),
     `+ region FE` = lm(log1p(emr) ~ skill_level + final_under_roof*final_meet_strangers + factor(agegroup) + pr_gender + factor(event_month) + factor(egg), 
         data = excess_egg10))
-
+prefmod = modlist_base$`+ region FE`
 # map to reorder coefficients
 # varnames = texreg::extract(modlist_base[["+ region FE"]])@coef.names
 # cat(varnames[!grepl("egg", varnames)], sep = "\n")
@@ -94,9 +63,23 @@ coefmap = list(
     "skill_levellower_skilled" = "lower_skilled",
     "skill_levelunskilled" = "unskilled",
 
+    "I(HISCAM_NL/100)" = "hiscam",
+    "HISCAM_NL" = "hiscam",
+    "EDF: s(HISCAM_NL)" = "EDF: s(HISCAM_NL)",
+
     "final_under_roof" = "indoor",
     "final_meet_strangers" = "strangers",
     "final_under_roof:final_meet_strangers" = "indoor and strangers",
+
+    "final_under_roof:skill_levelmedium_skilled" = "indoor and medium skilled",
+    "final_under_roof:skill_levellower_skilled" = "indoor and lower skilled",
+    "final_under_roof:skill_levelunskilled" = "indoor and unskilled",
+    "final_meet_strangers:skill_levelmedium_skilled" = "strangers and medium skilled",
+    "final_meet_strangers:skill_levellower_skilled" = "strangers and lower skilled",
+    "final_meet_strangers:skill_levelunskilled" = "strangers and unskilled",
+
+    "HISCAM_NL:final_meet_strangers" = "hiscam x strangers",
+    "HISCAM_NL:final_under_roof" = "hiscam x indoor",
     
     "factor(agegroup)20" = "agegroup 20",
     "factor(agegroup)30" = "agegroup 30",
@@ -115,12 +98,10 @@ coefmap = list(
 )
 
 coeflist = lapply(modlist_base, coeftest, vcov. = sandwich::vcovCL, cluster = ~ egg)
-
 texreg::screenreg(modlist_base, 
     custom.coef.map = coefmap,
     override.se = lapply(coeflist, `[`, i = , j = 2),
-    override.pval = lapply(coeflist, `[`, i = , j = 4),
-    file = "../out/models_base.txt")
+    override.pval = lapply(coeflist, `[`, i = , j = 4))
 texreg::texreg(modlist_base, 
     custom.coef.map = coefmap,
     override.se = lapply(coeflist, `[`, i = , j = 2),
@@ -128,6 +109,100 @@ texreg::texreg(modlist_base,
     caption = "Regression models of log excess mortality rate. Region-clustered standard errors between parentheses.",
     label = "tab:basemodels",
     file = "../out/models_base.tex")
+
+# models with dropped/recoded observations
+excess_egg10_nofarmers = excess(
+    deaths[HISCO != 61220 | is.na(HISCO)], # this should not drop NA occupations for comparability? Surefly these are dropped in the regression anyway?
+    aggvrbs = c("egg", aggvrbs))
+excess_egg10_nosoldiers = excess(
+    deaths[HISCO != 58340 | is.na(HISCO)],
+    aggvrbs = c("egg", aggvrbs))
+excess_egg10_nosoldiersnofarmers = excess(
+    deaths[(HISCO != 58340 & HISCO != 61220) | is.na(HISCO)],
+    aggvrbs = c("egg", aggvrbs))
+deaths_farmrecoded = copy(deaths)
+deaths_farmrecoded[HISCO == 61220, skill_level := "lower_skilled"]
+excess_egg10_farmrecoded = excess(
+    deaths_farmrecoded,
+    aggvrbs = c("egg", aggvrbs))
+
+modlist_altocc = list(
+    `all occupations` = prefmod,
+    `no farmers` = update(prefmod, data = excess_egg10_nofarmers),
+    `farmers recoded` = update(prefmod, data = excess_egg10_farmrecoded),
+    `no soldiers` = update(prefmod, data = excess_egg10_nosoldiers),
+    `no farmers and no soldiers` = update(prefmod, data = excess_egg10_nosoldiersnofarmers)
+)
+
+coeflist = lapply(modlist_altocc, coeftest, vcov. = sandwich::vcovCL, cluster = ~ egg)
+texreg::screenreg(modlist_altocc, 
+    custom.coef.map = coefmap,
+    override.se = lapply(coeflist, `[`, i = , j = 2),
+    override.pval = lapply(coeflist, `[`, i = , j = 4))
+texreg::texreg(modlist_altocc, 
+    custom.coef.map = coefmap,
+    override.se = lapply(coeflist, `[`, i = , j = 2),
+    override.pval = lapply(coeflist, `[`, i = , j = 4),
+    caption = "Regression models of log excess mortality rate, exluding selected occupations. Region-clustered standard errors between parentheses.",
+    label = "tab:altoccmodels",
+    file = "../out/models_altocc.tex")
+
+# hiscam
+excess_egg10_hiscam = excess(deaths,
+    aggvrbs = c("egg", "HISCAM_NL", aggvrbs[aggvrbs != "skill_level"]))
+modlist_hiscam = list(
+    `hisclass` = prefmod,
+    `hiscam` = update(prefmod, 
+        . ~ . - skill_level + I(HISCAM_NL / 100),
+        data = excess_egg10_hiscam[HISCAM_NL > 0]),
+    `hiscam spline` = mgcv::gam(update(formula(prefmod), . ~ . - skill_level + s(HISCAM_NL, k = 7)),
+            data = excess_egg10_hiscam[HISCAM_NL > 0])
+    )
+
+coeflist = lapply(modlist_hiscam[1:2], coeftest, vcov. = sandwich::vcovCL, cluster = ~ egg)
+texreg::screenreg(modlist_hiscam[1:2], 
+    custom.coef.map = coefmap,
+    override.se = lapply(coeflist, `[`, i = , j = 2),
+    override.pval = lapply(coeflist, `[`, i = , j = 4))
+texreg::texreg(modlist_hiscam[1:2], 
+    custom.coef.map = coefmap,
+    override.se = lapply(coeflist, `[`, i = , j = 2),
+    override.pval = lapply(coeflist, `[`, i = , j = 4),
+    caption = "Regression models of log excess mortality rate using occuaptional status (HISCAM) rather than skill (HISCLASS-based), exluding selected occupations. Region-clustered standard errors between parentheses.",
+    label = "tab:hiscammodels",
+    file = "../out/models_hiscam.tex")
+
+pdf("../out/hiscamspline.pdf")
+plot(modlist_hiscam$`hiscam spline`, col = 2, lwd = 1.5)
+dev.off()
+
+# interactions
+modlist_inter = list(
+    `no interactions` = prefmod,
+    `strangers interactions` = update(prefmod,
+        . ~ . - skill_level - final_under_roof - final_under_roof:final_meet_strangers + 
+        final_meet_strangers*skill_level),
+    `indoors interactions` = update(prefmod,
+        . ~ . - skill_level - final_meet_strangers - final_under_roof:final_meet_strangers + 
+        final_under_roof*skill_level),
+    `hiscam interactions` = update(prefmod,
+        . ~ . - skill_level - final_meet_strangers - final_under_roof - final_under_roof:final_meet_strangers + 
+        HISCAM_NL*final_meet_strangers + HISCAM_NL*final_under_roof,
+        data = excess_egg10_hiscam)
+    )
+
+coeflist = lapply(modlist_inter, coeftest, vcov. = sandwich::vcovCL, cluster = ~ egg)
+texreg::screenreg(modlist_inter, 
+    custom.coef.map = coefmap,
+    override.se = lapply(coeflist, `[`, i = , j = 2),
+    override.pval = lapply(coeflist, `[`, i = , j = 4))
+texreg::texreg(modlist_inter, 
+    custom.coef.map = coefmap,
+    override.se = lapply(coeflist, `[`, i = , j = 2),
+    override.pval = lapply(coeflist, `[`, i = , j = 4),
+    caption = "Regression models of log excess mortality rate with interactions, exluding selected occupations. Region-clustered standard errors between parentheses.",
+    label = "tab:intermodels",
+    file = "../out/models_inter.tex")
 
 # check model outcomes at different aggregation levels
 # 10 year age bins, municipalities
@@ -211,3 +286,38 @@ texreg::texreg(modlist_high,
     caption = "Regression models of log excess mortality rate for low and high excess mortality regions. Region-clustered standard errors between parentheses.",
     label = "tab:hilomodels",
     file = "../out/models_hilo.tex")
+
+# alt zero handling
+glm(emr ~ factor(skill_level), data = excess_egg10[!is.na(skill_level)], family = quasipoisson(link = "log"))
+lm(emr ~ factor(skill_level), data = excess_egg10[!is.na(skill_level)])
+lm(log1p(emr) ~ factor(skill_level), data = excess_egg10[!is.na(skill_level)])
+
+
+# example data set
+out = na.omit(excess_egg10[order(-emr)])
+out = out[, list(EGG = egg, 
+    indoor = final_under_roof,
+    strangers = final_meet_strangers,
+    sex = pr_gender,
+    month = event_month, agegroup, baseline, flu, emr)]
+set.seed(232)
+writeLines(
+    knitr::kable(out[sample(.N, 5)], 
+        format = "latex", 
+        lab = "tab:example",
+        caption = "Example excess mortality dataset",
+        digits = 2),
+    con = "../out/data_example.tex")
+
+# check correlations
+m = model.matrix(log1p(emr) ~ factor(agegroup) + pr_gender + factor(event_month) + skill_level + final_under_roof + final_meet_strangers, data = excess_egg10)
+# as.data.table(m)[, cor(.SD, .SD), .SDcols = -1]
+cm = round(cor(m[-1, -1]), digits = 2)
+cm = data.table(row = rep(rownames(cm), ncol(cm)),
+    col = rep(colnames(cm), each = nrow(cm)),
+    value = c(cm))
+pdf("../out/cormat.pdf")
+ggplot(cm, aes(row, col, fill = value)) + geom_tile() + 
+    theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) + 
+    scale_fill_viridis_c()
+dev.off()
