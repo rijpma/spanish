@@ -223,15 +223,12 @@ excess_egg10[, region := egg]
 excess_corop10[, region := corop]
 excess_province10[, region := province]
 
+regform = update(prefform, . ~ . - factor(egg) + factor(region))
 modlist_regions = list(
-    `municipalities` = update(prefmod,
-        . ~ . - factor(egg) + factor(amco), data = excess_amco10),
-    `*EGG*` = update(prefmod,
-        data = excess_egg10),
-    `COROP` = update(prefmod,
-        . ~ . - factor(egg) + factor(corop), data = excess_corop10),
-    `Province` = update(prefmod,
-        . ~ . - factor(egg) + factor(province), data = excess_province10)
+    `municipalities` = lm(regform, data = excess_amco10),
+    `*EGG*` = lm(regform, data = excess_egg10),
+    `COROP` = lm(regform, data = excess_corop10),
+    `Province` = lm(regform, data = excess_province10)
 )
 coeflist = lapply(modlist_regions, coeftest, vcov. = sandwich::vcovCL, cluster = ~ region)
 
