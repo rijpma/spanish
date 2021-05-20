@@ -34,27 +34,34 @@ aggvrbs = c("year", "event_month", "agegroup", "pr_gender", "skill_level", "fina
 # 10 year age bins, municipalities
 agebin = 10
 deaths[, agegroup := floor(pr_age / agebin) * agebin]
+deaths[!is.na(HISCO), farmer := HISCO %in% c(61220)] # also 62210, 62105 ?
 
 # 10 year age bins, egg regions
 excess_egg10 = excess(deaths,
-    aggvrbs = c("egg", aggvrbs))
+    aggvrbs = c("egg", "farmer", aggvrbs))
+
+excess_egg10[, list(nflu = sum(flu), nbase = sum(nbaseline), cells = .N), by = skill_level]
 
 modlist_base = list(
     `skill` = lm(log1p(emr) ~ skill_level, 
         data = excess_egg10),
-    `exposure` = lm(log1p(emr) ~ final_under_roof*final_meet_strangers, 
+    `farmer` = lm(log1p(emr) ~ skill_level + farmer, 
         data = excess_egg10),
-    `both` = lm(log1p(emr) ~ skill_level + final_under_roof*final_meet_strangers, 
+    `exposure` = lm(log1p(emr) ~ farmer + final_under_roof*final_meet_strangers, 
         data = excess_egg10),
-    `+ age` = lm(log1p(emr) ~ skill_level + final_under_roof*final_meet_strangers + factor(agegroup), 
+    `both` = lm(log1p(emr) ~ skill_level + farmer + final_under_roof*final_meet_strangers, 
         data = excess_egg10),
-    `+ sex` = lm(log1p(emr) ~ skill_level + final_under_roof*final_meet_strangers + factor(agegroup) + pr_gender, 
+    `+ age` = lm(log1p(emr) ~ skill_level + farmer + final_under_roof*final_meet_strangers + factor(agegroup), 
         data = excess_egg10),
-    `+ month` = lm(log1p(emr) ~ skill_level + final_under_roof*final_meet_strangers + factor(agegroup) + pr_gender + factor(event_month), 
+    `+ sex` = lm(log1p(emr) ~ skill_level + farmer + final_under_roof*final_meet_strangers + factor(agegroup) + pr_gender, 
         data = excess_egg10),
-    `+ region FE` = lm(log1p(emr) ~ skill_level + final_under_roof*final_meet_strangers + factor(agegroup) + pr_gender + factor(event_month) + factor(egg), 
+    `+ month` = lm(log1p(emr) ~ skill_level + farmer + final_under_roof*final_meet_strangers + factor(agegroup) + pr_gender + factor(event_month), 
+        data = excess_egg10),
+    `+ region FE` = lm(log1p(emr) ~ skill_level + farmer + final_under_roof*final_meet_strangers + factor(agegroup) + pr_gender + factor(event_month) + factor(egg), 
         data = excess_egg10))
 prefmod = modlist_base$`+ region FE`
+prefform = formula(prefmod)
+
 # map to reorder coefficients
 # varnames = texreg::extract(modlist_base[["+ region FE"]])@coef.names
 # cat(varnames[!grepl("egg", varnames)], sep = "\n")
@@ -62,6 +69,8 @@ coefmap = list(
     "skill_levelmedium_skilled" = "medium_skilled",
     "skill_levellower_skilled" = "lower_skilled",
     "skill_levelunskilled" = "unskilled",
+
+    "farmerTRUE" = "farmer",
 
     "I(HISCAM_NL/100)" = "hiscam",
     "HISCAM_NL" = "hiscam",
@@ -114,12 +123,6 @@ texreg::texreg(modlist_base,
 excess_egg10_nofarmers = excess(
     deaths[HISCO != 61220 | is.na(HISCO)], # this should not drop NA occupations for comparability? Surefly these are dropped in the regression anyway?
     aggvrbs = c("egg", aggvrbs))
-excess_egg10_nosoldiers = excess(
-    deaths[HISCO != 58340 | is.na(HISCO)],
-    aggvrbs = c("egg", aggvrbs))
-excess_egg10_nosoldiersnofarmers = excess(
-    deaths[(HISCO != 58340 & HISCO != 61220) | is.na(HISCO)],
-    aggvrbs = c("egg", aggvrbs))
 deaths_farmrecoded = copy(deaths)
 deaths_farmrecoded[HISCO == 61220, skill_level := "lower_skilled"]
 excess_egg10_farmrecoded = excess(
@@ -128,11 +131,8 @@ excess_egg10_farmrecoded = excess(
 
 modlist_altocc = list(
     `all occupations` = prefmod,
-    `no farmers` = update(prefmod, data = excess_egg10_nofarmers),
-    `farmers recoded` = update(prefmod, data = excess_egg10_farmrecoded),
-    `no soldiers` = update(prefmod, data = excess_egg10_nosoldiers),
-    `no farmers and no soldiers` = update(prefmod, data = excess_egg10_nosoldiersnofarmers)
-)
+    `no farmers` = update(prefmod, . ~ . - farmer, data = excess_egg10_nofarmers),
+    `farmers recoded` = update(prefmod, . ~ . - farmer, data = excess_egg10_farmrecoded))
 
 coeflist = lapply(modlist_altocc, coeftest, vcov. = sandwich::vcovCL, cluster = ~ egg)
 texreg::screenreg(modlist_altocc, 
@@ -149,13 +149,13 @@ texreg::texreg(modlist_altocc,
 
 # hiscam
 excess_egg10_hiscam = excess(deaths,
-    aggvrbs = c("egg", "HISCAM_NL", aggvrbs[aggvrbs != "skill_level"]))
+    aggvrbs = c("egg", "farmer", "HISCAM_NL", aggvrbs[aggvrbs != "skill_level"]))
 modlist_hiscam = list(
     `hisclass` = prefmod,
     `hiscam` = update(prefmod, 
         . ~ . - skill_level + I(HISCAM_NL / 100),
         data = excess_egg10_hiscam[HISCAM_NL > 0]),
-    `hiscam spline` = mgcv::gam(update(formula(prefmod), . ~ . - skill_level + s(HISCAM_NL, k = 7)),
+    `hiscam spline` = mgcv::gam(update(formula(prefmod), . ~ . - skill_level + s(HISCAM_NL, k = 5)),
             data = excess_egg10_hiscam[HISCAM_NL > 0])
     )
 
@@ -207,15 +207,15 @@ texreg::texreg(modlist_inter,
 # check model outcomes at different aggregation levels
 # 10 year age bins, municipalities
 excess_amco10 = excess(deaths,
-    aggvrbs = c("amco", aggvrbs))
+    aggvrbs = c("amco", "farmer", aggvrbs))
 
 # 10 year age bins, corop regions
 excess_corop10 = excess(deaths,
-    aggvrbs = c("corop", aggvrbs))
+    aggvrbs = c("corop", "farmer", aggvrbs))
 
 # 10 year age bins, provinces
 excess_province10 = excess(deaths,
-    aggvrbs = c("province", aggvrbs))
+    aggvrbs = c("province", "farmer", aggvrbs))
 
 # rename to region to refer to same clustering variable
 excess_amco10[, region := amco]
@@ -224,14 +224,10 @@ excess_corop10[, region := corop]
 excess_province10[, region := province]
 
 modlist_regions = list(
-    `municipalities` = lm(log1p(emr) ~ skill_level + final_under_roof*final_meet_strangers + factor(agegroup) + pr_gender + factor(event_month) + factor(region), 
-        data = excess_amco10),
-    `*EGG*` = lm(log1p(emr) ~ skill_level + final_under_roof*final_meet_strangers + factor(agegroup) + pr_gender + factor(event_month) + factor(region), 
-        data = excess_egg10),
-    `COROP` = lm(log1p(emr) ~ skill_level + final_under_roof*final_meet_strangers + factor(agegroup) + pr_gender + factor(event_month) + factor(region), 
-        data = excess_corop10),
-    `Province` = lm(log1p(emr) ~ skill_level + final_under_roof*final_meet_strangers + factor(agegroup) + pr_gender + factor(event_month) + factor(region), 
-        data = excess_province10)
+    `municipalities` = lm(prefform, data = excess_amco10),
+    `*EGG*` = lm(prefform, data = excess_egg10),
+    `COROP` = lm(prefform, data = excess_corop10),
+    `Province` = lm(prefform, data = excess_province10)
 )
 coeflist = lapply(modlist_regions, coeftest, vcov. = sandwich::vcovCL, cluster = ~ region)
 
@@ -272,10 +268,8 @@ excess_egg10 = merge(
     all.x = TRUE)
 
 modlist_high = list(
-    `low EM` = lm(log1p(emr) ~ skill_level + final_under_roof*final_meet_strangers + factor(agegroup) + pr_gender + factor(event_month) + factor(region),
-        data = excess_egg10[eggemr <= 2.5]),
-    `high EM` = lm(log1p(emr) ~ skill_level + final_under_roof*final_meet_strangers + factor(agegroup) + pr_gender + factor(event_month) + factor(region),
-        data = excess_egg10[eggemr > 2.5]))
+    `low EM` = lm(prefform, data = excess_egg10[eggemr <= 2.5]),
+    `high EM` = lm(prefform, data = excess_egg10[eggemr > 2.5]))
 
 coeflist = lapply(modlist_high, coeftest, vcov. = sandwich::vcovCL, cluster = ~ egg)
 
@@ -288,10 +282,14 @@ texreg::texreg(modlist_high,
     file = "../out/models_hilo.tex")
 
 # alt zero handling
-glm(emr ~ factor(skill_level), data = excess_egg10[!is.na(skill_level)], family = quasipoisson(link = "log"))
-lm(emr ~ factor(skill_level), data = excess_egg10[!is.na(skill_level)])
-lm(log1p(emr) ~ factor(skill_level), data = excess_egg10[!is.na(skill_level)])
-
+screenreg(
+    list(
+        prefmod,
+        lm(update.formula(prefform, log(emr) ~ .), data = excess_egg10[emr > 0]),
+        glm(update.formula(prefform, emr ~ .), data = excess_egg10, family = quasipoisson)
+    ),
+    omit.coef = "egg"
+)
 
 # example data set
 out = na.omit(excess_egg10[order(-emr)])
