@@ -15,12 +15,25 @@ source("fun.R")
 deaths = data.table::fread("../dat/deaths.csv", na.strings = "")
 municipalities = data.table::fread("../dat/spatialagg.txt")
 coverage = data.table::fread("../dat/coverage.csv")
+popdens = data.table::fread("../dat/inwonertal + bevolkingsdichtheid.txt")
+
+popdens[, popdens1918 := PopSize1918 / hectare]
+popdens_amco = merge(popdens, municipalities, by = "ACODE")
+popdens_egg = popdens_amco[, 
+    list(pop1918 = sum(PopSize1918), popdens1918 = sum(PopSize1918) / sum(hectare)), 
+    by = EGG]
+popdens_corop = popdens_amco[, 
+    list(pop1918 = sum(PopSize1918), popdens1918 = sum(PopSize1918) / sum(hectare)), 
+    by = Corop]
+popdens_prov = popdens_amco[, 
+    list(pop1918 = sum(PopSize1918), popdens1918 = sum(PopSize1918) / sum(hectare)), 
+    by = Provincie]
 
 # subset dataset
 deaths = deaths[sep_dec == TRUE]
 deaths = merge(
     x = deaths,
-    y = municipalities[Sampled == "Sampled", list(amco = ACODE, corop = Corop, egg = EGG, province = Provincie)],
+    y = municipalities[Sampled == "Sampled", list(amco = ACODE, corop = Corop, egg = EGG, prov = Provincie)],
     by = "amco",
     all.x = FALSE, all.y = FALSE)
 deaths = merge(
@@ -102,6 +115,9 @@ coefmap = list(
     "factor(event_month)10" = "event_month10",
     "factor(event_month)11" = "event_month11",
     "factor(event_month)12" = "event_month12",
+
+    "log(popdens1918)" = "log Pop. density '18",
+    "log(pop1918)" = "log Population '18",
     
     "(Intercept)" = "(Intercept)"
 )
@@ -119,33 +135,6 @@ texreg::texreg(modlist_base,
     label = "tab:basemodels",
     file = "../out/models_base.tex")
 
-# models with dropped/recoded observations
-excess_egg10_nofarmers = excess(
-    deaths[HISCO != 61220 | is.na(HISCO)], # this should not drop NA occupations for comparability? Surefly these are dropped in the regression anyway?
-    aggvrbs = c("egg", aggvrbs))
-deaths_farmrecoded = copy(deaths)
-deaths_farmrecoded[HISCO == 61220, skill_level := "lower_skilled"]
-excess_egg10_farmrecoded = excess(
-    deaths_farmrecoded,
-    aggvrbs = c("egg", aggvrbs))
-
-modlist_altocc = list(
-    `all occupations` = prefmod,
-    `no farmers` = update(prefmod, . ~ . - farmer, data = excess_egg10_nofarmers),
-    `farmers recoded` = update(prefmod, . ~ . - farmer, data = excess_egg10_farmrecoded))
-
-coeflist = lapply(modlist_altocc, coeftest, vcov. = sandwich::vcovCL, cluster = ~ egg)
-texreg::screenreg(modlist_altocc, 
-    custom.coef.map = coefmap,
-    override.se = lapply(coeflist, `[`, i = , j = 2),
-    override.pval = lapply(coeflist, `[`, i = , j = 4))
-texreg::texreg(modlist_altocc, 
-    custom.coef.map = coefmap,
-    override.se = lapply(coeflist, `[`, i = , j = 2),
-    override.pval = lapply(coeflist, `[`, i = , j = 4),
-    caption = "Regression models of log excess mortality rate, exluding selected occupations. Region-clustered standard errors between parentheses.",
-    label = "tab:altoccmodels",
-    file = "../out/models_altocc.tex")
 
 # hiscam
 excess_egg10_hiscam = excess(deaths,
@@ -175,6 +164,36 @@ texreg::texreg(modlist_hiscam[1:2],
 pdf("../out/hiscamspline.pdf")
 plot(modlist_hiscam$`hiscam spline`, col = 2, lwd = 1.5)
 dev.off()
+
+# models with dropped/recoded observations for farmers
+excess_egg10_nofarmers = excess(
+    deaths[HISCO != 61220 | is.na(HISCO)], # this should not drop NA occupations for comparability? Surefly these are dropped in the regression anyway?
+    aggvrbs = c("egg", aggvrbs))
+deaths_farmrecoded = copy(deaths)
+deaths_farmrecoded[HISCO == 61220, skill_level := "lower_skilled"]
+excess_egg10_farmrecoded = excess(
+    deaths_farmrecoded,
+    aggvrbs = c("egg", aggvrbs))
+
+modlist_altocc = list(
+    `all occupations` = prefmod,
+    `no farmers` = update(prefmod, . ~ . - farmer, data = excess_egg10_nofarmers),
+    `farmers recoded` = update(prefmod, . ~ . - farmer, data = excess_egg10_farmrecoded),
+    `hiscam` = update(prefmod, . ~ . - skill_level + I(HISCAM_NL / 100), data = excess_egg10_hiscam[HISCAM_NL > 0])
+)
+
+coeflist = lapply(modlist_altocc, coeftest, vcov. = sandwich::vcovCL, cluster = ~ egg)
+texreg::screenreg(modlist_altocc, 
+    custom.coef.map = coefmap,
+    override.se = lapply(coeflist, `[`, i = , j = 2),
+    override.pval = lapply(coeflist, `[`, i = , j = 4))
+texreg::texreg(modlist_altocc, 
+    custom.coef.map = coefmap,
+    override.se = lapply(coeflist, `[`, i = , j = 2),
+    override.pval = lapply(coeflist, `[`, i = , j = 4),
+    caption = "Regression models of log excess mortality rate, exluding selected occupations. Region-clustered standard errors between parentheses.",
+    label = "tab:altoccmodels",
+    file = "../out/models_altocc.tex")
 
 # interactions
 modlist_inter = list(
@@ -214,21 +233,21 @@ excess_corop10 = excess(deaths,
     aggvrbs = c("corop", "farmer", aggvrbs))
 
 # 10 year age bins, provinces
-excess_province10 = excess(deaths,
-    aggvrbs = c("province", "farmer", aggvrbs))
+excess_prov10 = excess(deaths,
+    aggvrbs = c("prov", "farmer", aggvrbs))
 
 # rename to region to refer to same clustering variable
 excess_amco10[, region := amco]
 excess_egg10[, region := egg]
 excess_corop10[, region := corop]
-excess_province10[, region := province]
+excess_prov10[, region := prov]
 
 regform = update(prefform, . ~ . - factor(egg) + factor(region))
 modlist_regions = list(
     `municipalities` = lm(regform, data = excess_amco10),
     `*EGG*` = lm(regform, data = excess_egg10),
     `COROP` = lm(regform, data = excess_corop10),
-    `Province` = lm(regform, data = excess_province10)
+    `Province` = lm(regform, data = excess_prov10)
 )
 coeflist = lapply(modlist_regions, coeftest, vcov. = sandwich::vcovCL, cluster = ~ region)
 
@@ -239,6 +258,30 @@ texreg::texreg(modlist_regions,
     caption = "Regression models of log excess mortality rate at different levels of aggregation. Region-clustered standard errors between parentheses.",
     label = "tab:regionmodels",
     file = "../out/models_regions.tex")
+
+# population density
+excess_amco10 = popdens_amco[excess_amco10, on = c(ACODE = "amco")]
+setnames(excess_amco10, "PopSize1918", "pop1918")
+excess_egg10 = popdens_egg[excess_egg10, on = c(EGG = "egg")]
+excess_corop10 = popdens_corop[excess_corop10, on = c(Corop = "corop")]
+excess_prov10 = popdens_prov[excess_prov10, on = c(Provincie = "prov")]
+
+popform = update(prefform, . ~ . - factor(egg) + log(pop1918) + log(popdens1918) - factor(region))
+modlist_popdens = list(
+    `municipalities` = lm(popform, data = excess_amco10),
+    `*EGG*` = lm(popform, data = excess_egg10),
+    `COROP` = lm(popform, data = excess_corop10),
+    `Province` = lm(popform, data = excess_prov10)
+)
+coeflist = lapply(modlist_popdens, coeftest, vcov. = sandwich::vcovCL, cluster = ~ region)
+
+texreg::texreg(modlist_popdens, 
+    custom.coef.map = coefmap,
+    override.se = lapply(coeflist, `[`, i = , j = 2),
+    override.pval = lapply(coeflist, `[`, i = , j = 4),
+    caption = "Regression models of log excess mortality rate including population density controls and no region FE. Region-clustered standard errors between parentheses.",
+    label = "tab:popdensmodels",
+    file = "../out/models_popdens.tex")
 
 
 # models for high mortality regions only
