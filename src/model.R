@@ -11,6 +11,7 @@ library("mgcv")
 data.table::setDTthreads(2)
 
 source("fun.R")
+source("coefmap.R")
 
 deaths = data.table::fread("../dat/deaths.csv", na.strings = "")
 municipalities = data.table::fread("../dat/spatialagg.txt")
@@ -21,7 +22,7 @@ popdens[, popdens1918 := PopSize1918 / hectare]
 popdens_amco = merge(popdens, municipalities, by = "ACODE")
 popdens_egg = popdens_amco[, 
     list(pop1918 = sum(PopSize1918), popdens1918 = sum(PopSize1918) / sum(hectare)), 
-    by = EGG]
+    by = list(egg = EGG)]
 popdens_corop = popdens_amco[, 
     list(pop1918 = sum(PopSize1918), popdens1918 = sum(PopSize1918) / sum(hectare)), 
     by = Corop]
@@ -78,49 +79,7 @@ prefform = formula(prefmod)
 # map to reorder coefficients
 # varnames = texreg::extract(modlist_base[["+ region FE"]])@coef.names
 # cat(varnames[!grepl("egg", varnames)], sep = "\n")
-coefmap = list(
-    "skill_levelmedium_skilled" = "medium_skilled",
-    "skill_levellower_skilled" = "lower_skilled",
-    "skill_levelunskilled" = "unskilled",
 
-    "farmerTRUE" = "farmer",
-
-    "I(HISCAM_NL/100)" = "hiscam",
-    "HISCAM_NL" = "hiscam",
-    "EDF: s(HISCAM_NL)" = "EDF: s(HISCAM_NL)",
-
-    "final_under_roof" = "indoor",
-    "final_meet_strangers" = "strangers",
-    "final_under_roof:final_meet_strangers" = "indoor and strangers",
-
-    "final_under_roof:skill_levelmedium_skilled" = "indoor and medium skilled",
-    "final_under_roof:skill_levellower_skilled" = "indoor and lower skilled",
-    "final_under_roof:skill_levelunskilled" = "indoor and unskilled",
-    "final_meet_strangers:skill_levelmedium_skilled" = "strangers and medium skilled",
-    "final_meet_strangers:skill_levellower_skilled" = "strangers and lower skilled",
-    "final_meet_strangers:skill_levelunskilled" = "strangers and unskilled",
-
-    "HISCAM_NL:final_meet_strangers" = "hiscam x strangers",
-    "HISCAM_NL:final_under_roof" = "hiscam x indoor",
-    
-    "factor(agegroup)20" = "agegroup 20",
-    "factor(agegroup)30" = "agegroup 30",
-    "factor(agegroup)40" = "agegroup 40",
-    "factor(agegroup)50" = "agegroup 50",
-    "factor(agegroup)60" = "agegroup 60",
-    "factor(agegroup)70" = "agegroup 70",
-    
-    "pr_genderm" = "male",
-    
-    "factor(event_month)10" = "event_month10",
-    "factor(event_month)11" = "event_month11",
-    "factor(event_month)12" = "event_month12",
-
-    "log(popdens1918)" = "log Pop. density '18",
-    "log(pop1918)" = "log Population '18",
-    
-    "(Intercept)" = "(Intercept)"
-)
 
 coeflist = lapply(modlist_base, coeftest, vcov. = sandwich::vcovCL, cluster = ~ egg)
 texreg::screenreg(modlist_base, 
@@ -262,7 +221,7 @@ texreg::texreg(modlist_regions,
 # population density
 excess_amco10 = popdens_amco[excess_amco10, on = c(ACODE = "amco")]
 setnames(excess_amco10, "PopSize1918", "pop1918")
-excess_egg10 = popdens_egg[excess_egg10, on = c(EGG = "egg")]
+excess_egg10 = popdens_egg[excess_egg10, on = c(egg = "egg")]
 excess_corop10 = popdens_corop[excess_corop10, on = c(Corop = "corop")]
 excess_prov10 = popdens_prov[excess_prov10, on = c(Provincie = "prov")]
 
