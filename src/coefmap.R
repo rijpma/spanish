@@ -9,6 +9,10 @@ coefmap = list(
     "HISCAM_NL" = "hiscam",
     "EDF: s(HISCAM_NL)" = "EDF: s(HISCAM_NL)",
 
+    "exposureindoors only" = "indoors only",
+    "exposurestrangers only" = "strangers only",
+    "exposureboth" = "both",
+
     "final_under_roof" = "indoor",
     "final_meet_strangers" = "strangers",
     "final_under_roof:final_meet_strangers" = "indoor and strangers",

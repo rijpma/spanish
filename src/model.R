@@ -44,7 +44,13 @@ deaths = merge(
     by = "amco",
     all.x = FALSE, all.y = FALSE)
 
-aggvrbs = c("year", "event_month", "agegroup", "pr_gender", "skill_level", "final_under_roof", "final_meet_strangers")
+deaths[, exposure := fcase(
+    final_meet_strangers == 1 & final_under_roof == 0, "strangers only",
+    final_meet_strangers == 0 & final_under_roof == 1, "indoors only",
+    final_meet_strangers == 1 & final_under_roof == 1, "both",
+    final_meet_strangers == 0 & final_under_roof == 0, "_neither")]
+
+aggvrbs = c("year", "event_month", "agegroup", "pr_gender", "skill_level", "exposure")
 
 # 10 year age bins, municipalities
 agebin = 10
@@ -65,17 +71,17 @@ modlist_base = list(
         data = excess_egg10),
     `farmer` = lm(log1p(emr) ~ skill_level + farmer, 
         data = excess_egg10),
-    `exposure` = lm(log1p(emr) ~ farmer + final_under_roof*final_meet_strangers, 
+    `exposure` = lm(log1p(emr) ~ farmer + exposure, 
         data = excess_egg10),
-    `both` = lm(log1p(emr) ~ skill_level + farmer + final_under_roof*final_meet_strangers, 
+    `both` = lm(log1p(emr) ~ skill_level + farmer + exposure, 
         data = excess_egg10),
-    `+ age` = lm(log1p(emr) ~ skill_level + farmer + final_under_roof*final_meet_strangers + factor(agegroup), 
+    `+ age` = lm(log1p(emr) ~ skill_level + farmer + exposure + factor(agegroup), 
         data = excess_egg10),
-    `+ sex` = lm(log1p(emr) ~ skill_level + farmer + final_under_roof*final_meet_strangers + factor(agegroup) + pr_gender, 
+    `+ sex` = lm(log1p(emr) ~ skill_level + farmer + exposure + factor(agegroup) + pr_gender, 
         data = excess_egg10),
-    `+ month` = lm(log1p(emr) ~ skill_level + farmer + final_under_roof*final_meet_strangers + factor(agegroup) + pr_gender + factor(event_month), 
+    `+ month` = lm(log1p(emr) ~ skill_level + farmer + exposure + factor(agegroup) + pr_gender + factor(event_month), 
         data = excess_egg10),
-    `+ region FE` = lm(log1p(emr) ~ skill_level + farmer + final_under_roof*final_meet_strangers + factor(agegroup) + pr_gender + factor(event_month) + factor(egg), 
+    `+ region FE` = lm(log1p(emr) ~ skill_level + farmer + exposure + factor(agegroup) + pr_gender + factor(event_month) + factor(egg), 
         data = excess_egg10))
 prefmod = modlist_base$`+ region FE`
 prefform = formula(prefmod)
@@ -97,44 +103,6 @@ texreg::texreg(modlist_base,
     label = "tab:basemodels",
     file = "../out/models_base.tex")
 
-excess_egg10[, higher_skilled := skill_level == "higher_skilled"]
-excess_egg10[, medium_skilled := skill_level == "medium_skilled"]
-excess_egg10[, lower_skilled := skill_level == "lower_skilled"]
-excess_egg10[, unskilled := skill_level == "unskilled"]
-
-# reference level check
-levlis = list(
-    update(prefmod, . ~ . - skill_level + medium_skilled + lower_skilled + unskilled),
-    update(prefmod, . ~ . - skill_level + higher_skilled + lower_skilled + unskilled),
-    update(prefmod, . ~ . - skill_level + higher_skilled + medium_skilled + unskilled),
-    update(prefmod, . ~ . - skill_level + higher_skilled + medium_skilled + lower_skilled)
-)
-levlis = lapply(levlis, coeftest, vcov. = sandwich::vcovCL, cluster = ~ egg)
-texreg::screenreg(levlis,
-    omit.coef = "egg")
-# exposure as factor check
-excess_egg10[, exposure := fcase(
-    final_meet_strangers == 1 & final_under_roof == 0, "strangers only",
-    final_meet_strangers == 0 & final_under_roof == 1, "indoors only",
-    final_meet_strangers == 1 & final_under_roof == 1, "both",
-    final_meet_strangers == 0 & final_under_roof == 0, "aneither")]
-excess_egg10[, unique(exposure), by = list(final_meet_strangers, final_under_roof)]
-factorlist = list(
-    prefmod,
-    update(prefmod, . ~ . - final_under_roof - final_meet_strangers - final_under_roof:final_meet_strangers + exposure)
-)
-texreg::screenreg(factorlist, omit.coef = "egg")
-x = lapply(factorlist, model.matrix)
-which(x[[1]][, "final_under_roof"] != x[[2]][, "exposureindoors only"])
-all.equal(x[[1]][, "final_meet_strangers"], x[[2]][, "exposurestrangers only"])
-all.equal(x[[1]][, "final_under_roof:final_meet_strangers"], x[[2]][, "exposureboth"])
-
-
-
-
-factorlist = lapply(factorlist, coeftest, vcov. = sandwich::vcovCL, cluster = ~ egg)
-texreg::screenreg(factorlist,
-    omit.coef = "egg")
 # hiscam
 excess_egg10_hiscam = excess(deaths,
     aggvrbs = c("egg", "farmer", "HISCAM_NL", aggvrbs[aggvrbs != "skill_level"]))
@@ -282,7 +250,6 @@ texreg::texreg(modlist_popdens,
     label = "tab:popdensmodels",
     file = "../out/models_popdens.tex")
 
-c("amco", "farmer", "armyhosp1913", "base1918", aggvrbs))
 # army bases
 excess_amco10 = army[excess_amco10, on = c("amco" = "ACODE")]
 excess_amco10[, base1918 := !is.na(dataset2)]
@@ -296,10 +263,13 @@ modlist_army = list(
 )
 coeflist = lapply(modlist_army, coeftest, vcov. = sandwich::vcovCL, cluster = ~ region)
 texreg::screenreg(modlist_army)
-texreg::screenreg(modlist_army, 
+texreg::texreg(modlist_army, 
     custom.coef.map = coefmap,
     override.se = lapply(coeflist, `[`, i = , j = 2),
-    override.pval = lapply(coeflist, `[`, i = , j = 4))
+    override.pval = lapply(coeflist, `[`, i = , j = 4),
+    caption = "Regression models of log excess mortality rate including army base and hospital controls. Region-clustered standard errors between parentheses.",
+    label = "tab:popdensmodels",
+    file = "../out/models_popdens.tex")
 
 # models for high mortality regions only
 # or maybe do this on amco level first?
@@ -310,7 +280,6 @@ hist(excess_egg$emr, breaks = 20)
 plot(ecdf(excess_egg$emr))
 quantile(excess_egg$emr, 1:9 / 10)
 mean(excess_egg$emr)
-
 
 excess_amco = excess(deaths,
     aggvrbs = c("amco", "year", "agegroup"))
