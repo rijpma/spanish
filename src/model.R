@@ -17,6 +17,7 @@ deaths = data.table::fread("../dat/deaths.csv", na.strings = "")
 municipalities = data.table::fread("../dat/spatialagg.txt")
 coverage = data.table::fread("../dat/coverage.csv")
 popdens = data.table::fread("../dat/inwonertal + bevolkingsdichtheid.txt")
+army = data.table::fread("../dat/legerplaatsen.csv", na.strings = "")
 
 popdens[, popdens1918 := PopSize1918 / hectare]
 popdens_amco = merge(popdens, municipalities, by = "ACODE")
@@ -56,6 +57,9 @@ excess_egg10 = excess(deaths,
 
 excess_egg10[, list(nflu = sum(flu), nbase = sum(nbaseline), cells = .N), by = skill_level]
 
+# % of emr == 0 observations
+excess_egg10[, sum(emr == 0) / .N]
+
 modlist_base = list(
     `skill` = lm(log1p(emr) ~ skill_level, 
         data = excess_egg10),
@@ -80,7 +84,6 @@ prefform = formula(prefmod)
 # varnames = texreg::extract(modlist_base[["+ region FE"]])@coef.names
 # cat(varnames[!grepl("egg", varnames)], sep = "\n")
 
-
 coeflist = lapply(modlist_base, coeftest, vcov. = sandwich::vcovCL, cluster = ~ egg)
 texreg::screenreg(modlist_base, 
     custom.coef.map = coefmap,
@@ -94,7 +97,44 @@ texreg::texreg(modlist_base,
     label = "tab:basemodels",
     file = "../out/models_base.tex")
 
+excess_egg10[, higher_skilled := skill_level == "higher_skilled"]
+excess_egg10[, medium_skilled := skill_level == "medium_skilled"]
+excess_egg10[, lower_skilled := skill_level == "lower_skilled"]
+excess_egg10[, unskilled := skill_level == "unskilled"]
 
+# reference level check
+levlis = list(
+    update(prefmod, . ~ . - skill_level + medium_skilled + lower_skilled + unskilled),
+    update(prefmod, . ~ . - skill_level + higher_skilled + lower_skilled + unskilled),
+    update(prefmod, . ~ . - skill_level + higher_skilled + medium_skilled + unskilled),
+    update(prefmod, . ~ . - skill_level + higher_skilled + medium_skilled + lower_skilled)
+)
+levlis = lapply(levlis, coeftest, vcov. = sandwich::vcovCL, cluster = ~ egg)
+texreg::screenreg(levlis,
+    omit.coef = "egg")
+# exposure as factor check
+excess_egg10[, exposure := fcase(
+    final_meet_strangers == 1 & final_under_roof == 0, "strangers only",
+    final_meet_strangers == 0 & final_under_roof == 1, "indoors only",
+    final_meet_strangers == 1 & final_under_roof == 1, "both",
+    final_meet_strangers == 0 & final_under_roof == 0, "aneither")]
+excess_egg10[, unique(exposure), by = list(final_meet_strangers, final_under_roof)]
+factorlist = list(
+    prefmod,
+    update(prefmod, . ~ . - final_under_roof - final_meet_strangers - final_under_roof:final_meet_strangers + exposure)
+)
+texreg::screenreg(factorlist, omit.coef = "egg")
+x = lapply(factorlist, model.matrix)
+which(x[[1]][, "final_under_roof"] != x[[2]][, "exposureindoors only"])
+all.equal(x[[1]][, "final_meet_strangers"], x[[2]][, "exposurestrangers only"])
+all.equal(x[[1]][, "final_under_roof:final_meet_strangers"], x[[2]][, "exposureboth"])
+
+
+
+
+factorlist = lapply(factorlist, coeftest, vcov. = sandwich::vcovCL, cluster = ~ egg)
+texreg::screenreg(factorlist,
+    omit.coef = "egg")
 # hiscam
 excess_egg10_hiscam = excess(deaths,
     aggvrbs = c("egg", "farmer", "HISCAM_NL", aggvrbs[aggvrbs != "skill_level"]))
@@ -242,6 +282,24 @@ texreg::texreg(modlist_popdens,
     label = "tab:popdensmodels",
     file = "../out/models_popdens.tex")
 
+c("amco", "farmer", "armyhosp1913", "base1918", aggvrbs))
+# army bases
+excess_amco10 = army[excess_amco10, on = c("amco" = "ACODE")]
+excess_amco10[, base1918 := !is.na(dataset2)]
+excess_amco10[, armyhosp1913 := !is.na(dataset1)]
+modlist_army = list(
+    `municipalities` = lm(popform, data = excess_amco10),
+    `base` = lm(update(popform, . ~ . + base1918), data = excess_amco10),
+    `hosp` = lm(update(popform, . ~ . + armyhosp1913), data = excess_amco10),
+    `hosp` = lm(update(popform, . ~ . + armyhosp1913 + base1918), data = excess_amco10)
+    # update(modlist_popdens$municipalities, . ~ . + armyhosp1913 + base1918, data = excess_amco10_wboth)
+)
+coeflist = lapply(modlist_army, coeftest, vcov. = sandwich::vcovCL, cluster = ~ region)
+texreg::screenreg(modlist_army)
+texreg::screenreg(modlist_army, 
+    custom.coef.map = coefmap,
+    override.se = lapply(coeflist, `[`, i = , j = 2),
+    override.pval = lapply(coeflist, `[`, i = , j = 4))
 
 # models for high mortality regions only
 # or maybe do this on amco level first?
@@ -285,14 +343,23 @@ texreg::texreg(modlist_high,
     file = "../out/models_hilo.tex")
 
 # alt zero handling
-screenreg(
-    list(
-        prefmod,
-        lm(update.formula(prefform, log(emr) ~ .), data = excess_egg10[emr > 0]),
-        glm(update.formula(prefform, emr ~ .), data = excess_egg10, family = quasipoisson)
-    ),
-    omit.coef = "egg"
+modlist_zeroes = list(
+    `log x + 1` = prefmod,
+    `drop zeroes` = lm(update.formula(prefform, log(emr) ~ .), data = excess_egg10[emr > 0]),
+    `quasipoisson` = glm(update.formula(prefform, emr ~ .), data = excess_egg10, family = quasipoisson),
+    `inv. hyperbolic sine` = lm(update.formula(prefform, asinh(emr) ~ .), data = excess_egg10)
+    # `tobit` = censReg(update.formula(prefform, . ~ . ), data = excess_egg10)
 )
+coeflist = lapply(modlist_zeroes, coeftest, vcov. = sandwich::vcovCL, cluster = ~ egg)
+texreg::screenreg(modlist_zeroes, 
+    custom.coef.map = coefmap)
+texreg::texreg(modlist_zeroes, 
+    custom.coef.map = coefmap,
+    override.se = lapply(coeflist, `[`, i = , j = 2),
+    override.pval = lapply(coeflist, `[`, i = , j = 4),
+    caption = "Alternative model forms for regressions of log excess mortality rate. Region-clustered standard errors between parentheses.",
+    label = "tab:altmodels",
+    file = "../out/models_altform.tex")
 
 # example data set
 out = na.omit(excess_egg10[order(-emr)])

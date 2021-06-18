@@ -38,6 +38,9 @@ coefmap = list(
 
     "log(popdens1918)" = "log Pop. density '18",
     "log(pop1918)" = "log Population '18",
-    
+
+    "base1918TRUE" = "Army base '18",
+    "armyhosp1913TRUE" = "Army hosp. '13",
+
     "(Intercept)" = "(Intercept)"
 )
