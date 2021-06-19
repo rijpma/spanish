@@ -50,6 +50,8 @@ deaths[, exposure := fcase(
     final_meet_strangers == 1 & final_under_roof == 1, "both",
     final_meet_strangers == 0 & final_under_roof == 0, "_neither")]
 
+deaths[, hiscam := HISCAM_NL / 100]
+
 aggvrbs = c("year", "event_month", "agegroup", "pr_gender", "skill_level", "exposure")
 
 # 10 year age bins, municipalities
@@ -105,14 +107,14 @@ texreg::texreg(modlist_base,
 
 # hiscam
 excess_egg10_hiscam = excess(deaths,
-    aggvrbs = c("egg", "farmer", "HISCAM_NL", aggvrbs[aggvrbs != "skill_level"]))
+    aggvrbs = c("egg", "farmer", "hiscam", aggvrbs[aggvrbs != "skill_level"]))
 modlist_hiscam = list(
     `hisclass` = prefmod,
     `hiscam` = update(prefmod, 
-        . ~ . - skill_level + I(HISCAM_NL / 100),
-        data = excess_egg10_hiscam[HISCAM_NL > 0]),
-    `hiscam spline` = mgcv::gam(update(formula(prefmod), . ~ . - skill_level + s(HISCAM_NL, k = 5)),
-            data = excess_egg10_hiscam[HISCAM_NL > 0])
+        . ~ . - skill_level + hiscam,
+        data = excess_egg10_hiscam[hiscam > 0]),
+    `hiscam spline` = mgcv::gam(update(formula(prefmod), . ~ . - skill_level + s(hiscam, k = 5)),
+            data = excess_egg10_hiscam[hiscam > 0])
     )
 
 coeflist = lapply(modlist_hiscam[1:2], coeftest, vcov. = sandwich::vcovCL, cluster = ~ egg)
@@ -129,7 +131,9 @@ texreg::texreg(modlist_hiscam[1:2],
     file = "../out/models_hiscam.tex")
 
 pdf("../out/hiscamspline.pdf")
+mypar()
 plot(modlist_hiscam$`hiscam spline`, col = 2, lwd = 1.5)
+abline(h = 0, col = "gray")
 dev.off()
 
 # models with dropped/recoded observations for farmers
@@ -146,7 +150,7 @@ modlist_altocc = list(
     `all occupations` = prefmod,
     `no farmers` = update(prefmod, . ~ . - farmer, data = excess_egg10_nofarmers),
     `farmers recoded` = update(prefmod, . ~ . - farmer, data = excess_egg10_farmrecoded),
-    `hiscam` = update(prefmod, . ~ . - skill_level + I(HISCAM_NL / 100), data = excess_egg10_hiscam[HISCAM_NL > 0])
+    `hiscam` = update(prefmod, . ~ . - skill_level + hiscam, data = excess_egg10_hiscam[hiscam > 0])
 )
 
 coeflist = lapply(modlist_altocc, coeftest, vcov. = sandwich::vcovCL, cluster = ~ egg)
@@ -163,17 +167,15 @@ texreg::texreg(modlist_altocc,
     file = "../out/models_altocc.tex")
 
 # interactions
+excess_egg10[!is.na(exposure) & !is.na(skill_level),
+    exposureXskill_level := paste(exposure, skill_level)]
+
 modlist_inter = list(
     `no interactions` = prefmod,
     `strangers interactions` = update(prefmod,
-        . ~ . - skill_level - final_under_roof - final_under_roof:final_meet_strangers + 
-        final_meet_strangers*skill_level),
-    `indoors interactions` = update(prefmod,
-        . ~ . - skill_level - final_meet_strangers - final_under_roof:final_meet_strangers + 
-        final_under_roof*skill_level),
+        . ~ . - skill_level - exposure + exposureXskill_level),
     `hiscam interactions` = update(prefmod,
-        . ~ . - skill_level - final_meet_strangers - final_under_roof - final_under_roof:final_meet_strangers + 
-        HISCAM_NL*final_meet_strangers + HISCAM_NL*final_under_roof,
+        . ~ . - skill_level - exposure + exposure:hiscam,
         data = excess_egg10_hiscam)
     )
 
