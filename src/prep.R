@@ -5,8 +5,7 @@ library(stringi)
 deaths191030 <- fread(cmd = "gunzip -c ../dat/deaths1910-30.csv.gz")
 
 # municipalities with sufficient number of certificates
-munic_cov = fread("../dat/HDNG_OpenArch.txt")
-deaths191030 = deaths191030[amco %in% unique(munic_cov$ACODE)]
+municipalities = data.table::fread("../dat/spatialagg.txt")
 
 topo <- fread("../dat/DutchToponyms1812-2012Spatio-Temporal.txt")
 # nicer colnames
@@ -104,8 +103,15 @@ deaths191030[, sep_dec := data.table::between(event_month, 9, 12)]
 
 deaths191030[pr_gender == "", pr_gender := NA]
 
-fwrite(deaths191030, "../dat/deaths.csv")
+deaths[, exposure := fcase(
+    final_meet_strangers == 1 & final_under_roof == 0, "strangers only",
+    final_meet_strangers == 0 & final_under_roof == 1, "indoors only",
+    final_meet_strangers == 1 & final_under_roof == 1, "both",
+    final_meet_strangers == 0 & final_under_roof == 0, "_neither")]
 
+deaths[, hiscam := HISCAM_NL / 100]
+
+# drop low coverage municipalities
 coverage = deaths191030[, 
     list(hisco = mean(!is.na(HISCO), na.rm = TRUE),
          age = mean(!is.na(pr_age), na.rm = TRUE),
@@ -114,4 +120,18 @@ coverage = deaths191030[,
      by = list(amco)]
 coverage[, drop := hisco <= 0.1 | age <= 0.2 | date <= 0.4]
 
+deaths = merge(
+    x = deaths,
+    y = coverage[drop == FALSE],
+    by = "amco",
+    all.x = FALSE, all.y = FALSE)
+
+# and another round based on Rick's list
+deaths = merge(
+    x = deaths,
+    y = municipalities[Sampled == "Sampled", list(amco = ACODE, corop = Corop, egg = EGG, prov = Provincie)],
+    by = "amco",
+    all.x = FALSE, all.y = FALSE)
+
+fwrite(deaths191030, "../dat/deaths.csv")
 fwrite(coverage, "../dat/coverage.csv")
