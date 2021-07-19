@@ -1,4 +1,5 @@
 rm(list = ls())
+
 library(data.table)
 library(stringi)
 
@@ -89,6 +90,12 @@ deaths191030[final_under_roof == 1 & final_meet_strangers == 0, exposure := 1]
 deaths191030[final_under_roof == 0 & final_meet_strangers == 1, exposure := 2]
 deaths191030[final_under_roof == 1 & final_meet_strangers == 1, exposure := 3]
 
+deaths191030[, exposure := fcase(
+    final_meet_strangers == 1 & final_under_roof == 0, "strangers only",
+    final_meet_strangers == 0 & final_under_roof == 1, "indoors only",
+    final_meet_strangers == 1 & final_under_roof == 1, "both",
+    final_meet_strangers == 0 & final_under_roof == 0, "_neither")]
+
 deaths191030[, .N, list(exposure)][order(exposure)]
 
 deaths191030[, death_date := as.Date(
@@ -103,13 +110,7 @@ deaths191030[, sep_dec := data.table::between(event_month, 9, 12)]
 
 deaths191030[pr_gender == "", pr_gender := NA]
 
-deaths[, exposure := fcase(
-    final_meet_strangers == 1 & final_under_roof == 0, "strangers only",
-    final_meet_strangers == 0 & final_under_roof == 1, "indoors only",
-    final_meet_strangers == 1 & final_under_roof == 1, "both",
-    final_meet_strangers == 0 & final_under_roof == 0, "_neither")]
-
-deaths[, hiscam := HISCAM_NL / 100]
+deaths191030[, hiscam := HISCAM_NL / 100]
 
 # drop low coverage municipalities
 coverage = deaths191030[, 
@@ -120,15 +121,15 @@ coverage = deaths191030[,
      by = list(amco)]
 coverage[, drop := hisco <= 0.1 | age <= 0.2 | date <= 0.4]
 
-deaths = merge(
-    x = deaths,
+deaths191030 = merge(
+    x = deaths191030,
     y = coverage[drop == FALSE],
     by = "amco",
     all.x = FALSE, all.y = FALSE)
 
 # and another round based on Rick's list
-deaths = merge(
-    x = deaths,
+deaths191030 = merge(
+    x = deaths191030,
     y = municipalities[Sampled == "Sampled", list(amco = ACODE, corop = Corop, egg = EGG, prov = Provincie)],
     by = "amco",
     all.x = FALSE, all.y = FALSE)
