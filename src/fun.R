@@ -29,6 +29,34 @@ excess = function(dat,
     return(dat)
 }
 
+excess_boot = function(dat, index){
+    # emr calculation that can work with boot, for use with SD with by
+    # much slower because of all the joining for each SD
+
+    dat = dat[index, ]
+
+    # omit 1914 because belgian refugees
+    dat = dat[year <= 1918 & year != 1914, list(deaths = .N), by = year]
+
+    # cross-join to get a row for groups with zero deaths
+    tojoin = data.table(year = 1910:1918)[year != 1914]
+    tojoin = na.omit(tojoin)
+
+    dat = merge(dat, tojoin, by = "year", all = TRUE)
+    dat[is.na(deaths), deaths := 0]
+
+    dat[, y1918 := year == 1918]
+    dat = dat[,
+        list(flu = mean(deaths[y1918 == TRUE]), 
+            baseline = mean(deaths[y1918 == FALSE]),
+            nbaseline = sum(deaths[!y1918]),
+            nflu = sum(deaths[y1918]))]
+
+    # drop if no deaths 1910-1917
+    dat = dat[baseline > 0]
+
+    return(dat[, flu / baseline])
+}
 
 texregse = function(output = texreg, mdl, vcov., ...){
     cfs = lapply(mdl, lmtest::coeftest, vcov. = vcov.)
