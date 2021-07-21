@@ -5,9 +5,6 @@ library(stringi)
 
 deaths191030 <- fread(cmd = "gunzip -c ../dat/deaths1910-30.csv.gz")
 
-# municipalities with sufficient number of certificates
-municipalities = data.table::fread("../dat/spatialagg.txt")
-
 topo <- fread("../dat/DutchToponyms1812-2012Spatio-Temporal.txt")
 # nicer colnames
 setnames(topo, tolower(names(topo)))
@@ -112,27 +109,4 @@ deaths191030[pr_gender == "", pr_gender := NA]
 
 deaths191030[, hiscam := HISCAM_NL / 100]
 
-# drop low coverage municipalities
-coverage = deaths191030[, 
-    list(hisco = mean(!is.na(HISCO), na.rm = TRUE),
-         age = mean(!is.na(pr_age), na.rm = TRUE),
-         sex = mean(!is.na(pr_gender), na.rm = TRUE),
-         date = mean(!is.na(death_date), na.rm = TRUE)), 
-     by = list(amco)]
-coverage[, drop := hisco <= 0.1 | age <= 0.2 | date <= 0.4]
-
-deaths191030 = merge(
-    x = deaths191030,
-    y = coverage[drop == FALSE],
-    by = "amco",
-    all.x = FALSE, all.y = FALSE)
-
-# and another round based on Rick's list
-deaths191030 = merge(
-    x = deaths191030,
-    y = municipalities[Sampled == "Sampled", list(amco = ACODE, corop = Corop, egg = EGG, prov = Provincie)],
-    by = "amco",
-    all.x = FALSE, all.y = FALSE)
-
 fwrite(deaths191030, "../dat/deaths.csv")
-fwrite(coverage, "../dat/coverage.csv")
