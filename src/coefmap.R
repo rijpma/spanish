@@ -1,8 +1,10 @@
 coefmap = list(
-    "skill_levelmedium_skilled" = "medium_skilled",
-    "skill_levellower_skilled" = "lower_skilled",
+    "skill_levelhigher_skilled" = "higher skilled",
+    "skill_levelmedium_skilled" = "medium skilled",
+    "skill_levellower_skilled" = "lower skilled",
     "skill_levelunskilled" = "unskilled",
 
+    "skill_levelfarmer" = "farmer", # identical
     "farmerTRUE" = "farmer",
 
     "hiscam" = "hiscam",
@@ -52,6 +54,11 @@ coefmap = list(
     "factor(agegroup)60" = "agegroup 60",
     "factor(agegroup)70" = "agegroup 70",
     
+    "agegroup(11,30]" = "age (11,30]",
+    "agegroup(30,45]" = "age (30,45]",
+    "agegroup(45,60]" = "age (45,60]",
+    "agegroup(60,80]" = "age (60,80]",
+
     "pr_genderm" = "male",
     
     "factor(event_month)10" = "event_month10",
