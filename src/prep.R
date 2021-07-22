@@ -5,6 +5,10 @@ library(stringi)
 
 deaths191030 <- fread(cmd = "gunzip -c ../dat/deaths1910-30.csv.gz")
 
+# reduce size
+deaths191030[, source_digital_original := NULL] # just add https://www.openarch.nl/show.php?archive=zar&identifier= to source_record_guid
+deaths191030[, source_remark := NULL]
+
 topo <- fread("../dat/DutchToponyms1812-2012Spatio-Temporal.txt")
 # nicer colnames
 setnames(topo, tolower(names(topo)))
@@ -15,7 +19,7 @@ setnames(topo, "amsterdam code" , "amco")
 setnames(topo, "part of municipality from jjjjmmdd", "startdate_munc")
 setnames(topo, "till jjjjmmdd", "enddate_munc")
 
-deaths191030[, HISCO_THREE := as.character(stri_sub(HISCO, from = 1, to = 3)),]
+deaths191030[, HISCO_THREE := as.character(stri_sub(stri_pad(HISCO, width = 5, side = "left", pad = "0"), from = 1, to = 3)),]
 
 # add hisclass skill
 deaths191030[HISCLASS == 1  | HISCLASS == 2, skill_level := "higher_skilled", ]
