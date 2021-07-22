@@ -13,9 +13,8 @@ data.table::setDTthreads(2)
 source("fun.R")
 source("coefmap.R")
 
-deaths = data.table::fread("../dat/deaths.csv", na.strings = "")
+deaths = data.table::fread("../dat/deaths_subset.csv", na.strings = "")
 municipalities = data.table::fread("../dat/spatialagg.txt")
-coverage = data.table::fread("../dat/coverage.csv")
 popdens = data.table::fread("../dat/inwonertal + bevolkingsdichtheid.txt")
 army = data.table::fread("../dat/legerplaatsen.csv", na.strings = "")
 
@@ -31,66 +30,47 @@ popdens_prov = popdens_amco[,
     list(pop1918 = sum(PopSize1918), popdens1918 = sum(PopSize1918) / sum(hectare)), 
     by = Provincie]
 
-# subset dataset
-deaths = deaths[sep_dec == TRUE]
-deaths = merge(
-    x = deaths,
-    y = municipalities[Sampled == "Sampled", list(amco = ACODE, corop = Corop, egg = EGG, prov = Provincie)],
-    by = "amco",
-    all.x = FALSE, all.y = FALSE)
-deaths = merge(
-    x = deaths,
-    y = coverage[drop == FALSE],
-    by = "amco",
-    all.x = FALSE, all.y = FALSE)
-
-deaths[, exposure := fcase(
-    final_meet_strangers == 1 & final_under_roof == 0, "strangers only",
-    final_meet_strangers == 0 & final_under_roof == 1, "indoors only",
-    final_meet_strangers == 1 & final_under_roof == 1, "both",
-    final_meet_strangers == 0 & final_under_roof == 0, "_neither")]
-
-deaths[, hiscam := HISCAM_NL / 100]
-
 aggvrbs = c("year", "event_month", "agegroup", "pr_gender", "skill_level", "exposure")
+deaths[, agegroup := cut(pr_age, c(11, 30, 45, 60, 80))]
 
-# 10 year age bins, municipalities
-agebin = 10
-deaths[, agegroup := floor(pr_age / agebin) * agebin]
+# agebin = 10
+# deaths[, agegroup := floor(pr_age / agebin) * agebin]
 deaths[!is.na(HISCO), farmer := HISCO %in% c(61220)] # also 62210, 62105 ?
 
-# 10 year age bins, egg regions
-excess_egg10 = excess(deaths,
-    aggvrbs = c("egg", "farmer", aggvrbs))
+deaths[, skill_level := relevel(factor(skill_level), ref = "higher_skilled")]
 
-excess_egg10[, list(nflu = sum(flu), nbase = sum(nbaseline), cells = .N), by = skill_level]
+# count
+deaths[, .N]
+deaths[!is.na(skill_level), .N]
+deaths[!is.na(skill_level) & !is.na(exposure) & !is.na(event_month), .N]
+deaths[!is.na(skill_level) & !is.na(exposure) & !is.na(event_month) & !is.na(pr_gender), .N]
+deaths[!is.na(skill_level) & !is.na(exposure) & !is.na(event_month) & !is.na(pr_gender) & !is.na(agegroup), .N]
+
+# 10 year age bins, egg regions
+excess_egg = excess(deaths,
+    aggvrbs = c("egg", "farmer", aggvrbs))
+excess_egg[!is.na(skill_level), list(sum(nflu + nbaseline))] # this N is correct, also dropping 1914 and baselin = 0
 
 # % of emr == 0 observations
-excess_egg10[, sum(emr == 0) / .N]
+excess_egg[, sum(emr == 0) / .N]
 
 modlist_base = list(
     `skill` = lm(log1p(emr) ~ skill_level, 
-        data = excess_egg10),
+        data = excess_egg),
     `farmer` = lm(log1p(emr) ~ skill_level + farmer, 
-        data = excess_egg10),
+        data = excess_egg),
     `exposure` = lm(log1p(emr) ~ farmer + exposure, 
-        data = excess_egg10),
+        data = excess_egg),
     `both` = lm(log1p(emr) ~ skill_level + farmer + exposure, 
-        data = excess_egg10),
-    `+ age` = lm(log1p(emr) ~ skill_level + farmer + exposure + factor(agegroup), 
-        data = excess_egg10),
-    `+ sex` = lm(log1p(emr) ~ skill_level + farmer + exposure + factor(agegroup) + pr_gender, 
-        data = excess_egg10),
-    `+ month` = lm(log1p(emr) ~ skill_level + farmer + exposure + factor(agegroup) + pr_gender + factor(event_month), 
-        data = excess_egg10),
-    `+ region FE` = lm(log1p(emr) ~ skill_level + farmer + exposure + factor(agegroup) + pr_gender + factor(event_month) + factor(egg), 
-        data = excess_egg10))
+        data = excess_egg),
+    `+ demog.` = lm(log1p(emr) ~ skill_level + farmer + exposure + agegroup + pr_gender, 
+        data = excess_egg),
+    `+ month FE` = lm(log1p(emr) ~ skill_level + farmer + exposure + agegroup + pr_gender + factor(event_month), 
+        data = excess_egg),
+    `+ region FE` = lm(log1p(emr) ~ skill_level + farmer + exposure + agegroup + pr_gender + factor(event_month) + factor(egg), 
+        data = excess_egg))
 prefmod = modlist_base$`+ region FE`
 prefform = formula(prefmod)
-
-# map to reorder coefficients
-# varnames = texreg::extract(modlist_base[["+ region FE"]])@coef.names
-# cat(varnames[!grepl("egg", varnames)], sep = "\n")
 
 coeflist = lapply(modlist_base, coeftest, vcov. = sandwich::vcovCL, cluster = ~ egg)
 texreg::screenreg(modlist_base, 
@@ -106,19 +86,17 @@ texreg::texreg(modlist_base,
     file = "../out/models_base.tex")
 
 # hiscam
-excess_egg10_hiscam = excess(deaths,
+excess_egg_hiscam = excess(deaths,
     aggvrbs = c("egg", "farmer", "hiscam", aggvrbs[aggvrbs != "skill_level"]))
 modlist_hiscam = list(
     `hisclass` = prefmod,
     `hiscam` = update(prefmod, 
         . ~ . - skill_level + hiscam,
-        data = excess_egg10_hiscam[hiscam > 0]),
-    `hiscam spline` = mgcv::gam(update(formula(prefmod), . ~ . - skill_level + s(hiscam, k = 5)),
-            data = excess_egg10_hiscam[hiscam > 0])
-    )
+        data = excess_egg_hiscam[hiscam > 0])
+)
 
-coeflist = lapply(modlist_hiscam[1:2], coeftest, vcov. = sandwich::vcovCL, cluster = ~ egg)
-texreg::screenreg(modlist_hiscam[1:2], 
+coeflist = lapply(modlist_hiscam, coeftest, vcov. = sandwich::vcovCL, cluster = ~ egg)
+texreg::screenreg(modlist_hiscam, 
     custom.coef.map = coefmap,
     override.se = lapply(coeflist, `[`, i = , j = 2),
     override.pval = lapply(coeflist, `[`, i = , j = 4))
@@ -130,29 +108,31 @@ texreg::texreg(modlist_hiscam[1:2],
     label = "tab:hiscammodels",
     file = "../out/models_hiscam.tex")
 
+m_hiscam_spline = mgcv::gam(update(formula(prefmod), . ~ . - skill_level + s(hiscam, k = 5)),
+            data = excess_egg_hiscam[hiscam > 0])
+
 pdf("../out/hiscamspline.pdf")
 mypar()
-plot(modlist_hiscam$`hiscam spline`, col = 2, lwd = 1.5)
+plot(m_hiscam_spline, col = 2, lwd = 1.5)
 abline(h = 0, col = "gray")
 dev.off()
 
 # models with dropped/recoded observations for farmers
-excess_egg10_nofarmers = excess(
-    deaths[HISCO != 61220 | is.na(HISCO)], # this should not drop NA occupations for comparability? Surefly these are dropped in the regression anyway?
+excess_egg_nofarmers = excess(
+    deaths[HISCO != 61220 | is.na(HISCO)], # this should not drop NA occupations for comparability? These are dropped in the regression anyway
     aggvrbs = c("egg", aggvrbs))
 deaths_farmrecoded = copy(deaths)
 deaths_farmrecoded[HISCO == 61220, skill_level := "lower_skilled"]
-excess_egg10_farmrecoded = excess(
+excess_egg_farmrecoded = excess(
     deaths_farmrecoded,
     aggvrbs = c("egg", aggvrbs))
 
 modlist_altocc = list(
     `all occupations` = prefmod,
-    `no farmers` = update(prefmod, . ~ . - farmer, data = excess_egg10_nofarmers),
-    `farmers recoded` = update(prefmod, . ~ . - farmer, data = excess_egg10_farmrecoded),
-    `hiscam` = update(prefmod, . ~ . - skill_level + hiscam, data = excess_egg10_hiscam[hiscam > 0])
+    `no farmers` = update(prefmod, . ~ . - farmer, data = excess_egg_nofarmers),
+    `farmers recoded` = update(prefmod, . ~ . - farmer, data = excess_egg_farmrecoded),
+    `hiscam` = update(prefmod, . ~ . - skill_level + hiscam, data = excess_egg_hiscam[hiscam > 0])
 )
-
 coeflist = lapply(modlist_altocc, coeftest, vcov. = sandwich::vcovCL, cluster = ~ egg)
 texreg::screenreg(modlist_altocc, 
     custom.coef.map = coefmap,
@@ -167,7 +147,7 @@ texreg::texreg(modlist_altocc,
     file = "../out/models_altocc.tex")
 
 # interactions
-excess_egg10[!is.na(exposure) & !is.na(skill_level),
+excess_egg[!is.na(exposure) & !is.na(skill_level),
     exposureXskill_level := paste(exposure, skill_level)]
 
 modlist_inter = list(
@@ -176,7 +156,7 @@ modlist_inter = list(
         . ~ . - skill_level - exposure + exposureXskill_level),
     `hiscam interactions` = update(prefmod,
         . ~ . - skill_level - exposure + exposure:hiscam,
-        data = excess_egg10_hiscam)
+        data = excess_egg_hiscam)
     )
 
 coeflist = lapply(modlist_inter, coeftest, vcov. = sandwich::vcovCL, cluster = ~ egg)
@@ -192,34 +172,60 @@ texreg::texreg(modlist_inter,
     label = "tab:intermodels",
     file = "../out/models_inter.tex")
 
+# plot of interactions
+cf = coef(modlist_inter$`strangers interactions`)
+cf = cf[grep("exposure", names(cf))]
+cf = data.table(
+    coef = cf, 
+    skill = stringi::stri_extract_last_regex(names(cf), "[a-z_]+skilled"),
+    exposure = stringi::stri_extract_last_regex(names(cf), "neither|indoors|strangers|both"))
+cf = dcast(cf, skill ~ exposure, value.var = 'coef')
+cf = cf[match(skill, c("higher_skilled", "medium_skilled", "lower_skilled", "unskilled")), ]
+
+
+pdf("../out/interactions.pdf")
+mypar()
+matplot(cf[, -1], type = 'b', pch = 19, lty = 1, xaxt = "n",
+    xlab = "skill level", ylab = "coefficient", bty = "l")
+abline(h = 0, col = "lightgray")
+axis(1, at = 1:4, labels = cf$skill)
+legend("topleft", fill = 1:4, legend = colnames(cf)[-1])
+cf_pref = coef(prefmod)[grep("skill", names(coef(prefmod)))]
+plot(c(0, cf_pref[c(2, 1, 3)]), type = 'b')
+dev.off()
+# most very similar to original coefs
+
 # check model outcomes at different aggregation levels
-# 10 year age bins, municipalities
-excess_amco10 = excess(deaths,
+# municipalities
+excess_amco = excess(deaths,
     aggvrbs = c("amco", "farmer", aggvrbs))
 
-# 10 year age bins, corop regions
-excess_corop10 = excess(deaths,
+# corop regions
+excess_corop = excess(deaths,
     aggvrbs = c("corop", "farmer", aggvrbs))
 
-# 10 year age bins, provinces
-excess_prov10 = excess(deaths,
+# provinces
+excess_prov = excess(deaths,
     aggvrbs = c("prov", "farmer", aggvrbs))
 
 # rename to region to refer to same clustering variable
-excess_amco10[, region := amco]
-excess_egg10[, region := egg]
-excess_corop10[, region := corop]
-excess_prov10[, region := prov]
+excess_amco[, region := amco]
+excess_egg[, region := egg]
+excess_corop[, region := corop]
+excess_prov[, region := prov]
 
 regform = update(prefform, . ~ . - factor(egg) + factor(region))
 modlist_regions = list(
-    `municipalities` = lm(regform, data = excess_amco10),
-    `*EGG*` = lm(regform, data = excess_egg10),
-    `COROP` = lm(regform, data = excess_corop10),
-    `Province` = lm(regform, data = excess_prov10)
+    `municipalities` = lm(regform, data = excess_amco),
+    `*EGG*` = lm(regform, data = excess_egg),
+    `COROP` = lm(regform, data = excess_corop),
+    `Province` = lm(regform, data = excess_prov)
 )
 coeflist = lapply(modlist_regions, coeftest, vcov. = sandwich::vcovCL, cluster = ~ region)
-
+texreg::screenreg(modlist_regions, 
+    custom.coef.map = coefmap,
+    override.se = lapply(coeflist, `[`, i = , j = 2),
+    override.pval = lapply(coeflist, `[`, i = , j = 4))
 texreg::texreg(modlist_regions, 
     custom.coef.map = coefmap,
     override.se = lapply(coeflist, `[`, i = , j = 2),
@@ -229,21 +235,22 @@ texreg::texreg(modlist_regions,
     file = "../out/models_regions.tex")
 
 # population density
-excess_amco10 = popdens_amco[excess_amco10, on = c(ACODE = "amco")]
-setnames(excess_amco10, "PopSize1918", "pop1918")
-excess_egg10 = popdens_egg[excess_egg10, on = c(egg = "egg")]
-excess_corop10 = popdens_corop[excess_corop10, on = c(Corop = "corop")]
-excess_prov10 = popdens_prov[excess_prov10, on = c(Provincie = "prov")]
+excess_amco = popdens_amco[excess_amco, on = c(ACODE = "amco")]
+setnames(excess_amco, "PopSize1918", "pop1918")
+excess_egg = popdens_egg[excess_egg, on = c(egg = "egg")]
+excess_corop = popdens_corop[excess_corop, on = c(Corop = "corop")]
+excess_prov = popdens_prov[excess_prov, on = c(Provincie = "prov")]
 
 popform = update(prefform, . ~ . - factor(egg) + log(pop1918) + log(popdens1918) - factor(region))
 modlist_popdens = list(
-    `municipalities` = lm(popform, data = excess_amco10),
-    `*EGG*` = lm(popform, data = excess_egg10),
-    `COROP` = lm(popform, data = excess_corop10),
-    `Province` = lm(popform, data = excess_prov10)
+    `municipalities` = lm(popform, data = excess_amco),
+    `*EGG*` = lm(popform, data = excess_egg),
+    `COROP` = lm(popform, data = excess_corop),
+    `Province` = lm(popform, data = excess_prov)
 )
 coeflist = lapply(modlist_popdens, coeftest, vcov. = sandwich::vcovCL, cluster = ~ region)
 
+screenreg(modlist_popdens)
 texreg::texreg(modlist_popdens, 
     custom.coef.map = coefmap,
     override.se = lapply(coeflist, `[`, i = , j = 2),
@@ -252,19 +259,20 @@ texreg::texreg(modlist_popdens,
     label = "tab:popdensmodels",
     file = "../out/models_popdens.tex")
 
+popdens[order(-popdens1918)][1:20]
+
 # army bases
-excess_amco10 = army[excess_amco10, on = c("amco" = "ACODE")]
-excess_amco10[, base1918 := !is.na(dataset2)]
-excess_amco10[, armyhosp1913 := !is.na(dataset1)]
+excess_amco = army[excess_amco, on = c("amco" = "ACODE")]
+excess_amco[, base1918 := !is.na(dataset2)]
+excess_amco[, armyhosp1913 := !is.na(dataset1)]
 modlist_army = list(
-    `municipalities` = lm(popform, data = excess_amco10),
-    `base` = lm(update(popform, . ~ . + base1918), data = excess_amco10),
-    `hosp` = lm(update(popform, . ~ . + armyhosp1913), data = excess_amco10),
-    `hosp` = lm(update(popform, . ~ . + armyhosp1913 + base1918), data = excess_amco10)
-    # update(modlist_popdens$municipalities, . ~ . + armyhosp1913 + base1918, data = excess_amco10_wboth)
+    `municipalities` = lm(popform, data = excess_amco),
+    `base` = lm(update(popform, . ~ . + base1918), data = excess_amco),
+    `hosp` = lm(update(popform, . ~ . + armyhosp1913), data = excess_amco),
+    `both` = lm(update(popform, . ~ . + armyhosp1913 + base1918), data = excess_amco)
+    # update(modlist_popdens$municipalities, . ~ . + armyhosp1913 + base1918, data = excess_amco_wboth)
 )
 coeflist = lapply(modlist_army, coeftest, vcov. = sandwich::vcovCL, cluster = ~ region)
-texreg::screenreg(modlist_army)
 texreg::texreg(modlist_army, 
     custom.coef.map = coefmap,
     override.se = lapply(coeflist, `[`, i = , j = 2),
@@ -274,38 +282,29 @@ texreg::texreg(modlist_army,
     file = "../out/models_popdens.tex")
 
 # models for high mortality regions only
-# or maybe do this on amco level first?
-deaths[data.table::between(pr_age, 10, 79), agegroup := 40]
-excess_egg = excess(deaths,
-    aggvrbs = c("egg", "year", "agegroup"))
-hist(excess_egg$emr, breaks = 20)
-plot(ecdf(excess_egg$emr))
-quantile(excess_egg$emr, 1:9 / 10)
-mean(excess_egg$emr)
+# first, ID high mort regions by EMR egg only
+excess_egg_only = excess(deaths, aggvrbs = c("egg", "year"))
+excess_amco_only = excess(deaths, aggvrbs = c("amco", "year"))
+summary(excess_egg_only$emr)
+summary(excess_amco_only$emr)
 
-excess_amco = excess(deaths,
-    aggvrbs = c("amco", "year", "agegroup"))
-hist(excess_amco$emr, breaks = 20)
-plot(ecdf(excess_amco$emr))
-quantile(excess_amco$emr, 1:9 / 10)
-mean(excess_amco$emr)
-
-# 2-3 are very normal, med = 2.6ish, mean = 3
+# emr 2-3 are very normal, med = 2.6ish, mean = 3
 # so let's go higher than 2.5 = high
-
-excess_egg10 = merge(
-    excess_egg10,
-    excess_egg[, list(egg, eggemr = emr)], 
+excess_egg = merge(
+    excess_egg,
+    excess_egg_only[, list(egg, eggemr = emr)], 
     by = "egg",
     all.x = TRUE)
 
-modlist_high = list(
-    `low EM` = lm(prefform, data = excess_egg10[eggemr <= 2.5]),
-    `high EM` = lm(prefform, data = excess_egg10[eggemr > 2.5]))
+modlist_hilo = list(
+    prefmod,
+    `low EM` = lm(prefform, data = excess_egg[eggemr <= 2.5]),
+    `high EM` = lm(prefform, data = excess_egg[eggemr > 2.5]))
 
-coeflist = lapply(modlist_high, coeftest, vcov. = sandwich::vcovCL, cluster = ~ egg)
+coeflist = lapply(modlist_hilo, coeftest, vcov. = sandwich::vcovCL, cluster = ~ egg)
 
-texreg::texreg(modlist_high, 
+# texreg::screenreg(modlist_hilo, omit.coef = "egg")
+texreg::texreg(modlist_hilo, 
     custom.coef.map = coefmap,
     override.se = lapply(coeflist, `[`, i = , j = 2),
     override.pval = lapply(coeflist, `[`, i = , j = 4),
@@ -316,10 +315,14 @@ texreg::texreg(modlist_high,
 # alt zero handling
 modlist_zeroes = list(
     `log x + 1` = prefmod,
-    `drop zeroes` = lm(update.formula(prefform, log(emr) ~ .), data = excess_egg10[emr > 0]),
-    `quasipoisson` = glm(update.formula(prefform, emr ~ .), data = excess_egg10, family = quasipoisson),
-    `inv. hyperbolic sine` = lm(update.formula(prefform, asinh(emr) ~ .), data = excess_egg10)
-    # `tobit` = censReg(update.formula(prefform, . ~ . ), data = excess_egg10)
+    `drop 0s` = lm(update.formula(prefform, log(emr) ~ .), data = excess_egg[emr > 0]),
+    `no log` = lm(update.formula(prefform, emr ~ .), data = excess_egg),
+    `norm. emr` = lm(update.formula(prefform, emrr ~ .), data = excess_egg),
+    `q-poiss EMR` = glm(update.formula(prefform, emr ~ .), data = excess_egg, family = quasipoisson),
+    `q-poiss N ` = glm(update.formula(prefform, nflu ~ .), data = excess_egg, family = quasipoisson, offset = log(baseline)),
+    `asinh` = lm(update.formula(prefform, asinh(emr) ~ .), data = excess_egg)
+    # `tobit` = censReg::censReg(update.formula(prefform, emr ~ . ), data = excess_egg)
+    # `tobit x` = AER::tobit(update.formula(prefform, emr ~ . ), data = excess_egg)
 )
 coeflist = lapply(modlist_zeroes, coeftest, vcov. = sandwich::vcovCL, cluster = ~ egg)
 texreg::screenreg(modlist_zeroes, 
@@ -333,13 +336,16 @@ texreg::texreg(modlist_zeroes,
     file = "../out/models_altform.tex")
 
 # example data set
-out = na.omit(excess_egg10[order(-emr)])
+set.seed(11)
+out = na.omit(excess_egg[pr_gender == "m"])
 out = out[, list(EGG = egg, 
-    indoor = final_under_roof,
-    strangers = final_meet_strangers,
-    sex = pr_gender,
-    month = event_month, agegroup, baseline, flu, emr)]
-set.seed(232)
+    month = event_month, 
+    agegroup, 
+    skill_level = skill_level,
+    exposure = exposure,
+    baseline, 
+    flu, 
+    emr)]
 writeLines(
     knitr::kable(out[sample(.N, 5)], 
         format = "latex", 
@@ -349,7 +355,7 @@ writeLines(
     con = "../out/data_example.tex")
 
 # check correlations
-m = model.matrix(log1p(emr) ~ factor(agegroup) + pr_gender + factor(event_month) + skill_level + final_under_roof + final_meet_strangers, data = excess_egg10)
+m = model.matrix(log1p(emr) ~ factor(agegroup) + pr_gender + factor(event_month) + skill_level + exposure, data = excess_egg)
 # as.data.table(m)[, cor(.SD, .SD), .SDcols = -1]
 cm = round(cor(m[-1, -1]), digits = 2)
 cm = data.table(row = rep(rownames(cm), ncol(cm)),
