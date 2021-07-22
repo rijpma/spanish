@@ -25,6 +25,7 @@ excess = function(dat,
     dat = dat[baseline > 0]
 
     dat[, emr := flu / baseline]
+    dat[, emrr := (flu - baseline) / baseline]
 
     return(dat)
 }
