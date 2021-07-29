@@ -10,10 +10,10 @@ sumstats = function(dat){
         list(
             certificates = .N, 
             municipalities = uniqueN(amco),
-            age_at_death = mean(pr_age, na.rm = TRUE),
-            male = mean(pr_gender == "m", na.rm = TRUE),
-            unskilled = mean(skill_level == "unskilled", na.rm = TRUE),
-            contact = mean(exposure == "strangers only", na.rm = TRUE)
+            `mean age at death` = mean(pr_age, na.rm = TRUE),
+            `share male` = mean(pr_gender == "m", na.rm = TRUE),
+            `share unskilled` = mean(skill_level == "unskilled", na.rm = TRUE),
+            `share contact` = mean(exposure == "strangers only", na.rm = TRUE)
         )
     ]
     return(out)
