@@ -7,17 +7,11 @@ options(knitr.kable.NA = "-")
 source("fun.R")
 source("coefmap.R")
 
-deaths = data.table::fread("../dat/deaths.csv", na.strings = "")
-
-# subset dataset
-deaths = deaths[sep_dec == TRUE] # only compare pandemic months
-deaths[!is.na(skill_level), .N, by = pr_age][order(pr_age)]
-
-deaths = deaths[data.table::between(pr_age, 12, 79)] # no <10 and no >=80 (ending at 79 for 10y binning)
-deaths = deaths[year <= 1918]
+deaths = data.table::fread("../dat/deaths_subset.csv", na.strings = "")
 
 deaths[, agegroup := cut(pr_age, c(11, 30, 45, 60, 80))]
 deaths[!is.na(HISCO), farmer := HISCO %in% c(61220)] # also 62210, 62105 ?
+
 toboot = deaths[!is.na(skill_level) & !is.na(exposure) & !is.na(farmer) & !is.na(agegroup) & !is.na(pr_gender)]
 
 # boostrap with sims in list column
