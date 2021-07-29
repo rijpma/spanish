@@ -10,10 +10,10 @@ sumstats = function(dat){
         list(
             certificates = .N, 
             municipalities = uniqueN(amco),
-            `mean age at death` = mean(pr_age, na.rm = TRUE),
-            `share male` = mean(pr_gender == "m", na.rm = TRUE),
-            `share unskilled` = mean(skill_level == "unskilled", na.rm = TRUE),
-            `share contact` = mean(exposure == "strangers only", na.rm = TRUE)
+            `age` = mean(pr_age, na.rm = TRUE),
+            `% male` = mean(pr_gender == "m", na.rm = TRUE) * 100,
+            `% unskilled` = mean(skill_level == "unskilled", na.rm = TRUE) * 100,
+            `% contact` = mean(exposure == "strangers only", na.rm = TRUE) * 100
         )
     ]
     return(out)
@@ -90,7 +90,7 @@ fwrite(coverage, "../dat/coverage.csv")
 out = rbindlist(sumstatlist, id = "selection")
 out = knitr::kable(
     x = out, 
-    digits = 2, 
+    digits = 0, 
     format = "latex",
     caption = "Summary statistics and selection steps.",
     label = "tab:sumselect")
