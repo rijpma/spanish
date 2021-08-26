@@ -63,15 +63,15 @@ deaths = deaths[year != 1914]
 
 sumstatlist[["drop 1914"]] = sumstats(dat = deaths)
 
-# subset ages
-deaths = deaths[data.table::between(pr_age, 12, 79)]
-
-sumstatlist[["age"]] = sumstats(dat = deaths)
-
 # sep-dec only
 deaths = deaths[sep_dec == TRUE]
 
 sumstatlist[["Sep-Dec"]] = sumstats(dat = deaths)
+
+# subset ages
+deaths = deaths[data.table::between(pr_age, 12, 79)]
+
+sumstatlist[["age"]] = sumstats(dat = deaths)
 
 # complete cases look
 # huge amount of contact occs in missing ages
