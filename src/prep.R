@@ -62,6 +62,10 @@ deaths191030[HISCO_THREE == "065", final_meet_strangers := 1]
 deaths191030[HISCO_THREE == "980", final_under_roof := 0]
 deaths191030[HISCO_THREE == "980", final_meet_strangers := 1]
 
+# hisco 99999 is also hisco3 999, so fix to NA
+deaths191030[HISCO == 99999, final_meet_strangers := NA]
+deaths191030[HISCO == 99999, final_under_roof := NA]
+
 # encoding misery
 deaths191030[, occtitle_st := stringi::stri_replace_all_fixed(occtitle_st, "\xe3", "e")]
 deaths191030[HISCO_THREE == "999" & grepl("fabriek", occtitle_st), final_under_roof := 1]
