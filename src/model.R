@@ -85,39 +85,9 @@ texreg::texreg(modlist_base,
     label = "tab:basemodels",
     file = "../out/models_base.tex")
 
-# hiscam
+# models with hiscam and dropped/recoded observations for farmers
 excess_egg_hiscam = excess(deaths,
     aggvrbs = c("egg", "farmer", "hiscam", aggvrbs[aggvrbs != "skill_level"]))
-modlist_hiscam = list(
-    `hisclass` = prefmod,
-    `hiscam` = update(prefmod, 
-        . ~ . - skill_level + hiscam,
-        data = excess_egg_hiscam[hiscam > 0])
-)
-
-coeflist = lapply(modlist_hiscam, coeftest, vcov. = sandwich::vcovCL, cluster = ~ egg)
-texreg::screenreg(modlist_hiscam, 
-    custom.coef.map = coefmap,
-    override.se = lapply(coeflist, `[`, i = , j = 2),
-    override.pval = lapply(coeflist, `[`, i = , j = 4))
-texreg::texreg(modlist_hiscam[1:2], 
-    custom.coef.map = coefmap,
-    override.se = lapply(coeflist, `[`, i = , j = 2),
-    override.pval = lapply(coeflist, `[`, i = , j = 4),
-    caption = "Regression models of log excess mortality rate using occuaptional status (HISCAM) rather than skill (HISCLASS-based), exluding selected occupations. Region-clustered standard errors between parentheses.",
-    label = "tab:hiscammodels",
-    file = "../out/models_hiscam.tex")
-
-m_hiscam_spline = mgcv::gam(update(formula(prefmod), . ~ . - skill_level + s(hiscam, k = 5)),
-            data = excess_egg_hiscam[hiscam > 0])
-
-pdf("../out/hiscamspline.pdf")
-mypar()
-plot(m_hiscam_spline, col = 2, lwd = 1.5)
-abline(h = 0, col = "gray")
-dev.off()
-
-# models with dropped/recoded observations for farmers
 excess_egg_nofarmers = excess(
     deaths[HISCO != 61220 | is.na(HISCO)], # this should not drop NA occupations for comparability? These are dropped in the regression anyway
     aggvrbs = c("egg", aggvrbs))
@@ -146,54 +116,14 @@ texreg::texreg(modlist_altocc,
     label = "tab:altoccmodels",
     file = "../out/models_altocc.tex")
 
-# interactions
-excess_egg[!is.na(exposure) & !is.na(skill_level),
-    exposureXskill_level := paste(exposure, skill_level)]
+m_hiscam_spline = mgcv::gam(update(formula(prefmod), . ~ . - skill_level + s(hiscam, k = 5)),
+            data = excess_egg_hiscam[hiscam > 0])
 
-modlist_inter = list(
-    `no interactions` = prefmod,
-    `strangers interactions` = update(prefmod,
-        . ~ . - skill_level - exposure + exposureXskill_level),
-    `hiscam interactions` = update(prefmod,
-        . ~ . - skill_level - exposure + exposure:hiscam,
-        data = excess_egg_hiscam)
-    )
-
-coeflist = lapply(modlist_inter, coeftest, vcov. = sandwich::vcovCL, cluster = ~ egg)
-texreg::screenreg(modlist_inter, 
-    custom.coef.map = coefmap,
-    override.se = lapply(coeflist, `[`, i = , j = 2),
-    override.pval = lapply(coeflist, `[`, i = , j = 4))
-texreg::texreg(modlist_inter, 
-    custom.coef.map = coefmap,
-    override.se = lapply(coeflist, `[`, i = , j = 2),
-    override.pval = lapply(coeflist, `[`, i = , j = 4),
-    caption = "Regression models of log excess mortality rate with interactions, exluding selected occupations. Region-clustered standard errors between parentheses.",
-    label = "tab:intermodels",
-    file = "../out/models_inter.tex")
-
-# plot of interactions
-cf = coef(modlist_inter$`strangers interactions`)
-cf = cf[grep("exposure", names(cf))]
-cf = data.table(
-    coef = cf, 
-    skill = stringi::stri_extract_last_regex(names(cf), "[a-z_]+skilled"),
-    exposure = stringi::stri_extract_last_regex(names(cf), "neither|indoors|strangers|both"))
-cf = dcast(cf, skill ~ exposure, value.var = 'coef')
-cf = cf[match(skill, c("higher_skilled", "medium_skilled", "lower_skilled", "unskilled")), ]
-
-
-pdf("../out/interactions.pdf")
+pdf("../out/hiscamspline.pdf")
 mypar()
-matplot(cf[, -1], type = 'b', pch = 19, lty = 1, xaxt = "n",
-    xlab = "skill level", ylab = "coefficient", bty = "l")
-abline(h = 0, col = "lightgray")
-axis(1, at = 1:4, labels = cf$skill)
-legend("topleft", fill = 1:4, legend = colnames(cf)[-1])
-cf_pref = coef(prefmod)[grep("skill", names(coef(prefmod)))]
-plot(c(0, cf_pref[c(2, 1, 3)]), type = 'b')
+plot(m_hiscam_spline, col = 2, lwd = 1.5)
+abline(h = 0, col = "gray")
 dev.off()
-# most very similar to original coefs
 
 # check model outcomes at different aggregation levels
 # municipalities
@@ -241,7 +171,7 @@ excess_egg = popdens_egg[excess_egg, on = c(egg = "egg")]
 excess_corop = popdens_corop[excess_corop, on = c(Corop = "corop")]
 excess_prov = popdens_prov[excess_prov, on = c(Provincie = "prov")]
 
-popform = update(prefform, . ~ . - factor(egg) + log(pop1918) + log(popdens1918) - factor(region))
+popform = update(prefform, . ~ . - factor(egg) + log(pop1918) - factor(region))
 modlist_popdens = list(
     `municipalities` = lm(popform, data = excess_amco),
     `*EGG*` = lm(popform, data = excess_egg),
@@ -279,7 +209,7 @@ texreg::texreg(modlist_army,
     override.pval = lapply(coeflist, `[`, i = , j = 4),
     caption = "Regression models of log excess mortality rate including army base and hospital controls. Region-clustered standard errors between parentheses.",
     label = "tab:popdensmodels",
-    file = "../out/models_popdens.tex")
+    file = "../out/models_army.tex")
 
 # models for high mortality regions only
 # first, ID high mort regions by EMR egg only
@@ -304,7 +234,7 @@ modlist_hilo = list(
 coeflist = lapply(modlist_hilo, coeftest, vcov. = sandwich::vcovCL, cluster = ~ egg)
 
 # texreg::screenreg(modlist_hilo, omit.coef = "egg")
-texreg::texreg(modlist_hilo, 
+texreg::screenreg(modlist_hilo, 
     custom.coef.map = coefmap,
     override.se = lapply(coeflist, `[`, i = , j = 2),
     override.pval = lapply(coeflist, `[`, i = , j = 4),
