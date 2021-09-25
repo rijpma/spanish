@@ -2,7 +2,6 @@ rm(list = ls())
 
 library("data.table")
 library("texreg")
-library("plm")
 library("sandwich")
 library("lmtest")
 library("ggplot2")
@@ -38,13 +37,6 @@ deaths[, agegroup := cut(pr_age, c(11, 30, 45, 60, 80))]
 deaths[!is.na(HISCO), farmer := HISCO %in% c(61220)] # also 62210, 62105 ?
 
 deaths[, skill_level := relevel(factor(skill_level), ref = "higher_skilled")]
-
-# count
-deaths[, .N]
-deaths[!is.na(skill_level), .N]
-deaths[!is.na(skill_level) & !is.na(exposure) & !is.na(event_month), .N]
-deaths[!is.na(skill_level) & !is.na(exposure) & !is.na(event_month) & !is.na(pr_gender), .N]
-deaths[!is.na(skill_level) & !is.na(exposure) & !is.na(event_month) & !is.na(pr_gender) & !is.na(agegroup), .N]
 
 # 10 year age bins, egg regions
 excess_egg = excess(deaths,
@@ -188,8 +180,6 @@ texreg::texreg(modlist_popdens,
     caption = "Regression models of log excess mortality rate including population density controls and no region FE. Region-clustered standard errors between parentheses.",
     label = "tab:popdensmodels",
     file = "../out/models_popdens.tex")
-
-popdens[order(-popdens1918)][1:20]
 
 # army bases
 excess_amco = army[excess_amco, on = c("amco" = "ACODE")]
