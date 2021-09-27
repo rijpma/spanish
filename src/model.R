@@ -47,32 +47,38 @@ excess_egg[!is.na(skill_level), list(sum(nflu + nbaseline))] # this N is correct
 excess_egg[, sum(emr == 0) / .N]
 
 modlist_base = list(
-    `skill` = lm(log1p(emr) ~ skill_level, 
+    lm(log1p(emr) ~ skill_level, 
         data = excess_egg),
-    `farmer` = lm(log1p(emr) ~ skill_level + farmer, 
+    lm(log1p(emr) ~ skill_level + farmer, 
         data = excess_egg),
-    `exposure` = lm(log1p(emr) ~ farmer + exposure, 
+    lm(log1p(emr) ~ farmer + exposure, 
         data = excess_egg),
-    `both` = lm(log1p(emr) ~ skill_level + farmer + exposure, 
+    lm(log1p(emr) ~ skill_level + farmer + exposure, 
         data = excess_egg),
-    `+ demog.` = lm(log1p(emr) ~ skill_level + farmer + exposure + agegroup + pr_gender, 
+    lm(log1p(emr) ~ skill_level + farmer + exposure + agegroup + pr_gender, 
         data = excess_egg),
-    `+ month FE` = lm(log1p(emr) ~ skill_level + farmer + exposure + agegroup + pr_gender + factor(event_month), 
+    lm(log1p(emr) ~ skill_level + farmer + exposure + agegroup + pr_gender + factor(event_month), 
         data = excess_egg),
-    `+ region FE` = lm(log1p(emr) ~ skill_level + farmer + exposure + agegroup + pr_gender + factor(event_month) + factor(egg), 
+    lm(log1p(emr) ~ skill_level + farmer + exposure + agegroup + pr_gender + factor(event_month) + factor(egg), 
         data = excess_egg))
-prefmod = modlist_base$`+ region FE`
+prefmod = modlist_base[[length(modlist_base)]]
 prefform = formula(prefmod)
 
 coeflist = lapply(modlist_base, coeftest, vcov. = sandwich::vcovCL, cluster = ~ egg)
 texreg::screenreg(modlist_base, 
     custom.coef.map = coefmap,
     override.se = lapply(coeflist, `[`, i = , j = 2),
-    override.pval = lapply(coeflist, `[`, i = , j = 4))
+    override.pval = lapply(coeflist, `[`, i = , j = 4),
+    custom.gof.rows = list(
+        # `Month FE` = c(rep("No", 5), "Yes", "Yes"),
+        `Region FE` = c(rep("No", 6), "Yes")))
 texreg::texreg(modlist_base, 
     custom.coef.map = coefmap,
     override.se = lapply(coeflist, `[`, i = , j = 2),
     override.pval = lapply(coeflist, `[`, i = , j = 4),
+    custom.gof.rows = list(
+        # `Month FE` = c(rep("No", 5), "Yes", "Yes"),
+        `Region FE` = c(rep("No", 6), "Yes")),
     caption = "Regression models of log excess mortality rate. Region-clustered standard errors between parentheses.",
     label = "tab:basemodels",
     file = "../out/models_base.tex")
@@ -139,7 +145,7 @@ excess_prov[, region := prov]
 regform = update(prefform, . ~ . - factor(egg) + factor(region))
 modlist_regions = list(
     `municipalities` = lm(regform, data = excess_amco),
-    `*EGG*` = lm(regform, data = excess_egg),
+    `EGG` = lm(regform, data = excess_egg),
     `COROP` = lm(regform, data = excess_corop),
     `Province` = lm(regform, data = excess_prov)
 )
@@ -217,7 +223,7 @@ excess_egg = merge(
     all.x = TRUE)
 
 modlist_hilo = list(
-    prefmod,
+    `all` = prefmod,
     `low EM` = lm(prefform, data = excess_egg[eggemr <= 2.5]),
     `high EM` = lm(prefform, data = excess_egg[eggemr > 2.5]))
 
@@ -234,12 +240,11 @@ texreg::texreg(modlist_hilo,
 
 # alt zero handling
 modlist_zeroes = list(
-    `log x + 1` = prefmod,
-    `drop 0s` = lm(update.formula(prefform, log(emr) ~ .), data = excess_egg[emr > 0]),
+    `log x+1` = prefmod,
+    `drop 0` = lm(update.formula(prefform, log(emr) ~ .), data = excess_egg[emr > 0]),
     `no log` = lm(update.formula(prefform, emr ~ .), data = excess_egg),
-    `norm. emr` = lm(update.formula(prefform, emrr ~ .), data = excess_egg),
-    `q-poiss EMR` = glm(update.formula(prefform, emr ~ .), data = excess_egg, family = quasipoisson),
-    `q-poiss N ` = glm(update.formula(prefform, nflu ~ .), data = excess_egg, family = quasipoisson, offset = log(baseline)),
+    `poiss EMR` = glm(update.formula(prefform, emr ~ .), data = excess_egg, family = quasipoisson),
+    `poiss N ` = glm(update.formula(prefform, nflu ~ .), data = excess_egg, family = quasipoisson, offset = log(baseline)),
     `asinh` = lm(update.formula(prefform, asinh(emr) ~ .), data = excess_egg)
     # `tobit` = censReg::censReg(update.formula(prefform, emr ~ . ), data = excess_egg)
     # `tobit x` = AER::tobit(update.formula(prefform, emr ~ . ), data = excess_egg)
