@@ -224,7 +224,7 @@ modlist_hilo = list(
 coeflist = lapply(modlist_hilo, coeftest, vcov. = sandwich::vcovCL, cluster = ~ egg)
 
 # texreg::screenreg(modlist_hilo, omit.coef = "egg")
-texreg::screenreg(modlist_hilo, 
+texreg::texreg(modlist_hilo, 
     custom.coef.map = coefmap,
     override.se = lapply(coeflist, `[`, i = , j = 2),
     override.pval = lapply(coeflist, `[`, i = , j = 4),

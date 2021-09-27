@@ -49,6 +49,7 @@ coverage = deaths[,
          date = mean(!is.na(death_date), na.rm = TRUE)), 
      by = list(amco)]
 coverage[, drop := hisco <= 0.1 | age <= 0.2 | date <= 0.4]
+coverage[, drop := hisco <= 0.1 | age <= 0.5 | date <= 0.5 | sex <= 0.5]
 
 deaths = merge(
     x = deaths,
