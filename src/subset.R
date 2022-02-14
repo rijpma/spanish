@@ -9,8 +9,8 @@ sumstats = function(dat){
     out = dat[!is.na(amco), 
         list(
             certificates = .N, 
-            municipalities = uniqueN(amco),
-            `age` = mean(pr_age, na.rm = TRUE),
+            municip. = uniqueN(amco),
+            `mean age` = mean(pr_age, na.rm = TRUE),
             `% male` = mean(pr_gender == "m", na.rm = TRUE) * 100,
             `% unskilled` = mean(skill_level == "unskilled", na.rm = TRUE) * 100,
             `% contact` = mean(exposure == "strangers only", na.rm = TRUE) * 100
@@ -76,7 +76,7 @@ sumstatlist[["11 < age < 79"]] = sumstats(dat = deaths)
 
 # complete cases look
 # huge amount of contact occs in missing ages
-sumstatlist[["drop missing"]] = sumstats(
+sumstatlist[["complete cases"]] = sumstats(
     dat = deaths[!is.na(skill_level) 
         & !is.na(exposure)
         & !is.na(event_month) 
@@ -94,5 +94,5 @@ out = knitr::kable(
     digits = 0, 
     format = "latex",
     caption = "Summary statistics and selection steps.",
-    label = "tab:sumselect")
+    label = "sumselect")
 writeLines(out, "../out/selection_sumstats.tex")
