@@ -18,19 +18,6 @@ toplot = deaths[
     by = list(year(death_date), week(death_date), agegroup, sex = pr_gender) ][
         order(death_date, agegroup, sex)]
 
-out = ggplot(toplot, aes(death_date, N, color = sex)) + 
-    geom_line() + 
-    facet_wrap(~ agegroup) + 
-    xlab("date") + ylab("N deaths") +
-    theme_classic()
-    # geom_rect(xmin = as.Date("1918-09-01"), xmax = as.Date("1918-12-31"), ymin = -Inf, ymax = Inf, fill = "lightgray", color = NA) + 
-    # geom_vline(xintercept = as.Date("1918-09-01"), col = "gray") + 
-print(out)
-
-pdf("../out/weeklydeaths.pdf", height = 4, width = 9)
-print(out)
-dev.off()
-
 pdf("../out/weeklydeaths_base.pdf", height = 3, width = 9)
 mypar(mfrow = c(1, 3))
 plot(N ~ death_date, data = toplot, type = "n", 
@@ -57,27 +44,11 @@ deaths[!is.na(HISCO), farmer := HISCO %in% c(61220)] # also 62210, 62105 ?
 
 toplot = deaths[year <= 1918 & !is.na(skill_level) & !is.na(exposure) & !is.na(pr_gender) & !is.na(agegroup)]
 
-skill_level_plot = ggplot(toplot[, .N, by = list(skill_level, year)], aes(year, log(N), group = skill_level, col = skill_level)) + 
-    geom_line() + geom_point() + 
-    theme_classic() + theme(legend.position = "bottom", legend.direction = "vertical")
-exposure_plot = ggplot(toplot[, .N, by = list(exposure, year)], aes(year, log(N), col = exposure)) + 
-    geom_line() + geom_point() + 
-    theme_classic() + theme(legend.position = "bottom", legend.direction = "vertical")
-sex_plot = ggplot(toplot[, .N, by = list(pr_gender, year)], aes(year, log(N), col = pr_gender)) + 
-    geom_line() + geom_point() + 
-    theme_classic() + theme(legend.position = "bottom", legend.direction = "vertical")
-agegroup_plot = ggplot(toplot[, .N, by = list(agegroup, year)], aes(year, log(N), col = agegroup)) + 
-    geom_line() + geom_point() + 
-    theme_classic() + theme(legend.position = "bottom", legend.direction = "vertical")
-
-pdf("../out/annualdeaths_grouped.pdf", height = 5, width = 14)
-grid.arrange(skill_level_plot, exposure_plot, agegroup_plot, nrow = 1)
-dev.off()
-
 toplot[farmer == TRUE, skill_level := "farmer"]
+toplot[exposure == "strangers only", exposure := "contact only"]
 
-pdf("../out/annualdeaths_grouped_base.pdf", height = 4, width = 11)
-mypar(mfrow = c(1, 3))
+pdf("../out/annualdeaths_grouped_base.pdf", height = 6, width = 10)
+mypar(mfrow = c(1, 2))
 toplot2 = dcast(toplot, year ~ skill_level, fun = length)
 toplot2 = toplot2[, order(-toplot2[1, ]), with = FALSE] # reorder for legend
 groups = colnames(toplot2)[-1]
@@ -94,11 +65,4 @@ matplot(toplot2$year, toplot2[, -"year"], type = "n", log = "y",
 matlines(toplot2$year, toplot2[, -"year"], log = "y", type = "b", lty = 1, pch = 19)
 legend("topleft", fill = 1:length(groups), legend = groups)
 
-toplot2 = dcast(toplot, year ~ agegroup, fun = length)
-toplot2 = toplot2[, order(-toplot2[1, ]), with = FALSE]
-groups = colnames(toplot2)[-1]
-matplot(toplot2$year, toplot2[, -"year"], type = "n", log = "y",
-    xlab = "date", ylab = "N deaths", main = "Age group")
-matlines(toplot2$year, toplot2[, -"year"], log = "y", type = "b", lty = 1, pch = 19)
-legend("topleft", fill = 1:length(groups), legend = groups)
 dev.off()
