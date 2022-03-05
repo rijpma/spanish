@@ -61,9 +61,9 @@ coefmap = list(
 
     "pr_genderm" = "male",
     
-    "factor(event_month)10" = "event_month10",
-    "factor(event_month)11" = "event_month11",
-    "factor(event_month)12" = "event_month12",
+    "factor(event_month)10" = "month_10",
+    "factor(event_month)11" = "month_11",
+    "factor(event_month)12" = "month_12",
 
     "log(popdens1918)" = "log Pop. density '18",
     "log(pop1918)" = "log Population '18",
