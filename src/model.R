@@ -96,7 +96,7 @@ excess_egg_farmrecoded = excess(
     aggvrbs = c("egg", aggvrbs))
 
 modlist_altocc = list(
-    `all occupations` = prefmod,
+    `farmer control` = prefmod,
     `no farmers` = update(prefmod, . ~ . - farmer, data = excess_egg_nofarmers),
     `farmers recoded` = update(prefmod, . ~ . - farmer, data = excess_egg_farmrecoded),
     `hiscam` = update(prefmod, . ~ . - skill_level + hiscam, data = excess_egg_hiscam[hiscam > 0])
