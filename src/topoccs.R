@@ -5,29 +5,30 @@ source("fun.R")
 library("data.table")
 library("knitr")
 
-deaths = data.table::fread("../dat/deaths.csv", na.strings = "")
+deaths = data.table::fread("../dat/deaths_subset.csv", na.strings = "")
 
-deaths = deaths[!is.na(HISCO) & sep_dec == TRUE & data.table::between(pr_age, 10, 70) & event_year <= 1918]
-deaths[, agegroup := 40]
+deaths = deaths[!is.na(HISCO)]
+deaths[, agegroup := 40] # agegroup needed for 
 
-emr_occ = excess(deaths, aggvrbs = c("HISCO", "year", "agegroup"))
+emr_occ = excess(deaths, aggvrbs = c("HISCO", "year"))
 
 occs = deaths[,
     list(
-        occtitle = names(sort(-table(occtitle_st)))[1],
+        title = names(sort(-table(occtitle_st)))[1],
         .N,
-        strangers = sum(final_meet_strangers),
-        indoors = sum(final_under_roof),
-        both = sum(final_meet_strangers * final_under_roof),
-        neither = sum(final_meet_strangers + final_under_roof == 0),
+        contact = unique(final_meet_strangers),
+        indoors = unique(final_under_roof),
+        # both = unique(final_meet_strangers * final_under_roof),
+        # neither = unique(final_meet_strangers + final_under_roof == 0),
         skill = gsub("_?skilled", "", skill_level[1]),
         hiscam = HISCAM_NL[1]),
     by = HISCO]
-occs = emr_occ[, list(HISCO, emr)][occs, on = "HISCO"]
+occs = occs[emr_occ[, list(HISCO, emr)], on = "HISCO"]
+occs[, skill := gsub("un", "unskilled", skill)]
 out = knitr::kable(
     x = occs[order(-N)][1:30],
     digits = 1,
-    caption = "Most frequent occupations on death certificates for deceased age 10-70, september-december 1910–1918.",
+    caption = "Most frequent occupations on death certificates for deceased age 13-79, September--December 1910--1918.",
     label = "tab:topoccs_selected",
     format = "latex")
 writeLines(out, "../out/topoccs_sepdec.tex")
