@@ -160,6 +160,7 @@ texreg::texreg(modlist_regions,
     override.pval = lapply(coeflist, `[`, i = , j = 4),
     caption = "Regression models of log excess mortality rate at different levels of aggregation. Region-clustered standard errors between parentheses.",
     label = "tab:regionmodels",
+    fontsize = "small",
     file = "../out/models_regions.tex")
 
 # population density
@@ -185,6 +186,7 @@ texreg::texreg(modlist_popdens,
     override.pval = lapply(coeflist, `[`, i = , j = 4),
     caption = "Regression models of log excess mortality rate including population density controls and no region FE. Region-clustered standard errors between parentheses.",
     label = "tab:popdensmodels",
+    fontsize = "small",
     file = "../out/models_popdens.tex")
 
 # army bases
@@ -192,7 +194,7 @@ excess_amco = army[excess_amco, on = c("amco" = "ACODE")]
 excess_amco[, base1918 := !is.na(dataset2)]
 excess_amco[, armyhosp1913 := !is.na(dataset1)]
 modlist_army = list(
-    `municipalities` = lm(popform, data = excess_amco),
+    `none` = lm(popform, data = excess_amco),
     `base` = lm(update(popform, . ~ . + base1918), data = excess_amco),
     `hosp` = lm(update(popform, . ~ . + armyhosp1913), data = excess_amco),
     `both` = lm(update(popform, . ~ . + armyhosp1913 + base1918), data = excess_amco)
@@ -205,6 +207,7 @@ texreg::texreg(modlist_army,
     override.pval = lapply(coeflist, `[`, i = , j = 4),
     caption = "Regression models of log excess mortality rate including army base and hospital controls. Region-clustered standard errors between parentheses.",
     label = "tab:popdensmodels",
+    fontsize = "small",
     file = "../out/models_army.tex")
 
 # models for high mortality regions only
@@ -236,6 +239,7 @@ texreg::texreg(modlist_hilo,
     override.pval = lapply(coeflist, `[`, i = , j = 4),
     caption = "Regression models of log excess mortality rate for low and high excess mortality regions. Region-clustered standard errors between parentheses.",
     label = "tab:hilomodels",
+    fontsize = "small",
     file = "../out/models_hilo.tex")
 
 # alt zero handling
@@ -258,6 +262,7 @@ texreg::texreg(modlist_zeroes,
     override.pval = lapply(coeflist, `[`, i = , j = 4),
     caption = "Alternative model forms for regressions of log excess mortality rate. Region-clustered standard errors between parentheses.",
     label = "tab:altmodels",
+    fontsize = "small",
     file = "../out/models_altform.tex")
 
 # example data set
