@@ -81,6 +81,7 @@ texreg::texreg(modlist_base,
         `Region FE` = c(rep("No", 6), "Yes")),
     caption = "Regression models of log excess mortality rate. Region-clustered standard errors between parentheses.",
     label = "tab:basemodels",
+    float.pos = "h!",
     file = "../out/models_base.tex")
 
 # models with hiscam and dropped/recoded observations for farmers
@@ -112,6 +113,7 @@ texreg::texreg(modlist_altocc,
     override.pval = lapply(coeflist, `[`, i = , j = 4),
     caption = "Regression models of log excess mortality rate, exluding selected occupations. Region-clustered standard errors between parentheses.",
     label = "tab:altoccmodels",
+    float.pos = "h!",
     file = "../out/models_altocc.tex")
 
 m_hiscam_spline = mgcv::gam(update(formula(prefmod), . ~ . - skill_level + s(hiscam, k = 5)),
@@ -160,7 +162,9 @@ texreg::texreg(modlist_regions,
     override.pval = lapply(coeflist, `[`, i = , j = 4),
     caption = "Regression models of log excess mortality rate at different levels of aggregation. Region-clustered standard errors between parentheses.",
     label = "tab:regionmodels",
+    float.pos = "h!",
     fontsize = "small",
+
     file = "../out/models_regions.tex")
 
 # population density
@@ -186,7 +190,9 @@ texreg::texreg(modlist_popdens,
     override.pval = lapply(coeflist, `[`, i = , j = 4),
     caption = "Regression models of log excess mortality rate including population density controls and no region FE. Region-clustered standard errors between parentheses.",
     label = "tab:popdensmodels",
+    float.pos = "h!",
     fontsize = "small",
+
     file = "../out/models_popdens.tex")
 
 # army bases
@@ -208,6 +214,7 @@ texreg::texreg(modlist_army,
     caption = "Regression models of log excess mortality rate including army base and hospital controls. Region-clustered standard errors between parentheses.",
     label = "tab:popdensmodels",
     fontsize = "small",
+    float.pos = "h!",
     file = "../out/models_army.tex")
 
 # models for high mortality regions only
@@ -240,6 +247,7 @@ texreg::texreg(modlist_hilo,
     caption = "Regression models of log excess mortality rate for low and high excess mortality regions. Region-clustered standard errors between parentheses.",
     label = "tab:hilomodels",
     fontsize = "small",
+    float.pos = "h!",
     file = "../out/models_hilo.tex")
 
 # alt zero handling
@@ -263,6 +271,7 @@ texreg::texreg(modlist_zeroes,
     caption = "Alternative model forms for regressions of log excess mortality rate. Region-clustered standard errors between parentheses.",
     label = "tab:altmodels",
     fontsize = "small",
+    float.pos = "h!",
     file = "../out/models_altform.tex")
 
 # example data set
