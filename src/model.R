@@ -81,7 +81,6 @@ texreg::texreg(modlist_base,
         `Region FE` = c(rep("No", 6), "Yes")),
     caption = "Regression models of log excess mortality rate. Region-clustered standard errors between parentheses.",
     label = "tab:basemodels",
-    float.pos = "h!",
     file = "../out/models_base.tex")
 
 # models with hiscam and dropped/recoded observations for farmers
@@ -113,7 +112,6 @@ texreg::texreg(modlist_altocc,
     override.pval = lapply(coeflist, `[`, i = , j = 4),
     caption = "Regression models of log excess mortality rate, exluding selected occupations. Region-clustered standard errors between parentheses.",
     label = "tab:altoccmodels",
-    float.pos = "h!",
     file = "../out/models_altocc.tex")
 
 m_hiscam_spline = mgcv::gam(update(formula(prefmod), . ~ . - skill_level + s(hiscam, k = 5)),
