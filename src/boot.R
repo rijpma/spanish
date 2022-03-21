@@ -28,13 +28,17 @@ skill_level = toboot[order(match(skill_level, c("higher_skilled", "medium_skille
 skill_level[, i := 1:.N, by = skill_level]
 skill_level[, delta := V1 - shift(V1), by = i]
 out = skill_level[, 
-    list(`Excess mort.` = mean(V1), 
-         se = sd(V1), # bootstrap se is sd of the replications
-         difference = mean(delta), 
-         `se(diff)` = sd(delta)), 
+    list(`Excess mort.` = paste0(
+            round(mean(V1), 2), 
+            " (", round(sd(V1), 2), ")"), # bootstrap se is sd of the replications
+         difference = paste0(
+            round(mean(delta), 2), 
+            " (", round(sd(delta), 2), ")")),
     by = list(group = skill_level)]
+out[grep("NA", difference), difference := NA]
+
 out = knitr::kable(out, digits = 2, format = "latex", 
-    caption = "Excess mortality rates in September-December 1918 by occupational skill group and their differences, with bootstrapped standard errors.",
+    caption = "Excess mortality rates in September-December 1918 by occupational skill group and their differences, with bootstrapped standard errors between parentheses.",
     label = "lab:emr_byskill_boot")
 writeLines(out, "../out/emr_byskill_boot.tex")
 
