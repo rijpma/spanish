@@ -24,13 +24,17 @@ occs = deaths[,
     by = HISCO]
 occs = occs[emr_occ[, list(HISCO, emr)], on = "HISCO"]
 occs[, skill := gsub("un", "unskilled", skill)]
-out = knitr::kable(
-    x = occs[order(-N)][1:25],
+
+out = xtable::xtable(
+    occs[order(-N)][1:25],
     digits = 1,
     caption = "Most frequent occupations on death certificates for deceased age 13-79, September--December 1910--1918.",
-    label = "tab:topoccs_selected",
-    format = "latex")
-writeLines(out, "../out/topoccs_sepdec.tex")
+    label = "tab:topoccs_selected")
+print(
+    out, 
+    include.rownames = FALSE,
+    table.placement = "h!",
+    file = "../out/topoccs_sepdec.tex")
 
 out = knitr::kable(
     x = occs[order(-indoors), list(HISCO, emr, occtitle, indoors)][1:20],
