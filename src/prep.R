@@ -40,7 +40,8 @@ covid2[is.na(agreement), agreement := 0,]
 
 # add agreement to covid_coding
 covid_coding <- merge(covid_coding, covid2[,c("agreement", "unitGroup")], by = "unitGroup")
-fwrite(covid_coding, "../dat/exposurecoding_asinmodel.csv")
+fwrite(covid_coding[, list(label, label_clean, hisco_three = HISCO_THREE, indoors = final_under_roof, contact = final_meet_strangers, agreement)], 
+    file = "../dat/exposurecoding_asinmodel.csv")
 
 # merge coding
 deaths191030 <- merge(
