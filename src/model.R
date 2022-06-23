@@ -162,7 +162,6 @@ texreg::texreg(modlist_regions,
     label = "tab:regionmodels",
     float.pos = "h!",
     fontsize = "small",
-
     file = "../out/models_regions.tex")
 
 # population density
@@ -271,6 +270,26 @@ texreg::texreg(modlist_zeroes,
     fontsize = "small",
     float.pos = "h!",
     file = "../out/models_altform.tex")
+
+# omit women
+
+modlist_nofem = list(
+    modlist_base[[7]],
+    # update(modlist_base[[7]], . ~ . - pr_gender),
+    update(modlist_base[[7]], . ~ . - pr_gender, data = excess_egg[pr_gender != "f"])
+    # identical to remaking the dataset w/o women
+)
+coeflist = lapply(modlist_nofem, coeftest, vcov. = sandwich::vcovCL, cluster = ~ egg)
+texreg::texreg(modlist_nofem, 
+    custom.coef.map = coefmap,
+    override.se = lapply(coeflist, `[`, i = , j = 2),
+    override.pval = lapply(coeflist, `[`, i = , j = 4),
+    caption = "Alternative model forms for regressions of log excess mortality rate. Region-clustered standard errors between parentheses.",
+    label = "tab:altmodels",
+    fontsize = "small",
+    float.pos = "h!",
+    file = "../out/models_nofem.tex")
+
 
 # example data set
 set.seed(11)
