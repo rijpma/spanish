@@ -83,6 +83,8 @@ texreg::texreg(modlist_base,
     label = "tab:basemodels",
     file = "../out/models_base.tex")
 
+
+
 # models with hiscam and dropped/recoded observations for farmers
 excess_egg_hiscam = excess(deaths,
     aggvrbs = c("egg", "farmer", "hiscam", aggvrbs[aggvrbs != "skill_level"]))
@@ -272,7 +274,6 @@ texreg::texreg(modlist_zeroes,
     file = "../out/models_altform.tex")
 
 # omit women
-
 modlist_nofem = list(
     modlist_base[[7]],
     # update(modlist_base[[7]], . ~ . - pr_gender),
@@ -284,11 +285,41 @@ texreg::texreg(modlist_nofem,
     custom.coef.map = coefmap,
     override.se = lapply(coeflist, `[`, i = , j = 2),
     override.pval = lapply(coeflist, `[`, i = , j = 4),
-    caption = "Alternative model forms for regressions of log excess mortality rate. Region-clustered standard errors between parentheses.",
+    caption = "Bzzzz***fixme**bzzz model forms for regressions of log excess mortality rate. Region-clustered standard errors between parentheses.",
     label = "tab:altmodels",
     fontsize = "small",
     float.pos = "h!",
     file = "../out/models_nofem.tex")
+
+# stricter cutoffs
+excess_egg_age16 = excess(deaths[pr_age >= 16],
+    aggvrbs = c("egg", "farmer", aggvrbs))
+# maybe better age group as well?
+excess_egg_hisco20 = excess(deaths[poor_coverage_strict_hisco == FALSE],
+    aggvrbs = c("egg", "farmer", aggvrbs))
+excess_egg_age16_hisco20 = excess(deaths[pr_age >= 16 & poor_coverage_strict_hisco == FALSE],
+    aggvrbs = c("egg", "farmer", aggvrbs))
+
+modlist_cutoffs = list(
+    prefmod,
+    `age >= 16` = update(prefmod, data = excess_egg_age16),
+    `occ >= 20%` = update(prefmod, data = excess_egg_hisco20),
+    `both` = update(prefmod, data = excess_egg_age16_hisco20)
+)
+
+coeflist = lapply(modlist_cutoffs, coeftest, vcov. = sandwich::vcovCL, cluster = ~ egg)
+texreg::texreg(modlist_cutoffs, 
+    custom.coef.map = coefmap,
+    override.se = lapply(coeflist, `[`, i = , j = 2),
+    override.pval = lapply(coeflist, `[`, i = , j = 4),
+    caption = "Robustness checks for regressions of log excess mortality rate: no 12-15 year olds and higher occupation coverage. Region-clustered standard errors between parentheses.",
+    label = "tab:altmodels",
+    fontsize = "small",
+    float.pos = "h!",
+    file = "../out/models_cutoffs.tex")
+
+
+
 
 
 # example data set
