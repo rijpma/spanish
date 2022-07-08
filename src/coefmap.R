@@ -13,6 +13,11 @@ coefmap = list(
     "exposureindoors only" = "indoors only",
     "exposurestrangers only" = "contact only",
     "exposureboth" = "both",
+    
+    "indoorsTRUE" = "indoors only",
+    "contactTRUE" = "contact only",
+    
+    "exposure_add" = "exposure (additive)",
 
     "final_under_roof" = "indoor",
     "final_meet_strangers" = "contact",

@@ -83,7 +83,35 @@ texreg::texreg(modlist_base,
     label = "tab:basemodels",
     file = "../out/models_base.tex")
 
+# alternative specifications for base model
+excess_egg[, .N, by = exposure]
+excess_egg[, indoors := exposure == "indoors only"]
+excess_egg[, contact := exposure == "strangers only"]
+excess_egg[, exposure_add := indoors + contact]
 
+modlist_altspec = list(
+    `preferred model` = prefmod,
+    `no interaction` = update(prefmod, . ~ . - exposure + indoors + contact),
+    `additive exposure` = update(prefmod, . ~ . - exposure + exposure2)
+    )
+coeflist = lapply(modlist_altspec, coeftest, vcov. = sandwich::vcovCL, cluster = ~ egg)
+texreg::screenreg(modlist_altspec, 
+    custom.coef.map = coefmap,
+    override.se = lapply(coeflist, `[`, i = , j = 2),
+    override.pval = lapply(coeflist, `[`, i = , j = 4))
+texreg::texreg(modlist_altspec, 
+    custom.coef.map = coefmap,
+    override.se = lapply(coeflist, `[`, i = , j = 2),
+    override.pval = lapply(coeflist, `[`, i = , j = 4),
+    caption = "Regression models of log excess mortality rate, with alternative specifications for the exposure variables. Region-clustered standard errors between parentheses.",
+    label = "tab:altspecmodels",
+    file = "../out/models_altspec.tex")
+
+# F-test joint effect of exposure
+anova(prefmod, update(prefmod, . ~ . - exposure, data = excess_egg[!is.na(exposure)]))
+anova(modlist_altspec[[2]], update(prefmod, . ~ . - exposure, data = excess_egg[!is.na(exposure)]))
+# and for completeness
+anova(prefmod, update(prefmod, . ~ . - skill_level, data = excess_egg[!is.na(skill_level)])) 
 
 # models with hiscam and dropped/recoded observations for farmers
 excess_egg_hiscam = excess(deaths,
