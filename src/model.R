@@ -330,7 +330,7 @@ excess_egg_age16_hisco20 = excess(deaths[pr_age >= 16 & poor_coverage_strict_his
 modlist_cutoffs = list(
     prefmod,
     `age >= 16` = update(prefmod, data = excess_egg_age16),
-    `occ >= 20%` = update(prefmod, data = excess_egg_hisco20),
+    `occ >= 20pc` = update(prefmod, data = excess_egg_hisco20),
     `both` = update(prefmod, data = excess_egg_age16_hisco20)
 )
 
