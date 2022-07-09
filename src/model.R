@@ -92,7 +92,7 @@ excess_egg[, exposure_add := indoors + contact]
 modlist_altspec = list(
     `preferred model` = prefmod,
     `no interaction` = update(prefmod, . ~ . - exposure + indoors + contact),
-    `additive exposure` = update(prefmod, . ~ . - exposure + exposure2)
+    `additive exposure` = update(prefmod, . ~ . - exposure + exposure_add)
     )
 coeflist = lapply(modlist_altspec, coeftest, vcov. = sandwich::vcovCL, cluster = ~ egg)
 texreg::screenreg(modlist_altspec, 
@@ -219,7 +219,6 @@ texreg::texreg(modlist_popdens,
     label = "tab:popdensmodels",
     float.pos = "h!",
     fontsize = "small",
-
     file = "../out/models_popdens.tex")
 
 # army bases
@@ -239,7 +238,7 @@ texreg::texreg(modlist_army,
     override.se = lapply(coeflist, `[`, i = , j = 2),
     override.pval = lapply(coeflist, `[`, i = , j = 4),
     caption = "Regression models of log excess mortality rate including army base and hospital controls. Region-clustered standard errors between parentheses.",
-    label = "tab:popdensmodels",
+    label = "tab:armymodels",
     fontsize = "small",
     float.pos = "h!",
     file = "../out/models_army.tex")
@@ -313,8 +312,8 @@ texreg::texreg(modlist_nofem,
     custom.coef.map = coefmap,
     override.se = lapply(coeflist, `[`, i = , j = 2),
     override.pval = lapply(coeflist, `[`, i = , j = 4),
-    caption = "Bzzzz***fixme**bzzz model forms for regressions of log excess mortality rate. Region-clustered standard errors between parentheses.",
-    label = "tab:altmodels",
+    caption = "Regressions of log excess mortality rate, including and excluding women. Region-clustered standard errors between parentheses.",
+    label = "tab:nofemmodels",
     fontsize = "small",
     float.pos = "h!",
     file = "../out/models_nofem.tex")
@@ -341,13 +340,10 @@ texreg::texreg(modlist_cutoffs,
     override.se = lapply(coeflist, `[`, i = , j = 2),
     override.pval = lapply(coeflist, `[`, i = , j = 4),
     caption = "Robustness checks for regressions of log excess mortality rate: no 12-15 year olds and higher occupation coverage. Region-clustered standard errors between parentheses.",
-    label = "tab:altmodels",
+    label = "tab:cutoffmodels",
     fontsize = "small",
     float.pos = "h!",
     file = "../out/models_cutoffs.tex")
-
-
-
 
 
 # example data set
