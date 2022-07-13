@@ -112,6 +112,21 @@ anova(modlist_altspec[[2]], update(prefmod, . ~ . - exposure, data = excess_egg[
 # and for completeness
 anova(prefmod, update(prefmod, . ~ . - skill_level, data = excess_egg[!is.na(skill_level)])) 
 
+# correlations between occupational variables
+# as ordinal variable
+cor(as.numeric(factor(excess_egg$skill_level, levels = c("unskilled", "lower_skilled", "medium_skilled", "higher_skilled"))), 
+    excess_egg$exposure_add, 
+    method = "spearman",
+    use = "pairwise.complete")
+
+# as dummy variables
+dummies = model.matrix(~ skill_level + farmer + exposure - 1, data = excess_egg)
+cm = cor(dummies)
+colnames(cm) = coefmap[colnames(cm)]
+rownames(cm) = coefmap[rownames(cm)]
+out = knitr::kable(cm[1:5, -c(1:5)], digits = 2, format = "latex")
+writeLines(out, "../out/occcoreations.tex")
+
 # models with hiscam and dropped/recoded observations for farmers
 excess_egg_hiscam = excess(deaths,
     aggvrbs = c("egg", "farmer", "hiscam", aggvrbs[aggvrbs != "skill_level"]))
