@@ -127,6 +127,7 @@ rownames(cm) = coefmap[rownames(cm)]
 out = knitr::kable(cm[1:5, -c(1:5)], 
     digits = 2, 
     format = "latex",
+    label = "tab:occcor",
     caption = "Pearson correlation coefficients between occupational variables in the data aggregated to EGG level.")
 writeLines(out, "../out/occcorrelations.tex")
 
