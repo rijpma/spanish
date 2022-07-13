@@ -324,22 +324,32 @@ excess_egg_age16 = excess(deaths[pr_age >= 16],
 # maybe better age group as well?
 excess_egg_hisco20 = excess(deaths[poor_coverage_strict_hisco == FALSE],
     aggvrbs = c("egg", "farmer", aggvrbs))
+excess_egg_everything = excess(deaths[poor_coverage_strict_everything == FALSE],
+    aggvrbs = c("egg", "farmer", aggvrbs))
 excess_egg_age16_hisco20 = excess(deaths[pr_age >= 16 & poor_coverage_strict_hisco == FALSE],
+    aggvrbs = c("egg", "farmer", aggvrbs))
+excess_egg_age16_everything = excess(deaths[pr_age >= 16 & poor_coverage_strict_everything == FALSE],
     aggvrbs = c("egg", "farmer", aggvrbs))
 
 modlist_cutoffs = list(
-    prefmod,
-    `age >= 16` = update(prefmod, data = excess_egg_age16),
+    `pref.` = prefmod,
+    `age > 15` = update(prefmod, data = excess_egg_age16),
     `occ >= 20pc` = update(prefmod, data = excess_egg_hisco20),
-    `both` = update(prefmod, data = excess_egg_age16_hisco20)
+    `age and occ` = update(prefmod, data = excess_egg_age16_hisco20),
+    `occ and rest >= 80pc` = update(prefmod, data = excess_egg_everything),
+    `all high` = update(prefmod, data = excess_egg_age16_everything)
 )
 
 coeflist = lapply(modlist_cutoffs, coeftest, vcov. = sandwich::vcovCL, cluster = ~ egg)
+texreg::screenreg(modlist_cutoffs,
+    custom.coef.map = coefmap,
+    override.se = lapply(coeflist, `[`, i = , j = 2),
+    override.pval = lapply(coeflist, `[`, i = , j = 4))
 texreg::texreg(modlist_cutoffs, 
     custom.coef.map = coefmap,
     override.se = lapply(coeflist, `[`, i = , j = 2),
     override.pval = lapply(coeflist, `[`, i = , j = 4),
-    caption = "Robustness checks for regressions of log excess mortality rate: no 12-15 year olds and higher occupation coverage. Region-clustered standard errors between parentheses.",
+    caption = "Robustness checks for regressions of log excess mortality rate: no 12-15 year olds, and using municipalities with higher occupation coverage, and higher coverage of sex, age, and date variables. Region-clustered standard errors between parentheses.",
     label = "tab:cutoffmodels",
     fontsize = "small",
     float.pos = "h!",

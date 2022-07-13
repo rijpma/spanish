@@ -51,6 +51,7 @@ coverage = deaths[,
 coverage[, poor_coverage := hisco <= 0.1 | age <= 0.2 | date <= 0.4]
 coverage[, poor_coverage := hisco <= 0.1 | age <= 0.5 | date <= 0.5 | sex <= 0.5]
 coverage[, poor_coverage_strict_hisco := hisco <= 0.2 | age <= 0.5 | date <= 0.5 | sex <= 0.5]
+coverage[, poor_coverage_strict_everything := hisco <= 0.2 | age <= 0.8 | date <= 0.8 | sex <= 0.8]
 # would drop an additional 75 munics
 
 deaths = merge(
@@ -88,8 +89,6 @@ sumstatlist[["complete cases"]] = sumstats(
 )
 
 fwrite(deaths, "../dat/deaths_subset.csv")
-fwrite(deaths[pr_age >= 16], "../dat/deaths_subset_age16.csv")
-fwrite(deaths[pr_age >= 16 & poor_coverage_strict_hisco == FALSE], "../dat/deaths_subset_age16_hisco20.csv")
 fwrite(coverage, "../dat/coverage.csv")
 
 out = rbindlist(sumstatlist, id = "selection")
