@@ -40,7 +40,7 @@ deaths[, skill_level := relevel(factor(skill_level), ref = "higher_skilled")]
 
 # 10 year age bins, egg regions
 excess_egg = excess(deaths,
-    aggvrbs = c("egg", "farmer", aggvrbs))
+    aggvrbs = c("egg", "farmer", "final_under_roof", "final_meet_strangers", aggvrbs))
 excess_egg[!is.na(skill_level), list(sum(nflu + nbaseline))] # this N is correct, also dropping 1914 and baselin = 0
 
 # % of emr == 0 observations
@@ -84,9 +84,8 @@ texreg::texreg(modlist_base,
     file = "../out/models_base.tex")
 
 # alternative specifications for base model
-excess_egg[, .N, by = exposure]
-excess_egg[, indoors := exposure == "indoors only"]
-excess_egg[, contact := exposure == "strangers only"]
+excess_egg[, indoors := final_under_roof]
+excess_egg[, contact := final_meet_strangers]
 excess_egg[, exposure_add := indoors + contact]
 
 modlist_altspec = list(
