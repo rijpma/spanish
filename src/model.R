@@ -107,6 +107,10 @@ texreg::texreg(modlist_altspec,
     file = "../out/models_altspec.tex")
 
 # F-test joint effect of exposure
+anova(modlist_base[[3]], update(modlist_base[[3]], . ~ . - exposure, data = excess_egg[!is.na(exposure)]))
+anova(modlist_base[[4]], update(modlist_base[[4]], . ~ . - exposure, data = excess_egg[!is.na(exposure)]))
+anova(modlist_base[[5]], update(modlist_base[[5]], . ~ . - exposure, data = excess_egg[!is.na(exposure)]))
+anova(modlist_base[[6]], update(modlist_base[[6]], . ~ . - exposure, data = excess_egg[!is.na(exposure)]))
 anova(prefmod, update(prefmod, . ~ . - exposure, data = excess_egg[!is.na(exposure)]))
 anova(modlist_altspec[[2]], update(prefmod, . ~ . - exposure, data = excess_egg[!is.na(exposure)]))
 # and for completeness
