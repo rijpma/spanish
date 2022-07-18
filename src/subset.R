@@ -102,6 +102,6 @@ out = xtable(
     x = out, 
     digits = 0, 
     format = "latex",
-    caption = "Summary statistics and selection steps. Source: Openarch Death Certificates. The table shows the stepwise selection of cases for analysis. The database contains a total of 741758 death certificates. We select only death certificates from municipalities fully available in the database (220795 cases) and where all variables are digitized (12625 cases).",
+    caption = "Summary statistics and selection steps. Source: Openarch Death Certificates. The table shows the stepwise selection of cases for analysis. The database contains a total of 741758 death certificates. We select only death certificates from municipalities fully available in the database (715703 cases) and where there is sufficient coverage for our variables (220795 cases). We also drop certain periods and age groups (35077), and finally select complete cases (12625) ",
     label = "sumselect")
 print(out, file = "../out/selection_sumstats.tex")
