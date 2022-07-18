@@ -31,7 +31,7 @@ toplot = merge(
 toplot$coverage[is.na(toplot$coverage)] <- FALSE
 
 pdf("../out/certificate_coverage.pdf", width = 6)
-plot(toplot[, "coverage"], pal = viridisLite::viridis, main = "Certificate coverage")
+plot(toplot[, "coverage"], pal = viridisLite::viridis, main = "(a) Certificate coverage")
 dev.off()
 
 # coverage other variables
@@ -55,17 +55,17 @@ toplot[toplot$acode == 10980, c("hisco", "age", "sex", "date")] <- 0
 toplot$hisco[toplot$hisco >= 0.6 & toplot$N < 10] <- NA
 toplot[order(-toplot$hisco), ]
 
+pdf("../out/date_coverage.pdf", width = 6)
+plot(toplot[, "date"], pal = viridisLite::viridis, main = "(b) Date coverage")
+dev.off()
 pdf("../out/age_coverage.pdf", width = 6)
-plot(toplot[, "age"], pal = viridisLite::viridis, main = "Age coverage")
+plot(toplot[, "age"], pal = viridisLite::viridis, main = "(c) Age coverage")
 dev.off()
 pdf("../out/sex_coverage.pdf", width = 6)
-plot(toplot[, "sex"], pal = viridisLite::viridis, main = "Sex coverage")
-dev.off()
-pdf("../out/date_coverage.pdf", width = 6)
-plot(toplot[, "date"], pal = viridisLite::viridis, main = "Date coverage")
+plot(toplot[, "sex"], pal = viridisLite::viridis, main = "(d) Sex coverage")
 dev.off()
 pdf("../out/occupations_coverage.pdf", width = 6)
-plot(toplot[, "hisco"], pal = viridisLite::viridis, main = "Occupation coverage")
+plot(toplot[, "hisco"], pal = viridisLite::viridis, main = "(e) Occupation coverage")
 dev.off()
 
 # occupations range 0-0.4 because age < 20 age > 60 and f age > 40 rarely have one
@@ -90,7 +90,7 @@ toplot$emr2 <- cut(toplot$emr, c(0, 1, 2, 3, 4, 5, 55))
 levels(toplot$emr2)[6] <- ">5"
 
 pdf("../out/excessmap.pdf", width = 6)
-plot(toplot[, "emr2"],  pal = viridisLite::viridis, main = "Excess mortality rate")
+plot(toplot[, "emr2"],  pal = viridisLite::viridis, main = "(f) Excess mortality rate")
 dev.off()
 
 # corop and egg regions
