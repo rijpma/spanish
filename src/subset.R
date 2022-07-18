@@ -1,7 +1,7 @@
 rm(list = ls())
 
 library("data.table")
-library("knitr")
+library("xtable")
 library("ggplot2")
 
 source("fun.R")
@@ -98,10 +98,10 @@ fwrite(deaths, "../dat/deaths_subset.csv")
 fwrite(coverage, "../dat/coverage.csv")
 
 out = rbindlist(sumstatlist, id = "selection")
-out = knitr::kable(
+out = xtable(
     x = out, 
     digits = 0, 
     format = "latex",
-    caption = "Summary statistics and selection steps.",
+    caption = "Summary statistics and selection steps. Source: Openarch Death Certificates. The table shows the stepwise selection of cases for analysis. The database contains a total of 741758 death certificates. We select only death certificates from municipalities fully available in the database (220795 cases) and where all variables are digitized (12625 cases).",
     label = "sumselect")
-writeLines(out, "../out/selection_sumstats.tex")
+print(out, file = "../out/selection_sumstats.tex")
