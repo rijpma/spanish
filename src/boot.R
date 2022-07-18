@@ -1,9 +1,8 @@
 rm(list = ls())
 
 library("data.table")
-library("knitr")
+library("xtable")
 library("boot")
-options(knitr.kable.NA = "-")
 
 source("fun.R")
 source("coefmap.R")
@@ -37,10 +36,12 @@ out = skill_level[,
     by = list(group = skill_level)]
 out[grep("NA", difference), difference := NA]
 
-out = knitr::kable(out, digits = 2, format = "latex", 
-    caption = "Excess mortality rates in September-December 1918 by occupational skill group and their differences, with bootstrapped standard errors between parentheses.",
+out = xtable(out, digits = 2, format = "latex", 
+    caption = "Excess mortality rates in September-December 1918 by occupational skill group and their differences, with bootstrapped standard errors between parentheses. Difference refers to the difference between the EMR in that row and the previous. Source: Openarch Death Certificats.",
     label = "lab:emr_byskill_boot")
-writeLines(out, "../out/emr_byskill_boot.tex")
+print(out, 
+    NA.string = "-",
+    file = "../out/emr_byskill_boot.tex")
 
 # other boots
 exposure = toboot[, 
