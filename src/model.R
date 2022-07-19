@@ -341,25 +341,15 @@ texreg::texreg(modlist_nofem,
     file = "../out/models_nofem.tex")
 
 # stricter cutoffs
-excess_egg_age16 = excess(deaths[pr_age >= 16],
-    aggvrbs = c("egg", "farmer", aggvrbs))
-# maybe better age group as well?
 excess_egg_hisco20 = excess(deaths[poor_coverage_strict_hisco == FALSE],
     aggvrbs = c("egg", "farmer", aggvrbs))
 excess_egg_everything = excess(deaths[poor_coverage_strict_everything == FALSE],
     aggvrbs = c("egg", "farmer", aggvrbs))
-excess_egg_age16_hisco20 = excess(deaths[pr_age >= 16 & poor_coverage_strict_hisco == FALSE],
-    aggvrbs = c("egg", "farmer", aggvrbs))
-excess_egg_age16_everything = excess(deaths[pr_age >= 16 & poor_coverage_strict_everything == FALSE],
-    aggvrbs = c("egg", "farmer", aggvrbs))
 
 modlist_cutoffs = list(
     `pref.` = prefmod,
-    `age > 15` = update(prefmod, data = excess_egg_age16),
     `occ >= 20pc` = update(prefmod, data = excess_egg_hisco20),
-    `age and occ` = update(prefmod, data = excess_egg_age16_hisco20),
-    `occ and rest >= 80pc` = update(prefmod, data = excess_egg_everything),
-    `all high` = update(prefmod, data = excess_egg_age16_everything)
+    `occ >= 20pc and rest >= 80pc` = update(prefmod, data = excess_egg_everything)
 )
 
 coeflist = lapply(modlist_cutoffs, coeftest, vcov. = sandwich::vcovCL, cluster = ~ egg)
@@ -371,7 +361,7 @@ texreg::texreg(modlist_cutoffs,
     custom.coef.map = coefmap,
     override.se = lapply(coeflist, `[`, i = , j = 2),
     override.pval = lapply(coeflist, `[`, i = , j = 4),
-    caption = "Robustness checks for regressions of log excess mortality rate, using stricter data selection steps: no 12-15 year olds, and using municipalities with higher occupation coverage, and higher (80 percent) coverage of sex, age, and date variables. Region-clustered standard errors between parentheses.",
+    caption = "Robustness checks for regressions of log excess mortality rate, using stricter data selection steps: municipalities with higher occupation coverage (20 percent), and higher (80 percent) coverage of sex, age, and date variables. Region-clustered standard errors between parentheses.",
     label = "tab:cutoffmodels",
     fontsize = "small",
     float.pos = "h!",
