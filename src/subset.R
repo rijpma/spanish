@@ -48,16 +48,17 @@ coverage = deaths[,
          sex = mean(!is.na(pr_gender), na.rm = TRUE),
          date = mean(!is.na(death_date), na.rm = TRUE)), 
      by = list(amco)]
-coverage[, poor_coverage := hisco <= 0.1 | age <= 0.2 | date <= 0.4]
-coverage[, poor_coverage := hisco <= 0.1 | age <= 0.5 | date <= 0.5 | sex <= 0.5]
-coverage[, poor_coverage_strict_hisco := hisco <= 0.2 | age <= 0.5 | date <= 0.5 | sex <= 0.5]
-coverage[, poor_coverage_strict_everything := hisco <= 0.2 | age <= 0.8 | date <= 0.8 | sex <= 0.8]
-# would drop an additional 75 munics
 
 out = ggplot(melt(coverage, id.vars = "amco", value.name = "share_present"), aes(x = share_present)) + geom_histogram() + facet_wrap(~ variable) + theme_classic()
 pdf("../out/coverage.pdf", height = 6)
 print(out)
 dev.off()
+
+coverage[, poor_coverage := hisco <= 0.1 | age <= 0.2 | date <= 0.4]
+coverage[, poor_coverage := hisco <= 0.1 | age <= 0.5 | date <= 0.5 | sex <= 0.5]
+coverage[, poor_coverage_strict_hisco := hisco <= 0.2 | age <= 0.5 | date <= 0.5 | sex <= 0.5]
+coverage[, poor_coverage_strict_everything := hisco <= 0.2 | age <= 0.8 | date <= 0.8 | sex <= 0.8]
+# would drop an additional 75 munics
 
 deaths = merge(
     x = deaths,
