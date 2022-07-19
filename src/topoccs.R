@@ -6,6 +6,7 @@ library("data.table")
 library("knitr")
 
 deaths = data.table::fread("../dat/deaths_subset.csv", na.strings = "")
+occlabels = data.table::fread("../dat/occlabels.csv")
 
 deaths = deaths[!is.na(HISCO)]
 
@@ -24,11 +25,13 @@ occs = deaths[,
     by = HISCO]
 occs = occs[emr_occ[, list(HISCO, emr)], on = "HISCO"]
 occs[, skill := gsub("un", "unskilled", skill)]
+occs = merge(occs, occlabels, by.x = "HISCO", by.y = "hisco", all.x = TRUE)
+
 
 out = xtable::xtable(
-    occs[order(-N)][1:25],
+    occs[order(-N)][1:25, list(HISCO, label, N, contact, indoors, skill, hiscam, emr)],
     digits = 1,
-    caption = "Most frequent occupations on death certificates for deceased age 13-79, September--December 1910--1918.",
+    caption = "Most frequent occupations on death certificates for deceased age 16-79, September--December months in 1910--1918.",
     label = "tab:topoccs_selected")
 print(
     out, 
