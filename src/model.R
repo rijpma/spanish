@@ -13,6 +13,7 @@ source("fun.R")
 source("coefmap.R")
 
 deaths = data.table::fread("../dat/deaths_subset.csv", na.strings = "")
+deaths_with_women = data.table::fread("../dat/deaths_with_women.csv", na.strings = "")
 municipalities = data.table::fread("../dat/spatialagg.txt")
 popdens = data.table::fread("../dat/inwonertal + bevolkingsdichtheid.txt")
 army = data.table::fread("../dat/legerplaatsen.csv", na.strings = "")
@@ -29,7 +30,7 @@ popdens_prov = popdens_amco[,
     list(pop1918 = sum(PopSize1918), popdens1918 = sum(PopSize1918) / sum(hectare)), 
     by = Provincie]
 
-aggvrbs = c("year", "event_month", "agegroup", "pr_gender", "skill_level", "exposure")
+aggvrbs = c("year", "event_month", "agegroup", "skill_level", "exposure")
 deaths[, agegroup := cut(pr_age, c(11, 30, 45, 60, 80))]
 
 # agebin = 10
@@ -55,11 +56,11 @@ modlist_base = list(
         data = excess_egg),
     lm(log1p(emr) ~ skill_level + farmer + exposure, 
         data = excess_egg),
-    lm(log1p(emr) ~ skill_level + farmer + exposure + agegroup + pr_gender, 
+    lm(log1p(emr) ~ skill_level + farmer + exposure + agegroup, 
         data = excess_egg),
-    lm(log1p(emr) ~ skill_level + farmer + exposure + agegroup + pr_gender + factor(event_month), 
+    lm(log1p(emr) ~ skill_level + farmer + exposure + agegroup + factor(event_month), 
         data = excess_egg),
-    lm(log1p(emr) ~ skill_level + farmer + exposure + agegroup + pr_gender + factor(event_month) + factor(egg), 
+    lm(log1p(emr) ~ skill_level + farmer + exposure + agegroup + factor(event_month) + factor(egg), 
         data = excess_egg))
 prefmod = modlist_base[[length(modlist_base)]]
 prefform = formula(prefmod)
@@ -322,11 +323,18 @@ texreg::texreg(modlist_zeroes,
     float.pos = "h!",
     file = "../out/models_altform.tex")
 
-# omit women
+# include women
+deaths_with_women[, agegroup := cut(pr_age, c(11, 30, 45, 60, 80))]
+deaths_with_women[!is.na(HISCO), farmer := HISCO %in% c(61220)] # also 62210, 62105 ?
+deaths_with_women[, skill_level := relevel(factor(skill_level), ref = "higher_skilled")]
+
+excess_egg_with_women = excess(deaths_with_women,
+    aggvrbs = c("egg", "farmer", "final_under_roof", "final_meet_strangers", "pr_gender", aggvrbs))
+
 modlist_nofem = list(
-    modlist_base[[7]],
+    `pref.` = modlist_base[[7]],
     # update(modlist_base[[7]], . ~ . - pr_gender),
-    update(modlist_base[[7]], . ~ . - pr_gender, data = excess_egg[pr_gender != "f"])
+    `include women` = update(modlist_base[[7]], . ~ . + pr_gender, data = excess_egg_with_women)
     # identical to remaking the dataset w/o women
 )
 coeflist = lapply(modlist_nofem, coeftest, vcov. = sandwich::vcovCL, cluster = ~ egg)
@@ -334,8 +342,8 @@ texreg::texreg(modlist_nofem,
     custom.coef.map = coefmap,
     override.se = lapply(coeflist, `[`, i = , j = 2),
     override.pval = lapply(coeflist, `[`, i = , j = 4),
-    caption = "Regressions of log excess mortality rate, including and excluding women. Region-clustered standard errors between parentheses.",
-    label = "tab:nofemmodels",
+    caption = "Regressions of log excess mortality rate, excluding and including women. Region-clustered standard errors between parentheses.",
+    label = "tab:femmodels",
     fontsize = "small",
     float.pos = "h!",
     file = "../out/models_nofem.tex")

@@ -83,6 +83,11 @@ deaths = deaths[data.table::between(pr_age, 16, 79)]
 
 sumstatlist[["15 < age < 79"]] = sumstats(dat = deaths)
 
+deaths_with_women = copy(deaths)
+deaths = deaths[pr_gender == "m"]
+
+sumstatlist[["men only"]] = sumstats(dat = deaths)
+
 # complete cases look
 # huge amount of contact occs in missing ages
 sumstatlist[["complete cases"]] = sumstats(
@@ -95,6 +100,7 @@ sumstatlist[["complete cases"]] = sumstats(
 )
 
 fwrite(deaths, "../dat/deaths_subset.csv")
+fwrite(deaths_with_women, "../dat/deaths_with_women.csv")
 fwrite(coverage, "../dat/coverage.csv")
 
 out = rbindlist(sumstatlist, id = "selection")
@@ -102,6 +108,6 @@ out = xtable(
     x = out, 
     digits = 0, 
     format = "latex",
-    caption = "Summary statistics and selection steps. Source: Openarch Death Certificates. The table shows the stepwise selection of cases for analysis. The database contains a total of 741758 death certificates. We select only death certificates from municipalities fully available in the database (715703 cases) and where there is sufficient coverage for our variables (220795 cases). We also drop certain periods and age groups (34111), and finally select complete cases (12530).",
+    caption = "Summary statistics and selection steps. Source: Openarch Death Certificates. The table shows the stepwise selection of cases for analysis. The database contains a total of 741758 death certificates. We select only death certificates from municipalities fully available in the database (715703 cases) and where there is sufficient coverage for our variables (220795 cases). We also drop certain periods, age groups, and women (16786), and finally select complete cases (11469).",
     label = "sumselect")
 print(out, file = "../out/selection_sumstats.tex")
